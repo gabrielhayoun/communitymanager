@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<head>
+</head>
+<body>
+
+<h1>My subscriptions</h1>
+
+<h2>Communities</h2>
+{% for commu in community %}
+    {% if commu in community_user %}
+        <p style="color:red">
+            {{ commu.name}}
+            <a href="{% url 'join' id=commu.id %}"> join </a>
+        </p>
+    {% else %}
+        {{ commu.name}}
+         <a href="{% url 'join' id=commu.id %}"> join </a>
+    {% endif %}
+{% endfor %}
+</body>
+</html>
