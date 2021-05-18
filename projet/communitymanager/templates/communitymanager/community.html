@@ -6,17 +6,26 @@
 
 <h1>My subscriptions</h1>
 
-<h2>Communities</h2>
-{% for commu in community %}
-    {% if commu in community_user %}
-        <p style="color:red">
-            {{ commu.name}}
-            <a href="{% url 'join' id=commu.id %}"> join </a>
-        </p>
-    {% else %}
-        {{ commu.name}}
-         <a href="{% url 'join' id=commu.id %}"> join </a>
-    {% endif %}
+<h2>{{one_community.name}}'s post</h2>
+
+<table style="width:60%; margin:auto; padding: 2%">
+
+  <tr>
+    <th>title</th>
+    <th>Description</th>
+    <th>Creation Date</th>
+    <th>Modifications</th>
+  </tr>
+
+{% for post in posts %}
+    <tr>
+        <td>{{ post.title}}</td>
+        <td> {{post.description}} + visualiser le détail du post</td>
+        <td>{{post.date_creation}}</td>
+        <td> plus tard </td>
+    </tr>
 {% endfor %}
+
+</table>
 </body>
 </html>
