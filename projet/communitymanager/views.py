@@ -1,6 +1,10 @@
+from django.db.models import DateTimeField
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
-from .models import Community, Post, Commentary
+from django.utils import timezone
+
+from .forms import NewPostForm
+from .models import Community, Post, Commentary, Priority
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -29,8 +33,26 @@ def community(request, community_id):
 
     return render(request, 'communitymanager/community.html', locals())
 
+
 def post(request, post_id):
     one_post = get_object_or_404(Post, id=post_id)
-    commentaries = Commentary.objects.filter (post=one_post).order_by('-date_creation')
+    commentaries = Commentary.objects.filter(post=one_post).order_by('-date_creation')
 
     return render(request, 'communitymanager/post.html', locals())
+
+
+def new_post(request):
+    form = NewPostForm(user=request.user, data=request.POST or None)
+    if form.is_valid():
+        post = Post()
+        post.title = form.cleaned_data['title']
+        post.description = form.cleaned_data['description']
+        post.community = Community.objects.get(name=form.cleaned_data['community'])
+        post.priority = Priority.objects.get(name=form.cleaned_data['priority'])
+        post.event = form.cleaned_data['event']
+        post.date_event = form.cleaned_data['date_event']
+        post.author = request.user
+        post.save()
+        return render(request, 'communitymanager/post.html', {'one_post': post})
+    else:
+        return render(request, 'communitymanager/new_post.html', locals())
