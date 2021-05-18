@@ -19,7 +19,8 @@
 
 {% for post in posts %}
     <tr>
-        <td>{{ post.title}}</td>
+        <td>{{ post.title}} <br>
+            <a href="{% url 'post' post_id=post.id %}">voir l'article</a></td>
         <td> {{post.description}} + visualiser le détail du post</td>
         <td>{{post.date_creation}}</td>
         <td> plus tard </td>

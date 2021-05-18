@@ -11,4 +11,6 @@ urlpatterns = [
 
     path('community/<int:community_id>', views.community, name='community'),
 
+    path('post/<int:post_id>', views.post, name='post'),
+
     ]

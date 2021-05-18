@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
-from .models import Community, Post
+from .models import Community, Post, Commentary
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -28,3 +28,9 @@ def community(request, community_id):
     posts = Post.objects.filter(community=one_community).order_by('-date_creation')
 
     return render(request, 'communitymanager/community.html', locals())
+
+def post(request, post_id):
+    one_post = get_object_or_404(Post, id=post_id)
+    commentaries = Commentary.objects.filter (post=one_post).order_by('-date_creation')
+
+    return render(request, 'communitymanager/post.html', locals())

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<head>
+</head>
+<body>
+
+<h1>My subscriptions</h1>
+
+<h2>{{one_post.title}}</h2>
+
+<table style="width:60%; margin:auto; padding: 2%">
+
+    <tr>
+        <td>{{ one_post.title}}</td>
+        <td> {{one_post.description}} + visualiser le détail du post</td>
+        <td>{{one_post.date_creation}}</td>
+        <td> plus tard </td>
+    </tr>
+    {% for comment in commentaries %}
+    <tr>
+        <td>{{ comment.author}}</td>
+        <td> {{comment.content}}</td>
+        <td>{{comment.date_creation}}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+</body>
+</html>
