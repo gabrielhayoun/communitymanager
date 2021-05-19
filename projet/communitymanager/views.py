@@ -44,15 +44,39 @@ def post(request, post_id):
 def new_post(request):
     form = NewPostForm(user=request.user, data=request.POST or None)
     if form.is_valid():
-        post = Post()
-        post.title = form.cleaned_data['title']
-        post.description = form.cleaned_data['description']
-        post.community = Community.objects.get(name=form.cleaned_data['community'])
-        post.priority = Priority.objects.get(name=form.cleaned_data['priority'])
-        post.event = form.cleaned_data['event']
-        post.date_event = form.cleaned_data['date_event']
-        post.author = request.user
-        post.save()
-        return render(request, 'communitymanager/post.html', {'one_post': post})
+        '''one_post = Post()
+        one_post.title = form.cleaned_data['title']
+        one_post.description = form.cleaned_data['description']
+        one_post.community = Community.objects.get(name=form.cleaned_data['community'])
+        one_post.priority = Priority.objects.get(name=form.cleaned_data['priority'])
+        one_post.event = form.cleaned_data['event']
+        one_post.date_event = form.cleaned_data['date_event']
+        one_post.author = request.user
+        one_post.save()'''
+
+        one_post = form.save(commit=False)
+        one_post.author = request.user
+        one_post.save()
+
+        return render(request, 'communitymanager/post.html', locals())
     else:
         return render(request, 'communitymanager/new_post.html', locals())
+
+def modif_post(request, post_id):
+    form = NewPostForm(user=request.user, data=request.POST or None)
+    if form.is_valid():
+        one_post = form.save(commit=False)
+        one_post.author = request.user
+        one_post.save()
+        return redirect(post, post_id=one_post.id)
+    else :
+        one_post = get_object_or_404(Post, id=post_id)
+        form = NewPostForm(user=request.user, instance=one_post)
+        return render(request, 'communitymanager/new_post.html', locals())
+
+
+def news_feed(request):
+    community_user = request.user.community_set.order_by('name')
+    posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
+    return render(request, 'communitymanager/news_feed.html', locals())
+

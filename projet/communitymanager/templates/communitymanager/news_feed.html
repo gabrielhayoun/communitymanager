@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<head>
+</head>
+<body>
+
+<h1>My subscriptions</h1>
+
+<h2>Communities</h2>
+
+<table style="width:60%; margin:auto; padding: 2%">
+{% for one_post in posts_user %}
+    <tr>
+        <td>{{ community_user.name}}</td>
+        <td>{{ one_post.title}}</td>
+        <td> {{one_post.description}} + visualiser le détail du post</td>
+        <td>{{one_post.date_creation}}</td>
+        <td> plus tard </td>
+    </tr>
+{% endfor %}
+</table>
+</body>
+</html>

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from .models import Community, Priority, Post
 from collections import defaultdict, deque
 
-
+'''
 class NewPostForm(forms.Form):
     community = forms.ModelChoiceField(queryset=Community.objects.all())
     title = forms.CharField(max_length=100)
@@ -38,10 +38,10 @@ class NewPostForm(forms.ModelForm):
         self.user = user
         super(NewPostForm, self).__init__(*args, **kwargs)
 
-        list_user_communities = [('0', '-------------')]
-        for i, obj in enumerate(self.user.community_set.all()):
-            list_user_communities.append((str(i + 1), str(obj.name)))
-        self.fields['community'].choices = list_user_communities
+#        list_user_communities = [('0', '-------------')]
+#        for i, obj in enumerate(self.user.community_set.all()):
+#            list_user_communities.append((str(i + 1), str(obj.name)))
+        self.fields['community'].queryset = self.user.community_set.all()
 
-'''
+
 
