@@ -1,24 +1,22 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block title %} Communities {% endblock %}
 
-<head>
-</head>
-<body>
-
+{% block content %}
 <h1>My subscriptions</h1>
 
 <h2>Communities</h2>
 {% for commu in community_list %}
-    {% if commu in community_user %}
-        <p style="color:red">
-            {{ commu.name}}
-            <a href="{% url 'community' community_id=commu.id %}">posts</a>
-            <a href="{% url 'join' community_id=commu.id %}"> join </a>
-        </p>
-    {% else %}
-        {{ commu.name}}
-        <a href="{% url 'community' community_id=commu.id %}">posts</a>
-        <a href="{% url 'join' community_id=commu.id %}"> join </a>
-    {% endif %}
+{% if commu in community_user %}
+<p style="color:red">
+    {{ commu.name}}
+    <a href="{% url 'community' community_id=commu.id %}">posts</a>
+    <a href="{% url 'join' community_id=commu.id %}"> join </a>
+</p>
+{% else %}
+{{ commu.name}}
+<a href="{% url 'community' community_id=commu.id %}">posts</a>
+<a href="{% url 'join' community_id=commu.id %}"> join </a>
+{% endif %}
 {% endfor %}
-</body>
-</html>
+
+{% endblock %}
