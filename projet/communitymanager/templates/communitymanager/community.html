@@ -1,32 +1,31 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block title %} {{one_community.name}} {% endblock %}
 
-<head>
-</head>
-<body>
+{% block content %}
+<div class="container">
+    <h1>{{one_community.name}}'s post</h1>
+    <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
+        <table class="table">
+            <tbody>
+            <tr class="center">
+                <th>title</th>
+                <th>Description</th>
+                <th>Creation Date</th>
+                <th>Modifications</th>
+            </tr>
 
-<h1>My subscriptions</h1>
+            {% for post in posts %}
+            <tr>
+                <td class="left">{{ post.title}} by {{post.author}}<br>
+                    <a href="{% url 'post' post_id=post.id %}">voir l'article</a></td>
+                <td class="center"> {{post.description}} + visualiser le détail du post</td>
+                <td class="center">{{post.date_creation}}</td>
+                <td class="right"> <a href="{% url 'modif_post' post_id=post.id %}">Change the article</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
 
-<h2>{{one_community.name}}'s post</h2>
-
-<table style="width:60%; margin:auto; padding: 2%">
-
-  <tr>
-    <th>title</th>
-    <th>Description</th>
-    <th>Creation Date</th>
-    <th>Modifications</th>
-  </tr>
-
-{% for post in posts %}
-    <tr>
-        <td>{{ post.title}} <br>
-            <a href="{% url 'post' post_id=post.id %}">voir l'article</a></td>
-        <td> {{post.description}} + visualiser le détail du post</td>
-        <td>{{post.date_creation}}</td>
-        <td> plus tard </td>
-    </tr>
-{% endfor %}
-
-</table>
-</body>
-</html>

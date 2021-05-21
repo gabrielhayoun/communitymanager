@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Latest compiled and minified CSS -->
@@ -19,6 +21,25 @@
 
 </head>
 <body>
+
+<div class="container mt-3">
+    <!-- Nav tabs -->
+    {% block nav %}
+    <ul class="nav nav-tabs nav-justified">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'news_feed' %}">News feed</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'communities' %}">Communities</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'new_post' %}">Create a post</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+</div>
+
 
 <section id="content">
     {% block content %} {% endblock %}

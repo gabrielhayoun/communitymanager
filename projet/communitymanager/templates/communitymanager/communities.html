@@ -1,22 +1,44 @@
 {% extends 'base.html' %}
 {% block title %} Communities {% endblock %}
 
+{% block nav %}
+<ul class="nav nav-tabs nav-justified">
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'news_feed' %}">News feed</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url 'communities' %}">Communities</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'new_post' %}">Create a post</a>
+    </li>
+</ul>
+</div>
+{% endblock %}
+
 {% block content %}
-<h1>My subscriptions</h1>
-
-<h2>Communities</h2>
-{% for commu in community_list %}
-{% if commu in community_user %}
-<p style="color:red">
-    {{ commu.name}}
-    <a href="{% url 'community' community_id=commu.id %}">posts</a>
-    <a href="{% url 'join' community_id=commu.id %}"> join </a>
-</p>
-{% else %}
-{{ commu.name}}
-<a href="{% url 'community' community_id=commu.id %}">posts</a>
-<a href="{% url 'join' community_id=commu.id %}"> join </a>
-{% endif %}
-{% endfor %}
-
+<div class="container">
+    <h1>Communities</h1>
+    <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
+        {% for commu in community_list %}
+        <table class="table">
+            {% if commu in community_user %}
+            <tbody style="color: red">
+            <tr>
+                <td class="left">{{ commu.name}}
+                    <a href="{% url 'community' community_id=commu.id %}">posts</a></td>
+                <td class="right"><a href="{% url 'join' community_id=commu.id %}">join</a></td>
+            </tr>
+            </tbody>
+            {% else %}
+            <tr>
+                <td class="left">{{ commu.name}}
+                    <a href="{% url 'community' community_id=commu.id %}">posts</a></td>
+                <td class="right"><a href="{% url 'join' community_id=commu.id %}">join</a></td>
+            </tr>
+            {% endif %}
+        </table>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

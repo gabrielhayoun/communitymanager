@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Community, Priority, Post
+from .models import Community, Priority, Post, Commentary
 from collections import defaultdict, deque
 
 '''
@@ -42,6 +42,19 @@ class NewPostForm(forms.ModelForm):
 #        for i, obj in enumerate(self.user.community_set.all()):
 #            list_user_communities.append((str(i + 1), str(obj.name)))
         self.fields['community'].queryset = self.user.community_set.all()
+
+
+class CommentaryForm(forms.ModelForm):
+
+    class Meta:
+        model = Commentary
+        fields = ('content',)
+
+    def __init__(self, *args, **kwargs):
+        super(CommentaryForm, self).__init__(*args, **kwargs)
+        self.fields['content'].required = False
+#        self.fields['content'].widget = forms.Textarea(attrs={'cols':100, 'rows':2})
+
 
 
 

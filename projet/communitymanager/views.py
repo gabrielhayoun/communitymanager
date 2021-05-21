@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-from .forms import NewPostForm
+from .forms import NewPostForm, CommentaryForm
 from .models import Community, Post, Commentary, Priority
 from django.contrib.auth.decorators import login_required
 
@@ -37,7 +37,17 @@ def community(request, community_id):
 def post(request, post_id):
     one_post = get_object_or_404(Post, id=post_id)
     commentaries = Commentary.objects.filter(post=one_post).order_by('-date_creation')
+    form = CommentaryForm(request.POST or None)
 
+    if form.is_valid():
+        if form.cleaned_data['content'] == "":
+            return render(request, 'communitymanager/post.html', locals())
+        else:
+            one_comment = form.save(commit=False)
+            one_comment.author = request.user
+            one_comment.post = one_post
+            one_comment.save()
+            return render(request, 'communitymanager/post.html', locals())
     return render(request, 'communitymanager/post.html', locals())
 
 

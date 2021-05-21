@@ -1,29 +1,37 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block title %} {{ one_post.title}} {% endblock %}
 
-<head>
-</head>
-<body>
-
-<h1>My subscriptions</h1>
-
-<h2>{{one_post.title}}</h2>
-
-<table style="width:60%; margin:auto; padding: 2%">
-
-    <tr>
-        <td>{{ one_post.title}}</td>
-        <td> {{one_post.description}} + visualiser le détail du post</td>
-        <td>{{one_post.date_creation}}</td>
-        <td> plus tard </td>
-    </tr>
-    {% for comment in commentaries %}
-    <tr>
-        <td>{{ comment.author}}</td>
-        <td> {{comment.content}}</td>
-        <td>{{comment.date_creation}}</td>
-    </tr>
-    {% endfor %}
-
-</table>
-</body>
-</html>
+{% block content %}
+<div class="container">
+    <h1>{{one_post.title}}</h1>
+    <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
+        <table class="table">
+            <tbody>
+            <tr class="center">
+                <td class="left">{{ one_post.title}}</td>
+                <td class="center"> {{one_post.description}}</td>
+                <td class="right">{{one_post.date_creation}}</td>
+            </tr>
+        </table>
+    </div>
+    <h3 class="left">Comments</h3>
+    <table class="table">
+        <form method="post" >
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_content">Comment:</label>
+                <textarea class="form-control" rows="5" id="id_content" name="content"></textarea>
+            </div>
+            <input type="submit" value="Submit">
+        </form>
+        {% for comment in commentaries %}
+        <tr>
+            <td class="left">{{ comment.author}}</td>
+            <td class="center"> {{comment.content}}</td>
+            <td class="right">{{comment.date_creation}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
