@@ -10,13 +10,19 @@
             <tr class="center">
                 <td class="left">{{ one_post.title}}</td>
                 <td class="center"> {{one_post.description}}</td>
+
+                {% if one_post.event == True %}
+                <td class="center">{{one_post.date_creation}}</td>
+                <td class = "right"> date of the event :<br> {{one_post.date_event}}</td>
+                {% else %}
                 <td class="right">{{one_post.date_creation}}</td>
+                {% endif %}
             </tr>
         </table>
     </div>
     <h3 class="left">Comments</h3>
     <table class="table">
-        <form method="post" >
+        <form method="post">
             {% csrf_token %}
             <div class="form-group">
                 <label for="id_content">Comment:</label>

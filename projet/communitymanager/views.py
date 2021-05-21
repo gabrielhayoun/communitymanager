@@ -53,6 +53,8 @@ def post(request, post_id):
 
 def new_post(request):
     form = NewPostForm(user=request.user, data=request.POST or None)
+    user_community = request.user.community_set.all()
+    priorities = Priority.objects.order_by('id')
     if form.is_valid():
         '''one_post = Post()
         one_post.title = form.cleaned_data['title']
@@ -70,6 +72,7 @@ def new_post(request):
 
         return render(request, 'communitymanager/post.html', locals())
     else:
+        print(form.errors)
         return render(request, 'communitymanager/new_post.html', locals())
 
 def modif_post(request, post_id):

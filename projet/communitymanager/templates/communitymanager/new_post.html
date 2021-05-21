@@ -1,16 +1,65 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block title %} Create a post {% endblock %}
 
-<head>
-</head>
-<body>
+{% block nav %}
+<ul class="nav nav-tabs nav-justified">
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'news_feed' %}">News feed</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'communities' %}">Communities</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url 'new_post' %}">Create a post</a>
+    </li>
+</ul>
+</div>
+{% endblock %}
 
-<h1>add a post</h1>
-
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
-</form>
-
-</body>
-</html>
+{% block content %}
+<div class="container">
+    <h1>add a post</h1>
+    <form method="post" action="{% url 'new_post' %}" id="post_form" class="needs-validation">
+        <div class="form-group">
+            {% csrf_token %}
+             <label for="id_community">Community :</label>
+            <select class="form-control" id="id_community" name="community" required>
+                <option></option>
+                {% for commu in user_community %}
+                <option value="{{commu.id}}">{{commu}}</option>
+                {% endfor %}
+            </select>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+            <br>
+            <label for="id_title">Title:</label>
+            <input type="text" class="form-control" name="title" id="id_title" placeholder="Enter the Title" required/>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+            <br>
+            <label for="id_description">Description:</label>
+            <textarea class="form-control" rows="5" id="id_description" name="description" required></textarea>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+            <br>
+           <label for="id_event">Is it an event ?:</label>
+            <input type="checkbox" class="a" id="id_event" name="event"/>
+            <br>
+            <label for="id_date_event">Date of the event</label>
+            <input type="datetime-local" class="" id="id_date_event" name="date_event"/>
+            <br>
+            <label for="id_priority">Priority :</label>
+            <select class="form-control" id="id_priority" name="priority" required>
+                {% for priority in priorities %}
+                <option value="{{priority.id}}">{{priority}}</option>
+                {% endfor %}
+            </select>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+            <br>
+<!--            {{ form.as_p }} -->
+        </div>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{% endblock %}

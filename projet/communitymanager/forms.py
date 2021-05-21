@@ -32,7 +32,7 @@ class NewPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = '__all__'
-        exclude = ('author', 'date_creation')
+        exclude = ('author', 'date_creation', 'date_event','event')
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
@@ -42,6 +42,8 @@ class NewPostForm(forms.ModelForm):
 #        for i, obj in enumerate(self.user.community_set.all()):
 #            list_user_communities.append((str(i + 1), str(obj.name)))
         self.fields['community'].queryset = self.user.community_set.all()
+#        self.fields['date_event'].required = False
+#        self.fields['event'].required = False
 
 
 class CommentaryForm(forms.ModelForm):
