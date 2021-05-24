@@ -32,7 +32,7 @@ class NewPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = '__all__'
-        exclude = ('author', 'date_creation', 'date_event','event')
+        exclude = ('author', 'date_creation', 'event', 'date_event')
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
@@ -44,6 +44,7 @@ class NewPostForm(forms.ModelForm):
         self.fields['community'].queryset = self.user.community_set.all()
 #        self.fields['date_event'].required = False
 #        self.fields['event'].required = False
+#        self.fields['description'].widget = forms.Textarea(attrs={'cols':100})
 
 
 class CommentaryForm(forms.ModelForm):
@@ -55,7 +56,10 @@ class CommentaryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CommentaryForm, self).__init__(*args, **kwargs)
         self.fields['content'].required = False
+#        self.fields['date_creation'].input_format = ['%d/%m/%Y %H:%M']
+#        self.fields['date_event'].input_format=  ['%d/%m/%Y %H:%M']
 #        self.fields['content'].widget = forms.Textarea(attrs={'cols':100, 'rows':2})
+
 
 
 
