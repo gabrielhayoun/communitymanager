@@ -1,8 +1,5 @@
-#communities_jumbo {
-    padding-top:3%;
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-bottom: 3%;
+.communities_jumbo {
+    padding: 10% 5% 3%;
 }
 
 .right {
@@ -15,4 +12,17 @@
 
 .center {
     text-align: center;
+}
+
+.navbar-nav.navbar-center {
+            position: absolute;
+            left: 50%;
+            transform: translatex(-50%);
+        }
+.border-title {
+    padding-top: 10px;
+}
+
+.active-nav {
+    color: red;
 }

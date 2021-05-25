@@ -2,9 +2,8 @@
 {% block title %} Newsfeed {% endblock %}
 
 {% block nav %}
-<ul class="nav nav-tabs nav-justified">
     <li class="nav-item">
-        <a class="nav-link active" href="{% url 'news_feed' %}">News feed</a>
+        <a class="nav-link active-nav" href="{% url 'news_feed' %}">News feed</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{% url 'communities' %}">Communities</a>
@@ -12,17 +11,14 @@
     <li class="nav-item">
         <a class="nav-link" href="{% url 'new_post' %}">Create a post</a>
     </li>
-</ul>
 </div>
 {% endblock %}
 
 {% block content %}
 <div class="container">
     <h1>My subscriptions</h1>
-
-    <h2>Communities</h2>
     <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
-        <table style="width:60%; margin:auto; padding: 2%">
+        <table class="table">
             {% for one_post in posts_user %}
             <tr>
                 <td>{{ community_user.name}}</td>

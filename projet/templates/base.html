@@ -1,8 +1,7 @@
 <!DOCTYPE html>
+{% load static %}s
 <html lang="en">
 <head>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Latest compiled and minified CSS -->
@@ -17,14 +16,40 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+
     <title>{% block title %} {% endblock %}</title>
 
 </head>
 <body>
 
 <div class="container mt-3">
-    <!-- Nav tabs -->
-    {% block nav %}
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+        <a class="navbar-brand">In da Club</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="nav navbar-nav navbar-center">
+                {% block nav %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'news_feed' %}">News feed</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'communities' %}">Communities</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'new_post' %}">Create a post</a>
+                </li>
+                {% endblock %}
+            </ul>
+        </div>
+    </nav>
+</div>
+<br>
+
+<!--
+<div class="container mt-3">
     <ul class="nav nav-tabs nav-justified">
         <li class="nav-item">
             <a class="nav-link" href="{% url 'news_feed' %}">News feed</a>
@@ -37,8 +62,8 @@
         </li>
     </ul>
 </div>
-{% endblock %}
 </div>
+-->
 
 
 <section id="content">

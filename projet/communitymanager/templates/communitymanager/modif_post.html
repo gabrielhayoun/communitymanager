@@ -1,20 +1,5 @@
 {% extends 'base.html' %}
 {% block title %} Create a post {% endblock %}
-var title = {{title}}
-{% block nav %}
-<ul class="nav nav-tabs nav-justified" xmlns="http://www.w3.org/1999/html">
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'news_feed' %}">News feed</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'communities' %}">Communities</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" href="{% url 'new_post' %}">Create a post</a>
-    </li>
-</ul>
-</div>
-{% endblock %}
 
 {% block content %}
 <div class="container">
