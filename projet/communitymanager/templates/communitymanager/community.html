@@ -20,7 +20,9 @@
                     <a href="{% url 'post' post_id=post.id %}">voir l'article</a></td>
                 <td class="center"> {{post.description}} + visualiser le détail du post</td>
                 <td class="center">{{post.date_creation}}</td>
+                {% if request.user == post.author %}
                 <td class="right"> <a href="{% url 'modif_post' post_id=post.id %}">Change the article</a></td>
+                {% endif %}
             </tr>
             {% endfor %}
             </tbody>

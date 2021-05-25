@@ -102,38 +102,40 @@ def modif_post(request, post_id):
     user_community = request.user.community_set.all()
     priorities = Priority.objects.order_by('id')
     one_post = get_object_or_404(Post, id=post_id)
-    if form.is_valid():
-        one_post.title = form.cleaned_data['title']
-        one_post.description = form.cleaned_data['description']
-        one_post.community = Community.objects.get(name=form.cleaned_data['community'])
-        one_post.priority = Priority.objects.get(name=form.cleaned_data['priority'])
-        one_post.date_creation = timezone.now()
-        if request.POST.get('event'):
-            one_post.event = True
-            date_time = request.POST.get('date_event')
-            final_date_time = ""
-            for i in range(len(date_time)):
-                if date_time[i] == 'T':
-                    final_date_time += ' '
-                else:
-                    final_date_time += date_time[i]
-            one_post.date_event = final_date_time
-        else:
-            one_post.event = False
-        one_post.save()
-        return redirect(post, post_id=one_post.id)
-    else:
-        date_time = ""
-        date_event = str(one_post.date_event)
-        print(date_event)
-        for i in range(len(date_event) - 6):
-            if date_event[i] == ' ':
-                date_time += 'T'
+    if request.user == one_post.author:
+        if form.is_valid():
+            one_post.title = form.cleaned_data['title']
+            one_post.description = form.cleaned_data['description']
+            one_post.community = Community.objects.get(name=form.cleaned_data['community'])
+            one_post.priority = Priority.objects.get(name=form.cleaned_data['priority'])
+            one_post.date_creation = timezone.now()
+            if request.POST.get('event'):
+                one_post.event = True
+                date_time = request.POST.get('date_event')
+                final_date_time = ""
+                for i in range(len(date_time)):
+                    if date_time[i] == 'T':
+                        final_date_time += ' '
+                    else:
+                        final_date_time += date_time[i]
+                one_post.date_event = final_date_time
             else:
-                date_time += date_event[i]
-        print(date_time)
-        return render(request, 'communitymanager/modif_post.html', locals())
-
+                one_post.event = False
+            one_post.save()
+            return redirect(post, post_id=one_post.id)
+        else:
+            date_time = ""
+            date_event = str(one_post.date_event)
+            print(date_event)
+            for i in range(len(date_event) - 6):
+                if date_event[i] == ' ':
+                    date_time += 'T'
+                else:
+                    date_time += date_event[i]
+            print(date_time)
+            return render(request, 'communitymanager/modif_post.html', locals())
+    else:
+        return redirect(post, post_id=one_post.id)
 
 @login_required()
 def news_feed(request):
