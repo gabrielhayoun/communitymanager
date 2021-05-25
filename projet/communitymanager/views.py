@@ -14,7 +14,6 @@ from django.contrib.auth.decorators import login_required
 def communities(request):
     community_user = request.user.community_set.all()
     community_list = Community.objects.all()
-    #    statut = request.user.has_perm("communitymanager.change_article")
     return render(request, 'communitymanager/communities.html', locals())
 
 

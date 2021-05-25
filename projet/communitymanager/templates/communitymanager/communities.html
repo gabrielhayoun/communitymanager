@@ -2,24 +2,23 @@
 {% block title %} Communities {% endblock %}
 
 {% block nav %}
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'news_feed' %}">News feed</a>
-    </li>
-    <li class="nav-item">
-        <a class="navbar-text" href="{% url 'communities' %}">Communities</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'new_post' %}">Create a post</a>
-    </li>
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'news_feed' %}">News feed</a>
+</li>
+<li class="nav-item">
+    <a class="navbar-text" href="{% url 'communities' %}">Communities</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'new_post' %}">Create a post</a>
+</li>
 {% endblock %}
 
 {% block content %}
 <div class="container">
     <h1 class="border-title">Communities</h1>
     <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
-        {% for commu in community_list %}
         <table class="table">
-            {% if commu in community_user %}
+            {% for commu in community_user %}
             <tbody style="color: red">
             <tr>
                 <td class="left">{{ commu.name}}
@@ -27,15 +26,17 @@
                 <td class="right"><a href="{% url 'join' community_id=commu.id %}">join</a></td>
             </tr>
             </tbody>
-            {% else %}
+            {% endfor %}
+            {% for commu in community_list %}
+            {% if commu not in community_user %}
             <tr>
                 <td class="left">{{ commu.name}}
                     <a href="{% url 'community' community_id=commu.id %}">posts</a></td>
                 <td class="right"><a href="{% url 'join' community_id=commu.id %}">join</a></td>
             </tr>
             {% endif %}
+            {% endfor %}
         </table>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}

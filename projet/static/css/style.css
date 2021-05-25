@@ -31,3 +31,8 @@
     color: cornflowerblue;
     font-weight: bold;
 }
+
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
