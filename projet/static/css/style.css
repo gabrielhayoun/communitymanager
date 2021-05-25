@@ -20,7 +20,7 @@
             transform: translatex(-50%);
         }
 .border-title {
-    padding-top: 10px;
+    padding-top: 5%;
 }
 
 .active-nav {
@@ -32,7 +32,3 @@
     font-weight: bold;
 }
 
-.wrapper {
-    display: flex;
-    align-items: stretch;
-}

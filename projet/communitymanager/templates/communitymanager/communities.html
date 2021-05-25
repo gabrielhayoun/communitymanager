@@ -19,11 +19,11 @@
     <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
         <table class="table">
             {% for commu in community_user %}
-            <tbody style="color: red">
+            <tbody>
             <tr>
                 <td class="left">{{ commu.name}}
                     <a href="{% url 'community' community_id=commu.id %}">posts</a></td>
-                <td class="right"><a href="{% url 'join' community_id=commu.id %}">join</a></td>
+                <td class="right"><a href="{% url 'join' community_id=commu.id %}"> <i class="fas fa-heart " style="font-size: 30px"></a></td>
             </tr>
             </tbody>
             {% endfor %}
@@ -32,7 +32,7 @@
             <tr>
                 <td class="left">{{ commu.name}}
                     <a href="{% url 'community' community_id=commu.id %}">posts</a></td>
-                <td class="right"><a href="{% url 'join' community_id=commu.id %}">join</a></td>
+                <td class="right"><a href="{% url 'join' community_id=commu.id %}"><i class="far fa-heart " style="font-size: 30px"></a></td>
             </tr>
             {% endif %}
             {% endfor %}
