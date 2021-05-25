@@ -2,15 +2,15 @@
 {% block title %} Newsfeed {% endblock %}
 
 {% block nav %}
-    <li class="nav-item">
-        <a class="navbar-text" href="{% url 'news_feed' %}">News feed</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'communities' %}">Communities</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'new_post' %}">Create a post</a>
-    </li>
+<li class="nav-item">
+    <a class="navbar-text" href="{% url 'news_feed' %}">News feed</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'communities' %}">Communities</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'new_post' %}">Create a post</a>
+</li>
 </div>
 {% endblock %}
 
@@ -19,13 +19,25 @@
     <h1>My subscriptions</h1>
     <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
         <table class="table">
+            <tr>
+                <th>Community</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Description:</th>
+                <th>Date of creation</th>
+                <th class="right">Change the article</th>
+            </tr>
             {% for one_post in posts_user %}
             <tr>
-                <td>{{ community_user.name}}</td>
-                <td>{{ one_post.title}}</td>
-                <td> {{one_post.description}} + visualiser le détail du post</td>
+                <td><a href="{% url 'community' community_id=one_post.community.id %}">{{ one_post.community}}</a></td>
+                <td>{{ one_post.title}} <br>
+                    <a href="{% url 'post' post_id=one_post.id %}">voir l'article</a></td>
+                <td> {{ one_post.author}}</td>
+                <td> {{one_post.description}}</td>
                 <td>{{one_post.date_creation}}</td>
-                <td> plus tard</td>
+                {% if request.user == one_post.author %}
+                <td class="right"><a href="{% url 'modif_post' post_id=one_post.id %}">Change the article</a></td>
+                {% endif %}
             </tr>
             {% endfor %}
         </table>
