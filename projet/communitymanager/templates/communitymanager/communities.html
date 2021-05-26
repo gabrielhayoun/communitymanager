@@ -35,7 +35,7 @@
                 <td class="left">{{ commu.name}}
                     <a href="{% url 'community' community_id=commu.id %}">posts</a></td>
                 <td class="right"><a href="{% url 'join' community_id=commu.id %}"><i class="far fa-heart "
-                                                                                      style="font-size: 30px"></a></td>
+                                                                                      style="font-size: 30px"></i></a></td>
             </tr>
             {% endif %}
             {% endfor %}
