@@ -39,7 +39,7 @@ def community(request, community_id):
 
 
 @login_required()
-def post(request, post_id):
+def post(request, post_id, modif=0):
     one_post = get_object_or_404(Post, id=post_id)
     commentaries = Commentary.objects.filter(post=one_post).order_by('-date_creation')
     form = CommentaryForm(request.POST or None)
@@ -134,7 +134,8 @@ def modif_post(request, post_id):
             print(date_time)
             return render(request, 'communitymanager/modif_post.html', locals())
     else:
-        return redirect(post, post_id=one_post.id)
+        return redirect(post, post_id=one_post.id, modif=1)
+
 
 @login_required()
 def news_feed(request):

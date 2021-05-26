@@ -13,10 +13,11 @@ urlpatterns = [
 
     path('post/<int:post_id>', views.post, name='post'),
 
+    path('post/<int:post_id>/<int:modif>', views.post, name='post_modif'),
     path('new_post/', views.new_post, name='new_post'),
 
     path('modif_post/<int:post_id>', views.modif_post, name='modif_post'),
 
     path('news_feed', views.news_feed, name='news_feed'),
 
-    ]
+]

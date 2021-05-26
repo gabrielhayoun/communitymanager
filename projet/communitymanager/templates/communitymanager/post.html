@@ -3,6 +3,17 @@
 
 {% block content %}
 <div class="container">
+    {% if modif %}
+    <div class="toast" data-autohide="false" style="position: absolute; top: 10%; right: 2%;">
+        <div class="toast-header">
+            <strong class="mr-auto text-primary"> WARNING !</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+        </div>
+        <div class="toast-body">
+            You can not modify a post that is not yours !
+        </div>
+    </div>
+    {% endif %}
     <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
         <table class="table">
             <tbody>
@@ -10,7 +21,7 @@
                 <th class="left">{{ one_post.title}}</th>
                 <td class="center"> {{one_post.description}}</td>
                 {% if one_post.event == True %}
-                <td class = "center"> date of the event :<br> {{one_post.date_event}}</td>
+                <td class="center"> date of the event :<br> {{one_post.date_event}}</td>
                 <td class="right">{{one_post.date_creation}}</td>
                 {% else %}
                 <td class="right">{{one_post.date_creation}}</td>
@@ -38,4 +49,13 @@
         </tbody>
     </table>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        $('.toast').toast('show');
+    });
+</script>
+
+
 {% endblock %}
