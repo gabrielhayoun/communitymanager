@@ -18,6 +18,7 @@
     <form method="post" id="post_form" class="needs-validation">
         <div class="form-group">
             {% csrf_token %}
+            {# Community #}
             <label for="id_community">Community :</label>
             <select class="form-control" id="id_community" name="community" required>
                 <option value={{one_post.community.id}}>{{one_post.community}}</option>
@@ -30,17 +31,20 @@
             <div class="valid-feedback">Valid.</div>
             <div class="invalid-feedback">Please fill out this field.</div>
             <br>
+            {# Title #}
             <label for="id_title">Title:</label>
             <input type="text" class="form-control" name="title" id="id_title" value="{{one_post.title}}" required/>
             <div class="valid-feedback">Valid.</div>
             <div class="invalid-feedback">Please fill out this field.</div>
             <br>
+            {# Description #}
             <label for="id_description">Description:</label>
             <textarea class="form-control" rows="5" id="id_description"
                       name="description">{{one_post.description}}</textarea>
             <div class="valid-feedback">Valid.</div>
             <div class="invalid-feedback">Please fill out this field.</div>
             <br>
+            {# Event #}
             {% if one_post.event == True %}
             <label for="id_event">Is it an event ?:</label>
             <input type="checkbox" class="a" id="id_event" name="event" checked/>
@@ -48,7 +52,15 @@
             <label for="id_date_event">Date of the event</label>
             <input type="datetime-local" class="" id="id_date_event" name="date_event" value="{{date_time}}"/>
             <br>
+            {% else %}}
+            <label for="id_event">Is it an event ?:</label>
+            <input type="checkbox" class="a" id="id_event" name="event"/>
+            <br>
+            <label for="id_date_event">Date of the event</label>
+            <input type="datetime-local" class="" id="id_date_event" name="date_event"/>
+            <br>
             {% endif %}
+            {# Priority #}
             <label for="id_priority">Priority :</label>
             <select class="form-control" id="id_priority" name="priority" required>
                 <option value={{one_post.priority.id}}>{{one_post.priority}}</option>
@@ -66,6 +78,7 @@
     </form>
 </div>
 
+{# script to make the toast pop-up #}
 <script>
     $(document).ready(function () {
         $('.toast').toast('show');

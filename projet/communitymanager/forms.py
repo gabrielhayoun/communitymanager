@@ -1,32 +1,7 @@
 from django import forms
-from django.contrib.auth.models import User
-from .models import Community, Priority, Post, Commentary
-from collections import defaultdict, deque
-
-'''
-class NewPostForm(forms.Form):
-    community = forms.ModelChoiceField(queryset=Community.objects.all())
-    title = forms.CharField(max_length=100)
-    description = forms.CharField(widget=forms.Textarea, max_length=5000)
-    event = forms.BooleanField(required=False)
-    date_event = forms.DateTimeField(widget=forms.SelectDateWidget(), required=False)
-
-    list_priorities = []
-    for i, obj in enumerate(Priority.objects.order_by('id')):
-        list_priorities.append((str(i), str(obj.name)))
-    priority = forms.ModelChoiceField(queryset=Priority.objects.order_by('id'))
-
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
-        super(NewPostForm, self).__init__(*args, **kwargs)
-
-#        list_user_communities = [('0', '-------------')]
-#        for i, obj in enumerate(self.user.community_set.all()):
-#            list_user_communities.append((str(i+1), str(obj.name)))
-        self.fields['community'].queryset = self.user.community_set.all()
+from .models import Post, Commentary
 
 
-'''
 class NewPostForm(forms.ModelForm):
 
     class Meta:
@@ -37,25 +12,24 @@ class NewPostForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(NewPostForm, self).__init__(*args, **kwargs)
-
-#        list_user_communities = [('0', '-------------')]
-#        for i, obj in enumerate(self.user.community_set.all()):
-#            list_user_communities.append((str(i + 1), str(obj.name)))
+        # set the communities possibility to the user's ones
         self.fields['community'].queryset = self.user.community_set.all()
-#        self.fields['date_event'].required = False
-#        self.fields['event'].required = False
-#        self.fields['description'].widget = forms.Textarea(attrs={'cols':100})
+
+    # redefine the clean for event and date_event
     def clean_event_and_date(self, request):
+        # if the checkbox is crossed
         if request.POST.get('event'):
             event = True
             date_time = request.POST.get('date_event')
             final_date_time = ""
+            # we put the date to the good format
             for i in range(len(date_time)):
                 if date_time[i] == 'T':
                     final_date_time += ' '
                 else:
                     final_date_time += date_time[i]
             return event, final_date_time
+        # otherwise no event
         else:
             return False, None
 
@@ -69,9 +43,6 @@ class CommentaryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CommentaryForm, self).__init__(*args, **kwargs)
         self.fields['content'].required = False
-#        self.fields['date_creation'].input_format = ['%d/%m/%Y %H:%M']
-#        self.fields['date_event'].input_format=  ['%d/%m/%Y %H:%M']
-#        self.fields['content'].widget = forms.Textarea(attrs={'cols':100, 'rows':2})
 
 
 

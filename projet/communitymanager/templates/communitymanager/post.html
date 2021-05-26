@@ -3,6 +3,7 @@
 
 {% block content %}
 <div class="container">
+    {# toast #}
     {% if modif %}
     <div class="toast" data-autohide="false" style="position: absolute; top: 10%; right: 2%;">
         <div class="toast-header">
@@ -14,6 +15,7 @@
         </div>
     </div>
     {% endif %}
+
     <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
         <table class="table">
             <tbody>
@@ -29,16 +31,20 @@
             </tr>
         </table>
     </div>
+
+    {# comment section #}
     <h3 class="left">Comments</h3>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_content">Comment:</label>
+            <textarea class="form-control" rows="5" id="id_content" name="content"></textarea>
+        </div>
+        <input type="submit" value="Submit">
+    </form>
+
     <table class="table">
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="id_content">Comment:</label>
-                <textarea class="form-control" rows="5" id="id_content" name="content"></textarea>
-            </div>
-            <input type="submit" value="Submit">
-        </form>
         {% for comment in commentaries %}
         <tr>
             <td class="left">{{ comment.author}}</td>
@@ -46,11 +52,10 @@
             <td class="right">{{comment.date_creation}}</td>
         </tr>
         {% endfor %}
-        </tbody>
     </table>
 </div>
 
-
+{# script to make the toast pop-up #}
 <script>
     $(document).ready(function () {
         $('.toast').toast('show');
