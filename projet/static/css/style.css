@@ -19,6 +19,13 @@
             left: 50%;
             transform: translatex(-50%);
         }
+
+.navbar-nav.navbar-right {
+            position: absolute;
+            left: 90%;
+            transform: translatex(-90%);
+        }
+
 .border-title {
     padding-top: 5%;
 }
