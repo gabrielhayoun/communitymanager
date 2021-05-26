@@ -24,8 +24,8 @@
                 <th>Author</th>
                 <th>Description:</th>
                 <th>Date of the event</th>
-                <th>Date of creation</th>
-                <th class="right">Change the article</th>
+                <th>Change the article</th>
+                <th class="right">Date of creation</th>
             </tr>
             {% for one_post in posts_user %}
             <tr>
@@ -41,6 +41,8 @@
                 {% endif %}
                 {% if request.user == one_post.author %}
                 <td class="center"><a href="{% url 'modif_post' post_id=one_post.id %}">Change the article</a></td>
+                {% else %}
+                <td></td>
                 {% endif %}
                 <td class="right">{{one_post.date_creation}}</td>
             </tr>

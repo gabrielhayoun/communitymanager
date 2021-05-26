@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="border-title">add a post</h1>
+    <h1 class="border-title">Change a post</h1>
     {% if date %}
     <div class="toast" data-autohide="false" style="position: absolute; top: 10%; right: 2%;">
         <div class="toast-header">
@@ -52,7 +52,7 @@
             <label for="id_date_event">Date of the event</label>
             <input type="datetime-local" class="" id="id_date_event" name="date_event" value="{{date_time}}"/>
             <br>
-            {% else %}}
+            {% else %}
             <label for="id_event">Is it an event ?:</label>
             <input type="checkbox" class="a" id="id_event" name="event"/>
             <br>

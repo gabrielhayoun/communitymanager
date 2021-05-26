@@ -29,6 +29,8 @@
                 {% endif %}
                 {% if request.user == post.author %}
                 <td class="center"><a href="{% url 'modif_post' post_id=post.id %}">Change the article</a></td>
+                {% else %}
+                <td></td>
                 {% endif %}
                 <td class="right">{{post.date_creation}}</td>
             </tr>

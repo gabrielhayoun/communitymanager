@@ -111,7 +111,12 @@ def modif_post(request, post_id):
             one_post.priority = Priority.objects.get(name=form.cleaned_data['priority'])
             one_post.date_creation = timezone.now()
             one_post.event, one_post.date_event = form.clean_event_and_date(request)
-            one_post.save()
+            try:
+                one_post.save()
+            except:
+                # otherwise we send the form again and a toast says that the format of the date has to be correct
+                date = True
+                return render(request, 'communitymanager/modif_post.html', locals())
             return redirect(post, post_id=one_post.id)
         else:
             # we send a date with the good format
