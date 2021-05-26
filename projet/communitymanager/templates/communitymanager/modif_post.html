@@ -4,6 +4,17 @@
 {% block content %}
 <div class="container">
     <h1 class="border-title">add a post</h1>
+    {% if date %}
+    <div class="toast" data-autohide="false" style="position: absolute; top: 10%; right: 2%;">
+        <div class="toast-header">
+            <strong class="mr-auto text-primary"> WARNING !</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+        </div>
+        <div class="toast-body">
+            If you check the event box, you have to put a date !
+        </div>
+    </div>
+    {% endif %}
     <form method="post" id="post_form" class="needs-validation">
         <div class="form-group">
             {% csrf_token %}
@@ -54,4 +65,11 @@
         <input type="submit" value="Submit">
     </form>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('.toast').toast('show');
+    });
+</script>
+
 {% endblock %}

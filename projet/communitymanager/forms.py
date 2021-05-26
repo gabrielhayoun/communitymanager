@@ -45,6 +45,19 @@ class NewPostForm(forms.ModelForm):
 #        self.fields['date_event'].required = False
 #        self.fields['event'].required = False
 #        self.fields['description'].widget = forms.Textarea(attrs={'cols':100})
+    def clean_event_and_date(self, request):
+        if request.POST.get('event'):
+            event = True
+            date_time = request.POST.get('date_event')
+            final_date_time = ""
+            for i in range(len(date_time)):
+                if date_time[i] == 'T':
+                    final_date_time += ' '
+                else:
+                    final_date_time += date_time[i]
+            return event, final_date_time
+        else:
+            return False, None
 
 
 class CommentaryForm(forms.ModelForm):
