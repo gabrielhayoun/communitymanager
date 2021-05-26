@@ -1,8 +1,11 @@
 
 # ---------------IMPORT-------------------
+from django.core.files import temp
 from django.shortcuts import render, get_object_or_404, redirect
 
 from django.utils import timezone
+from datetime import datetime
+
 
 from .forms import NewPostForm, CommentaryForm
 from .models import Community, Post, Commentary, Priority
@@ -79,7 +82,19 @@ def new_post(request):
         one_post.event, one_post.date_event = form.clean_event_and_date(request)
         one_post.author = request.user
 
-        # check if the form can be saved (especially if the date of the event has a good format
+        # check if the date is possible (after now)
+        if one_post.event:
+            try:
+                compare_date = datetime.strptime(one_post.date_event, '%Y-%m-%d %H:%M')
+            except:
+                # otherwise we send the form again and a toast says that the format of the date has to be correct
+                date = True
+                return render(request, 'communitymanager/modif_post.html', locals())
+            if compare_date < datetime.today():
+                date_too_soon = True
+                return render(request, 'communitymanager/modif_post.html', locals())
+
+        # check if the form can be saved (especially if the date of the event has a good format)
         try:
             one_post.save()
         except:
@@ -111,6 +126,19 @@ def modif_post(request, post_id):
             one_post.priority = Priority.objects.get(name=form.cleaned_data['priority'])
             one_post.date_creation = timezone.now()
             one_post.event, one_post.date_event = form.clean_event_and_date(request)
+
+            # check if the date is possible (after now)
+            if one_post.event:
+                try:
+                    compare_date = datetime.strptime(one_post.date_event, '%Y-%m-%d %H:%M')
+                except:
+                    # otherwise we send the form again and a toast says that the format of the date has to be correct
+                    date = True
+                    return render(request, 'communitymanager/modif_post.html', locals())
+                if compare_date < datetime.today():
+                    date_too_soon = True
+                    return render(request, 'communitymanager/modif_post.html', locals())
+
             try:
                 one_post.save()
             except:

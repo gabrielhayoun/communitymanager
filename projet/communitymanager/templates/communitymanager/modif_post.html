@@ -4,6 +4,8 @@
 {% block content %}
 <div class="container">
     <h1 class="border-title">Change a post</h1>
+
+    {# Toast #}
     {% if date %}
     <div class="toast" data-autohide="false" style="position: absolute; top: 10%; right: 2%;">
         <div class="toast-header">
@@ -15,6 +17,20 @@
         </div>
     </div>
     {% endif %}
+
+    {% if date_too_soon %}
+    <div class="toast" data-autohide="false" style="position: absolute; top: 10%; right: 2%;">
+        <div class="toast-header">
+            <strong class="mr-auto text-primary"> WARNING !</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+        </div>
+        <div class="toast-body">
+            The date of the event has already happened. Put a possible date !
+        </div>
+    </div>
+    {% endif %}
+
+    {# Toasts #}
     <form method="post" id="post_form" class="needs-validation">
         <div class="form-group">
             {% csrf_token %}
