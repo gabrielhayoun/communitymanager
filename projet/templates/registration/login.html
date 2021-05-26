@@ -16,12 +16,11 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    {% if user.is_authenticated %}
+    <meta http-equiv="refresh" content="5;URL={% url 'communities' %}">
+    {% endif %}
 </head>
 <body>
-
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
 
 <!--{% if next %}
     {% if user.is_authenticated %}
@@ -32,9 +31,6 @@
     {% endif %}
 {% endif %}-->
 
-{% if user.is_authenticated %}
-Vous êtes connecté, {{user.username}} !
-{% else %}
 
 <div class="jumbotron jumbotron-fluid" style="padding-bottom:1%; padding-top: 2%">
     <div class="container">
@@ -45,6 +41,10 @@ Vous êtes connecté, {{user.username}} !
 
 <div class="container">
     <div class="jumbotron" style="margin-top:10%; width:40%; margin-left:30%; text-align: center">
+
+        {% if user.is_authenticated %}
+        <h1> you are already connected, you will be redirected to the community pages</h1>
+        {% else %}
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
             <h1>Enter your username and your password</h1>
@@ -61,11 +61,12 @@ Vous êtes connecté, {{user.username}} !
             <input type="submit" value="login">
             <input type="hidden" name="next" value="{{ next }}">
         </form>
+        {% endif %}
     </div>
+    {% if form.errors %}
+    <p style="text-align: center; color: dodgerblue">Your username and password didn't match. Please try again.</p>
+    {% endif %}
 </div>
-{# Assumes you setup the password_reset view in your URLconf #}
-<p style="text-align: center"><a href="{% url 'password_reset' %}">Lost password?</a></p>
-{% endif %}
 
 </body>
 </html>
