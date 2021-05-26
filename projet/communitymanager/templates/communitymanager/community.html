@@ -3,26 +3,34 @@
 
 {% block content %}
 <div class="container">
-    <h1>{{one_community.name}}'s post</h1>
+    <h1 class="border-title">{{one_community.name}}'s post</h1>
     <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
         <table class="table">
             <tbody>
             <tr class="center">
-                <th>title</th>
+                <th>Title</th>
+                <th>Author</th>
                 <th>Description</th>
-                <th>Creation Date</th>
+                <th>Date of the event</th>
+                <th>Date of creation</th>
                 <th>Modifications</th>
             </tr>
 
             {% for post in posts %}
             <tr>
-                <td class="left">{{ post.title}} by {{post.author}}<br>
+                <td class="left">{{ post.title}}<br>
                     <a href="{% url 'post' post_id=post.id %}">voir l'article</a></td>
-                <td class="center"> {{post.description}} + visualiser le détail du post</td>
-                <td class="center">{{post.date_creation}}</td>
-                {% if request.user == post.author %}
-                <td class="right"> <a href="{% url 'modif_post' post_id=post.id %}">Change the article</a></td>
+                <td class="center">{{post.author}}</td>
+                <td class="left"> {{post.description}}</td>
+                {% if post.event %}
+                <td class="center">{{post.date_event}}</td>
+                {% else %}
+                <td class="center"> /</td>
                 {% endif %}
+                {% if request.user == post.author %}
+                <td class="center"><a href="{% url 'modif_post' post_id=post.id %}">Change the article</a></td>
+                {% endif %}
+                <td class="right">{{post.date_creation}}</td>
             </tr>
             {% endfor %}
             </tbody>

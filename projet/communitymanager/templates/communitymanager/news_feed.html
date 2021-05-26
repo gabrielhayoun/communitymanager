@@ -23,6 +23,7 @@
                 <th>Title</th>
                 <th>Author</th>
                 <th>Description:</th>
+                <th>Date of the event</th>
                 <th>Date of creation</th>
                 <th class="right">Change the article</th>
             </tr>
@@ -33,10 +34,15 @@
                     <a href="{% url 'post' post_id=one_post.id %}">voir l'article</a></td>
                 <td> {{ one_post.author}}</td>
                 <td> {{one_post.description}}</td>
-                <td>{{one_post.date_creation}}</td>
-                {% if request.user == one_post.author %}
-                <td class="right"><a href="{% url 'modif_post' post_id=one_post.id %}">Change the article</a></td>
+                {% if one_post.event %}
+                <td> {{one_post.date_event}}</td>
+                {% else %}
+                <td class="center"> /</td>
                 {% endif %}
+                {% if request.user == one_post.author %}
+                <td class="center"><a href="{% url 'modif_post' post_id=one_post.id %}">Change the article</a></td>
+                {% endif %}
+                <td class="right">{{one_post.date_creation}}</td>
             </tr>
             {% endfor %}
         </table>

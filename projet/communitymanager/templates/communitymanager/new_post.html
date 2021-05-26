@@ -15,7 +15,7 @@
 
 {% block content %}
 <div class="container">
-    <h1>add a post</h1>
+    <h1 class="border-title">add a post</h1>
     <form method="post" action="{% url 'new_post' %}" id="post_form" class="needs-validation">
         <div class="form-group">
             {% csrf_token %}
