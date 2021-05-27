@@ -1,0 +1,494 @@
+- model: communitymanager.priority
+  pk: 1
+  fields:
+    name: white
+- model: communitymanager.priority
+  pk: 3
+  fields:
+    name: orange
+- model: communitymanager.priority
+  pk: 4
+  fields:
+    name: red
+- model: auth.permission
+  pk: 1
+  fields:
+    name: Can add log entry
+    content_type: 1
+    codename: add_logentry
+- model: auth.permission
+  pk: 2
+  fields:
+    name: Can change log entry
+    content_type: 1
+    codename: change_logentry
+- model: auth.permission
+  pk: 3
+  fields:
+    name: Can delete log entry
+    content_type: 1
+    codename: delete_logentry
+- model: auth.permission
+  pk: 4
+  fields:
+    name: Can view log entry
+    content_type: 1
+    codename: view_logentry
+- model: auth.permission
+  pk: 5
+  fields:
+    name: Can add permission
+    content_type: 2
+    codename: add_permission
+- model: auth.permission
+  pk: 6
+  fields:
+    name: Can change permission
+    content_type: 2
+    codename: change_permission
+- model: auth.permission
+  pk: 7
+  fields:
+    name: Can delete permission
+    content_type: 2
+    codename: delete_permission
+- model: auth.permission
+  pk: 8
+  fields:
+    name: Can view permission
+    content_type: 2
+    codename: view_permission
+- model: auth.permission
+  pk: 9
+  fields:
+    name: Can add group
+    content_type: 3
+    codename: add_group
+- model: auth.permission
+  pk: 10
+  fields:
+    name: Can change group
+    content_type: 3
+    codename: change_group
+- model: auth.permission
+  pk: 11
+  fields:
+    name: Can delete group
+    content_type: 3
+    codename: delete_group
+- model: auth.permission
+  pk: 12
+  fields:
+    name: Can view group
+    content_type: 3
+    codename: view_group
+- model: auth.permission
+  pk: 13
+  fields:
+    name: Can add user
+    content_type: 4
+    codename: add_user
+- model: auth.permission
+  pk: 14
+  fields:
+    name: Can change user
+    content_type: 4
+    codename: change_user
+- model: auth.permission
+  pk: 15
+  fields:
+    name: Can delete user
+    content_type: 4
+    codename: delete_user
+- model: auth.permission
+  pk: 16
+  fields:
+    name: Can view user
+    content_type: 4
+    codename: view_user
+- model: auth.permission
+  pk: 17
+  fields:
+    name: Can add content type
+    content_type: 5
+    codename: add_contenttype
+- model: auth.permission
+  pk: 18
+  fields:
+    name: Can change content type
+    content_type: 5
+    codename: change_contenttype
+- model: auth.permission
+  pk: 19
+  fields:
+    name: Can delete content type
+    content_type: 5
+    codename: delete_contenttype
+- model: auth.permission
+  pk: 20
+  fields:
+    name: Can view content type
+    content_type: 5
+    codename: view_contenttype
+- model: auth.permission
+  pk: 21
+  fields:
+    name: Can add session
+    content_type: 6
+    codename: add_session
+- model: auth.permission
+  pk: 22
+  fields:
+    name: Can change session
+    content_type: 6
+    codename: change_session
+- model: auth.permission
+  pk: 23
+  fields:
+    name: Can delete session
+    content_type: 6
+    codename: delete_session
+- model: auth.permission
+  pk: 24
+  fields:
+    name: Can view session
+    content_type: 6
+    codename: view_session
+- model: auth.permission
+  pk: 25
+  fields:
+    name: Can add communaute
+    content_type: 7
+    codename: add_communaute
+- model: auth.permission
+  pk: 26
+  fields:
+    name: Can change communaute
+    content_type: 7
+    codename: change_communaute
+- model: auth.permission
+  pk: 27
+  fields:
+    name: Can delete communaute
+    content_type: 7
+    codename: delete_communaute
+- model: auth.permission
+  pk: 28
+  fields:
+    name: Can view communaute
+    content_type: 7
+    codename: view_communaute
+- model: auth.permission
+  pk: 29
+  fields:
+    name: Can add communities
+    content_type: 8
+    codename: add_community
+- model: auth.permission
+  pk: 30
+  fields:
+    name: Can change communities
+    content_type: 8
+    codename: change_community
+- model: auth.permission
+  pk: 31
+  fields:
+    name: Can delete communities
+    content_type: 8
+    codename: delete_community
+- model: auth.permission
+  pk: 32
+  fields:
+    name: Can view communities
+    content_type: 8
+    codename: view_community
+- model: auth.permission
+  pk: 33
+  fields:
+    name: Can add post
+    content_type: 9
+    codename: add_post
+- model: auth.permission
+  pk: 34
+  fields:
+    name: Can change post
+    content_type: 9
+    codename: change_post
+- model: auth.permission
+  pk: 35
+  fields:
+    name: Can delete post
+    content_type: 9
+    codename: delete_post
+- model: auth.permission
+  pk: 36
+  fields:
+    name: Can view post
+    content_type: 9
+    codename: view_post
+- model: auth.permission
+  pk: 37
+  fields:
+    name: Can add priority
+    content_type: 10
+    codename: add_priority
+- model: auth.permission
+  pk: 38
+  fields:
+    name: Can change priority
+    content_type: 10
+    codename: change_priority
+- model: auth.permission
+  pk: 39
+  fields:
+    name: Can delete priority
+    content_type: 10
+    codename: delete_priority
+- model: auth.permission
+  pk: 40
+  fields:
+    name: Can view priority
+    content_type: 10
+    codename: view_priority
+- model: auth.permission
+  pk: 41
+  fields:
+    name: Can add commentaries
+    content_type: 11
+    codename: add_commentaries
+- model: auth.permission
+  pk: 42
+  fields:
+    name: Can change commentaries
+    content_type: 11
+    codename: change_commentaries
+- model: auth.permission
+  pk: 43
+  fields:
+    name: Can delete commentaries
+    content_type: 11
+    codename: delete_commentaries
+- model: auth.permission
+  pk: 44
+  fields:
+    name: Can view commentaries
+    content_type: 11
+    codename: view_commentaries
+- model: auth.permission
+  pk: 45
+  fields:
+    name: Can add commentarie
+    content_type: 11
+    codename: add_commentary
+- model: auth.permission
+  pk: 46
+  fields:
+    name: Can change commentarie
+    content_type: 11
+    codename: change_commentary
+- model: auth.permission
+  pk: 47
+  fields:
+    name: Can delete commentarie
+    content_type: 11
+    codename: delete_commentary
+- model: auth.permission
+  pk: 48
+  fields:
+    name: Can view commentarie
+    content_type: 11
+    codename: view_commentary
+- model: auth.user
+  pk: 1
+  fields:
+    password: pbkdf2_sha256$120000$ojHJyWo76xVH$rpY6rxoaAXY1SKlTCjBqsDt23/Q0QYnZ6qBSS/lAgxc=
+    last_login: 2021-05-26 21:33:03.567000+00:00
+    is_superuser: true
+    username: gabrielhayoun
+    first_name: ''
+    last_name: ''
+    email: gabrielhay@outlook.fr
+    is_staff: true
+    is_active: true
+    date_joined: 2021-05-17 10:06:53.583000+00:00
+    groups: []
+    user_permissions: []
+- model: auth.user
+  pk: 2
+  fields:
+    password: pbkdf2_sha256$120000$KpcsHcPfrZCC$dmIk00cKd/VqHA2E3nVzoSJr1CV0y/VoceV0B7uxfCs=
+    last_login: 2021-05-17 17:33:35.785000+00:00
+    is_superuser: false
+    username: axellecousinou
+    first_name: axelle
+    last_name: cousinou
+    email: ''
+    is_staff: false
+    is_active: true
+    date_joined: 2021-05-17 10:09:37+00:00
+    groups: []
+    user_permissions: []
+- model: auth.user
+  pk: 3
+  fields:
+    password: pbkdf2_sha256$120000$9ukxnY3cKySZ$rMemWngJrKIkPFdl5xTEv+wdCUmhTykmlPIOblYbiIY=
+    last_login: null
+    is_superuser: false
+    username: thomasguillebot
+    first_name: thomas
+    last_name: guillebot
+    email: ''
+    is_staff: false
+    is_active: true
+    date_joined: 2021-05-17 10:11:40+00:00
+    groups: []
+    user_permissions: []
+- model: communitymanager.commentary
+  pk: 1
+  fields:
+    date_creation: 2021-05-18 10:13:20+00:00
+    content: "Crepes sal\xE9es ou rien"
+    author: 1
+    post: 1
+- model: communitymanager.commentary
+  pk: 3
+  fields:
+    date_creation: 2021-05-18 10:17:07+00:00
+    content: "Oh dommage je vais \xE0 la r\xE9union geek. Une prochaine fois !"
+    author: 2
+    post: 2
+- model: communitymanager.commentary
+  pk: 4
+  fields:
+    date_creation: 2021-05-18 10:28:42+00:00
+    content: c'est des CREPES
+    author: 2
+    post: 1
+- model: communitymanager.commentary
+  pk: 7
+  fields:
+    date_creation: 2021-05-20 22:03:25.503000+00:00
+    content: belle article
+    author: 1
+    post: 4
+- model: communitymanager.commentary
+  pk: 8
+  fields:
+    date_creation: 2021-05-20 22:03:31.587000+00:00
+    content: ''
+    author: 1
+    post: 4
+- model: communitymanager.commentary
+  pk: 9
+  fields:
+    date_creation: 2021-05-20 22:03:35.486000+00:00
+    content: ''
+    author: 1
+    post: 4
+- model: communitymanager.commentary
+  pk: 10
+  fields:
+    date_creation: 2021-05-20 22:04:04.676000+00:00
+    content: belle article
+    author: 1
+    post: 4
+- model: communitymanager.commentary
+  pk: 11
+  fields:
+    date_creation: 2021-05-20 22:36:38.360000+00:00
+    content: dfdf
+    author: 1
+    post: 3
+- model: communitymanager.commentary
+  pk: 12
+  fields:
+    date_creation: 2021-05-20 22:44:16.946000+00:00
+    content: salut
+    author: 1
+    post: 2
+- model: communitymanager.commentary
+  pk: 13
+  fields:
+    date_creation: 2021-05-20 22:48:54.928000+00:00
+    content: a
+    author: 1
+    post: 4
+- model: communitymanager.commentary
+  pk: 14
+  fields:
+    date_creation: 2021-05-20 22:48:58.265000+00:00
+    content: z
+    author: 1
+    post: 4
+- model: communitymanager.commentary
+  pk: 15
+  fields:
+    date_creation: 2021-05-20 22:49:00.073000+00:00
+    content: e
+    author: 1
+    post: 4
+- model: communitymanager.commentary
+  pk: 16
+  fields:
+    date_creation: 2021-05-20 22:49:01.144000+00:00
+    content: r
+    author: 1
+    post: 4
+- model: communitymanager.post
+  pk: 1
+  fields:
+    title: Les GALETTES
+    description: "On ne dit pas cr\xEApes sal\xE9es mais galettes (ce n'est pas la
+      m\xEAme farine)"
+    date_creation: 2021-05-18 09:52:15+00:00
+    community: 2
+    priority: null
+    event: false
+    date_event: null
+    author: 3
+- model: communitymanager.post
+  pk: 2
+  fields:
+    title: "R\xE9union cidre"
+    description: on va boire du cidre. La Bretagne en force !
+    date_creation: 2021-05-18 09:53:02+00:00
+    community: 2
+    priority: 3
+    event: true
+    date_event: 2021-05-29 18:30:00+00:00
+    author: 3
+- model: communitymanager.post
+  pk: 3
+  fields:
+    title: salut les geeks
+    description: geek un jour, geek toujours
+    date_creation: 2021-05-18 09:53:57+00:00
+    community: 1
+    priority: 1
+    event: false
+    date_event: null
+    author: 2
+- model: communitymanager.post
+  pk: 4
+  fields:
+    title: "r\xE9union geeks"
+    description: venez les geeks
+    date_creation: 2021-05-18 09:54:25+00:00
+    community: 1
+    priority: 3
+    event: true
+    date_event: 2021-05-22 18:30:00+00:00
+    author: 1
+- model: communitymanager.community
+  pk: 1
+  fields:
+    name: geekos
+    subscribers:
+    - 1
+    - 2
+- model: communitymanager.community
+  pk: 2
+  fields:
+    name: Bretagne
+    subscribers:
+    - 3
