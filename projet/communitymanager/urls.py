@@ -17,8 +17,6 @@ urlpatterns = [
     # path to see the post with the corresponding id
     path('post/<int:post_id>', views.post, name='post'),
 
-    # path to see a post
-    path('post/<int:post_id>/<int:modif>', views.post, name='post'),
     # path to create a post
     path('new_post/', views.new_post, name='new_post'),
 

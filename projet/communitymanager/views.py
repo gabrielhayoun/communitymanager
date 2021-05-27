@@ -50,7 +50,7 @@ def community(request, community_id):
 # 0 lets not see the toast
 # 1 will return the page with a toast when someone wants to change a post he is not allowed to
 @login_required()
-def post(request, post_id, modif=0):
+def post(request, post_id,):
     one_post = get_object_or_404(Post, id=post_id)
     commentaries = Commentary.objects.filter(post=one_post).order_by('-date_creation')
     # beginning of the form
@@ -71,7 +71,6 @@ def post(request, post_id, modif=0):
 # create a new post
 @login_required()
 def new_post(request):
-    date = False
     form = NewPostForm(user=request.user, data=request.POST or None)
     user_community = request.user.community_set.all()
     priorities = Priority.objects.order_by('id')
@@ -158,7 +157,8 @@ def modif_post(request, post_id):
             # we return a page to modify the post
             return render(request, 'communitymanager/modif_post.html', locals())
     else:
-        return redirect(post, post_id=one_post.id, modif=1)
+        modif = True
+        return render(request, 'communitymanager/post.html', locals())
 
 
 # see the news_feed
