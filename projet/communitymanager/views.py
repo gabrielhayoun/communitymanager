@@ -7,7 +7,7 @@ from django.utils import timezone
 from datetime import datetime
 
 
-from .forms import NewPostForm, CommentaryForm, PriorityForm
+from .forms import NewPostForm, CommentaryForm, PriorityForm, EventForm
 from .models import Community, Post, Commentary, Priority
 from django.contrib.auth.decorators import login_required
 
@@ -161,37 +161,36 @@ def modif_post(request, post_id):
         return render(request, 'communitymanager/post.html', locals())
 
 
-
-
-
 # see the news_feed
+
+
 @login_required()
 def news_feed(request):
     community_user = request.user.community_set.order_by('name')
     posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
-    form = PriorityForm(request.POST or None)
+    priority_form = PriorityForm(request.POST or None)
     priorities = Priority.objects.all()
-    if form.is_valid():
-        if form.cleaned_data['name'] == "":
+    event_form = EventForm(request.POST or None)
+    is_event = False
+    if event_form.is_valid():
+        is_event = event_form.cleaned_data['is_event']
+        posts_user = Post.objects.filter(community__in=community_user).filter(event=is_event).order_by('-date_creation')
+    if priority_form.is_valid():
+        if priority_form.cleaned_data['name'] == "":
             return render(request, 'communitymanager/news_feed.html', locals())
         else:
-            prio_id = form.cleaned_data['name']
+            prio_id = priority_form.cleaned_data['name']
             chosen_pr = get_object_or_404(Priority, id=prio_id)
-            posts_user = Post.objects.filter(community__in=community_user).filter(priority__rank__gte=chosen_pr.rank).order_by('-date_creation')
-            return render(request, 'communitymanager/news_feed.html', locals())
+            if is_event :
+                posts_user = Post.objects.filter(community__in=community_user).filter(priority__rank__gte=chosen_pr.rank).filter(event=is_event).order_by('-date_creation')
+                return render(request, 'communitymanager/news_feed.html', locals())
+            else :
+                posts_user = Post.objects.filter(community__in=community_user).filter(
+                    priority__rank__gte=chosen_pr.rank).order_by('-date_creation')
+                return render(request, 'communitymanager/news_feed.html', locals())
     return render(request, 'communitymanager/news_feed.html', locals())
 
 
 
 
 
-@login_required()
-def filtered_news_feed(request, priority_id):
-    priority = get_object_or_404(Priority, id=priority_id)
-    rank = priorities[priority]
-    community_user = request.user.community_set.order_by('name')
-    posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
-    for post in posts_user:
-        if priorities[post.priority] < rank:
-            post.delete()
-    return render(request, 'communitymanager/news_feed.html', locals())

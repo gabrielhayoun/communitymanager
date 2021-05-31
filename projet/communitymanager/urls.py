@@ -26,5 +26,5 @@ urlpatterns = [
     # path to see the news_feed
     path('news_feed/', views.news_feed, name='news_feed'),
 
-    path('filtered_news_feed/<int:priority_id>', views.filtered_news_feed, name='filtered_news_feed')
+
 ]

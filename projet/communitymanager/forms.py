@@ -56,3 +56,5 @@ class PriorityForm(forms.ModelForm):
         self.fields['name'].required = False
 
 
+class EventForm(forms.Form):
+    is_event = forms.BooleanField(label='is_event')
