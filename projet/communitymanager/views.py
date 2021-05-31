@@ -2,12 +2,13 @@
 # ---------------IMPORT-------------------
 from django.core.files import temp
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Q
 
 from django.utils import timezone
 from datetime import datetime
 
 
-from .forms import NewPostForm, CommentaryForm
+from .forms import NewPostForm, CommentaryForm, SearchForm
 from .models import Community, Post, Commentary, Priority
 from django.contrib.auth.decorators import login_required
 
@@ -164,6 +165,16 @@ def modif_post(request, post_id):
 # see the news_feed
 @login_required()
 def news_feed(request):
-    community_user = request.user.community_set.order_by('name')
-    posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
+    form = SearchForm(request.POST or None)
+
+    if form.is_valid():
+        query = form.cleaned_data['query']
+        posts_user = Post.objects.filter(Q(title__icontains=query) |
+                                         Q(description__icontains=query) |
+                                         Q(author__username__icontains=query)
+                                         )
+    else:
+        community_user = request.user.community_set.order_by('name')
+        posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
     return render(request, 'communitymanager/news_feed.html', locals())
+

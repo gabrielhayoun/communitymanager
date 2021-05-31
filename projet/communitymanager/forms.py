@@ -45,6 +45,10 @@ class CommentaryForm(forms.ModelForm):
         self.fields['content'].required = False
 
 
+class SearchForm(forms.Form):
+    query = forms.CharField(max_length=100, required=False, label='Search in posts')
+
+
 
 
 
