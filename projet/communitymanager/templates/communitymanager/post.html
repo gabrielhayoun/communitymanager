@@ -35,7 +35,7 @@
     {# comment section #}
     <h3 class="left">Comments</h3>
 
-    <form method="post">
+    <form action="{% url 'post' post_id=one_post.id %}" method="post">
         {% csrf_token %}
         <div class="form-group">
             <label for="id_content">Comment:</label>

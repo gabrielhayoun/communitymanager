@@ -158,6 +158,19 @@ def modif_post(request, post_id):
             return render(request, 'communitymanager/modif_post.html', locals())
     else:
         modif = True
+        commentaries = Commentary.objects.filter(post=one_post).order_by('-date_creation')
+        # beginning of the form
+        form = CommentaryForm(request.POST or None)
+        if form.is_valid():
+            if form.cleaned_data['content'] == "":
+                return render(request, 'communitymanager/post.html', locals())
+            else:
+                one_comment = form.save(commit=False)
+                one_comment.author = request.user
+                one_comment.post = one_post
+                # we update the database and reload the page
+                one_comment.save()
+                return render(request, 'communitymanager/post.html', locals())
         return render(request, 'communitymanager/post.html', locals())
 
 

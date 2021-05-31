@@ -19,7 +19,11 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+
     <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+
+
 
     <title>{% block title %} {% endblock %}</title>
 
@@ -47,15 +51,15 @@
             </ul>
             {% endblock %}
         </div>
-            <ul class="navbar-nav navbar-right">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-door-open" style="font-size: 30px"></i></a>
-                </li>
-            </ul>
+        <ul class="navbar-nav navbar-right">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-door-open"
+                                                                 style="font-size: 30px"></i></a>
+            </li>
+        </ul>
     </nav>
 </div>
 <br>
-
 
 
 <section id="content">
