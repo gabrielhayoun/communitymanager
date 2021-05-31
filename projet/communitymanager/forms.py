@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Commentary
+from .models import Post, Commentary, Priority
 
 
 class NewPostForm(forms.ModelForm):
@@ -45,6 +45,14 @@ class CommentaryForm(forms.ModelForm):
         self.fields['content'].required = False
 
 
+class PriorityForm(forms.ModelForm):
 
+    class Meta:
+        model = Priority
+        fields = ('name',)
+
+    def __init__(self, *args, **kwargs):
+        super(PriorityForm, self).__init__(*args, **kwargs)
+        self.fields['name'].required = False
 
 

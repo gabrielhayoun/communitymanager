@@ -2,52 +2,67 @@
 {% block title %} Newsfeed {% endblock %}
 
 {% block nav %}
-<li class="nav-item">
-    <a class="navbar-text" href="{% url 'news_feed' %}">News feed</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href="{% url 'communities' %}">Communities</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href="{% url 'new_post' %}">Create a post</a>
-</li>
+    <li class="nav-item">
+        <a class="navbar-text" href="{% url 'news_feed' %}">News feed</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'communities' %}">Communities</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'new_post' %}">Create a post</a>
+    </li>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1 class="border-title">My subscriptions</h1>
-    <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
-        <table class="table">
-            <tr>
-                <th>Community</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Description:</th>
-                <th>Date of the event</th>
-                <th>Change the article</th>
-                <th class="right">Date of creation</th>
-            </tr>
-            {% for one_post in posts_user %}
-            <tr>
-                <td><a href="{% url 'community' community_id=one_post.community.id %}">{{ one_post.community}}</a></td>
-                <td>{{ one_post.title}} <br>
-                    <a href="{% url 'post' post_id=one_post.id %}">voir l'article</a></td>
-                <td> {{ one_post.author}}</td>
-                <td> {{one_post.description}}</td>
-                {% if one_post.event %}
-                <td> {{one_post.date_event}}</td>
-                {% else %}
-                <td class="center"> /</td>
-                {% endif %}
-                {% if request.user == one_post.author %}
-                <td class="center"><a href="{% url 'modif_post' post_id=one_post.id %}">Change the article</a></td>
-                {% else %}
-                <td></td>
-                {% endif %}
-                <td class="right">{{one_post.date_creation}}</td>
-            </tr>
-            {% endfor %}
-        </table>
+    <div class="container">
+
+        <h1 class="border-title">My subscriptions {{ chosen_pr }} with rank {{ chosen_pr.rank }}</h1>
+        <form method="post" id="priority_form">
+            <div class="form-group">
+                {% csrf_token %}
+                <label for="id_name">Priority :</label>
+                <select class="form-control" id="id_name" name="name">
+                    <option></option>
+                    {% for priority in priorities %}
+                        <option value={{priority.id}}>{{priority}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="submit" value="Submit">
+        </form>
+        <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
+            <table class="table">
+                <tr>
+                    <th>Community</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Description:</th>
+                    <th>Date of the event</th>
+                    <th>Change the article</th>
+                    <th class="right">Date of creation</th>
+                </tr>
+                {% for one_post in posts_user %}
+                    <tr>
+                        <td><a href="{% url 'community' community_id=one_post.community.id %}">{{ one_post.community}}</a></td>
+                        <td>{{ one_post.title}}
+                            <br>
+                            <a href="{% url 'post' post_id=one_post.id %}">voir l'article</a></td>
+                        <td> {{ one_post.author}} {{ one_post.priority }}</td>
+                        <td> {{one_post.description}}</td>
+                        {% if one_post.event %}
+                            <td> {{one_post.date_event}}</td>
+                        {% else %}
+                            <td class="center"> /</td>
+                        {% endif %}
+                        {% if request.user == one_post.author %}
+                            <td class="center"><a href="{% url 'modif_post' post_id=one_post.id %}">Change the article</a></td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        <td class="right">{{one_post.date_creation}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
-</div>
 {% endblock %}
