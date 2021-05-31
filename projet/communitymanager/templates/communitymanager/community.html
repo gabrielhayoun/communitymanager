@@ -4,6 +4,7 @@
 {% block content %}
 <div class="container">
     <h1 class="border-title">{{one_community.name}}'s post</h1>
+    {% include 'forms/post_filter.html' %}
     <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
         <table class="table">
             <tbody>
@@ -16,7 +17,7 @@
                 <th>Modifications</th>
             </tr>
 
-            {% for post in posts %}
+            {% for post in posts_user %}
             <tr>
                 <td class="left">{{ post.title}}<br>
                     <a href="{% url 'post' post_id=post.id %}">voir l'article</a></td>

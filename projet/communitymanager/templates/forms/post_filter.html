@@ -1,0 +1,22 @@
+<form method="post" id="priority_form">
+            <div class="form-group">
+                {% csrf_token %}
+                <label for="id_name">Priority :</label>
+                <select class="form-control" id="id_name" name="name">
+                    <option value={{ chosen_pr.id}} selected>{{ chosen_pr }}</option>
+                    {% for priority in priorities %}
+                        <option value={{priority.id}}>{{priority}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                {% csrf_token %}
+                <label for="id_is_event">Is it an event ?</label>
+                {% if is_event %}
+                    <input type="checkbox" class="a" id="id_is_event" name="is_event" checked/>
+                {% else %}
+                    <input type="checkbox" class="a" id="id_is_event" name="is_event"/>
+                {% endif %}
+            </div>
+            <input type="submit" value="Submit">
+        </form>
