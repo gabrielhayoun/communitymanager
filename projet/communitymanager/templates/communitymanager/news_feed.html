@@ -16,14 +16,32 @@
 {% block content %}
 <div class="container">
     <div class="clearfix">
-        <div class="float-right pb-3">
-            <form class="form-inline" method="POST" action="{% url 'news_feed' %}">
-                {% csrf_token %}
-                {{ form }}
-                <input class="btn btn-primary" type="submit" value="Submit"/>
-            </form>
+        <form method="post" action="{% url 'news_feed' %}">
+            {% csrf_token %}
+            <div class="form-row float-right">
+                <div class="col-auto">
+                    <label class="" for="inlineFormInputGroup">Search in posts : </label>
+                </div>
+                <div class="col-auto">
+                      <div class="input-group">
+                          <input type="text" class="form-control" id="inlineFormInputGroup" name="query">
+                      </div>
+                </div>
+                <div class="col-auto">
+                    <input type="submit" value="Submit"/>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="clearfix">
+        <div class="float-right">
+            <a href="{% url 'advanced_search' %}">
+                <input type="button" value="Advanced Search" />
+            </a>
         </div>
     </div>
+
     <h1 class="border-title">My subscriptions</h1>
     <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
         <table class="table">

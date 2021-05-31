@@ -48,7 +48,7 @@ class CommentaryForm(forms.ModelForm):
 class SearchForm(forms.Form):
     query = forms.CharField(max_length=100, required=False, label='Search in posts')
 
-
-
+class AdvancedSearchForm(forms.Form):
+    query = forms.CharField(max_length=100, required=False, label='Search in posts')
 
 

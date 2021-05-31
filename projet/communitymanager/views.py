@@ -8,7 +8,7 @@ from django.utils import timezone
 from datetime import datetime
 
 
-from .forms import NewPostForm, CommentaryForm, SearchForm
+from .forms import NewPostForm, CommentaryForm, SearchForm, AdvancedSearchForm
 from .models import Community, Post, Commentary, Priority
 from django.contrib.auth.decorators import login_required
 
@@ -177,4 +177,9 @@ def news_feed(request):
         community_user = request.user.community_set.order_by('name')
         posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
     return render(request, 'communitymanager/news_feed.html', locals())
+
+
+@login_required()
+def advanced_search(request):
+    form = AdvancedSearchForm(request.POST or None)
 
