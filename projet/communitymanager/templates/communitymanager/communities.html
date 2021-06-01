@@ -1,45 +1,24 @@
+<!-- Template of the page displaying every community and giving the user the possibility to follow or unfollow them -->
 {% extends 'base.html' %}
-{% block title %} Communities {% endblock %}
+
+{% block title %}Communities{% endblock %}
 
 {% block nav %}
-<li class="nav-item">
-    <a class="nav-link" href="{% url 'news_feed' %}">News feed</a>
-</li>
-<li class="nav-item">
-    <a class="navbar-text" href="{% url 'communities' %}">Communities</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href="{% url 'new_post' %}">Create a post</a>
-</li>
+    {% include 'nav/link_news_feed.html' %}
+    {% include 'nav/link_communities.html' %}
 {% endblock %}
 
+{% block logout %}{% include 'nav/logout.html' %}{% endblock %}
+
+{% block top %}Communities{% endblock %}
+
 {% block content %}
-<div class="container">
-    <h1 class="border-title">Communities</h1>
-    <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
-        <table class="table">
-            {% for commu in community_user %}
-            <tbody>
-            <tr>
-                <td class="left">{{ commu.name}}
-                    <a href="{% url 'community' community_id=commu.id %}">posts</a></td>
-                <td class="right"><a href="{% url 'join' community_id=commu.id %}"> <i class="fas fa-heart "
-                                                                                       style="font-size: 30px"></i></a>
-                </td>
-            </tr>
-            </tbody>
-            {% endfor %}
-            {% for commu in community_list %}
-            {% if commu not in community_user %}
-            <tr>
-                <td class="left">{{ commu.name}}
-                    <a href="{% url 'community' community_id=commu.id %}">posts</a></td>
-                <td class="right"><a href="{% url 'join' community_id=commu.id %}"><i class="far fa-heart "
-                                                                                      style="font-size: 30px"></i></a></td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-        </table>
-    </div>
-</div>
+    {% for community in community_user %}
+        {% include 'utility/community_disp.html' %}
+    {% endfor %}
+    {% for community in community_list %}
+        {% if community not in community_user %}
+            {% include 'utility/community_disp.html' %}
+        {% endif %}
+    {% endfor %}
 {% endblock %}

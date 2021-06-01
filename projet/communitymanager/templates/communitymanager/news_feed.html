@@ -18,15 +18,15 @@
     <div class = "row">
         <div class="col-md-10">
             {% if posts_user %}
-                <h4 class="display-4"> Welcome <strong>{{ user.username }}</strong>, here are all the posts of your favourite communities </h4>
+                <h1 class="display-5"> Welcome <strong>{{ user.username }}</strong>, here are all the posts of your favourite communities </h1>
                 {% for post in posts_user %}
                     <div class="row g-0 border border-left-0 border-bottom-0 flex-md-row mb-5 h-md-250">
                         <div class="col ml-6">
                             <div class="row justify-content-between">
-                                <h1 class="display-5 text-dark ml-4 mt-3">
+                                <h2 class="display-6 text-dark ml-4 mt-3">
                                     <strong><a href="{% url 'post' post.id %}" class="text-dark">{{ post }}</a></strong>
                                     in <a href="{% url 'community' post.community.id %}" class="text-dark">{{ post.community }}</a>
-                                </h1>
+                                </h2>
                                 <h1 class="display-5 text-dark mr-4 mt-3">
                                     {% include 'utility/post_like.html' %}
                                 </h1>
