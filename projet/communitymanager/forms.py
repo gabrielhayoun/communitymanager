@@ -7,7 +7,7 @@ class NewPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = '__all__'
-        exclude = ('author', 'date_creation', 'event', 'date_event', 'readers')
+        exclude = ('author', 'date_creation', 'event', 'date_event', 'readers', 'likers')
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
@@ -46,7 +46,7 @@ class CommentaryForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
-    query = forms.CharField(max_length=100, required=False, label='Search in posts')
+    query = forms.CharField(max_length=100, required=False, label="Search Posts")
 
 
 class PriorityForm(forms.ModelForm):
@@ -62,3 +62,6 @@ class PriorityForm(forms.ModelForm):
 
 class EventForm(forms.Form):
     is_event = forms.BooleanField(label='is_event')
+    def __init__(self, *args, **kwargs):
+        super(EventForm, self).__init__(*args, **kwargs)
+        self.fields['is_event'].required = False

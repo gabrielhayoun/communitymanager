@@ -1,0 +1,12 @@
+<!-- Template to display a general overview of a post -->
+<div class="row justify-text-center ">
+    <h3 class="text-dark ml-5 mr-5 ">{{ post.description|truncatewords:30 }}</h3>
+</div>
+<div class="row">
+    <div class="col-md-9">
+        <h4><a href="{% url 'post' post.id %}" class="text-dark"><i class="bi bi-layout-text-sidebar"></i> Show more...</a></h4>
+    </div>
+    <div class = "col-md-3">
+        {% include 'utility/post_signature.html' %}
+    </div>
+</div>

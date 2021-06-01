@@ -1,0 +1,12 @@
+{% csrf_token %}
+<label for="id_name">Priority :</label>
+<select class="form-control" id="id_name" name="name">
+    <option></option>
+    {% for priority in priorities %}
+        {% if priority.id == chosen_pr.id %}
+            <option value={{ chosen_pr.id}} selected>{{ chosen_pr }}</option>
+        {% else %}
+            <option value={{priority.id}}>{{priority}}</option>
+        {% endif %}
+    {% endfor %}
+</select>

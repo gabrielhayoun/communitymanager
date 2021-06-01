@@ -1,67 +1,45 @@
+<!-- Template of the homepage where are displayed every posts of the communities the user follows -->
 {% extends 'base.html' %}
-{% block title %} Newsfeed {% endblock %}
+
+{% block title %}Home{% endblock %}
+
+
 
 {% block nav %}
-    <li class="nav-item">
-        <a class="navbar-text" href="{% url 'news_feed' %}">News feed</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'communities' %}">Communities</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'new_post' %}">Create a post</a>
-    </li>
+    {% include 'nav/link_home.html' %}
+    {% include 'nav/link_communities.html' %}
 {% endblock %}
+{% block logout %}{% include 'nav/logout.html' %}{% endblock %}
+
+{% block top %}Home{% endblock %}
 
 {% block content %}
-
-    <div class="container">
-        <div class="clearfix">
-            <div class="float-right pb-3">
-                <form class="form-inline" method="POST" action="{% url 'news_feed' %}">
-                    {% csrf_token %}
-                    {{ form }}
-                    {% include 'forms/post_filter.html' %}
-                    <input class="btn btn-primary" type="submit" value="Submit"/>
-                </form>
-            </div>
-        </div>
-
-        <h1 class="border-title">My subscriptions {{ lala }}</h1>
-        <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
-            <table class="table">
-                <tr>
-                    <th>Community</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Description:</th>
-                    <th>Date of the event</th>
-                    <th>Change the article</th>
-                    <th class="right">Date of creation</th>
-                </tr>
+    {% include 'utility/advanced_searching.html' %}
+    <div class = "row">
+        <div class="col-md-10">
+            {% if posts_user %}
+                <h4 class="display-4"> Welcome <strong>{{ user.username }}</strong>, here are all the posts of your favourite communities </h4>
                 {% for post in posts_user %}
-                    <tr>
-                        <td><a href="{% url 'community' community_id=post.community.id %}">{{ post.community}}</a></td>
-                        <td>{{ post.title}}
-                            {% include 'forms/post_like.html' %}
-                            <br>
-                            <a href="{% url 'post' post_id=post.id %}">voir l'article</a></td>
-                        <td> {{ post.author}} {{ post.priority }}</td>
-                        <td> {{post.description}}</td>
-                        {% if post.event %}
-                            <td> {{post.date_event}}</td>
-                        {% else %}
-                            <td class="center"> /</td>
-                        {% endif %}
-                        {% if request.user == post.author %}
-                            <td class="center"><a href="{% url 'modif_post' post_id=post.id %}">Change the article</a></td>
-                        {% else %}
-                            <td></td>
-                        {% endif %}
-                        <td class="right">{{post.date_creation}}</td>
-                    </tr>
+                    <div class="row g-0 border border-left-0 border-bottom-0 flex-md-row mb-5 h-md-250">
+                        <div class="col ml-6">
+                            <div class="row justify-content-between">
+                                <h1 class="display-5 text-dark ml-4 mt-3">
+                                    <strong><a href="{% url 'post' post.id %}" class="text-dark">{{ post }}</a></strong>
+                                    in <a href="{% url 'community' post.community.id %}" class="text-dark">{{ post.community }}</a>
+                                </h1>
+                                <h1 class="display-5 text-dark mr-4 mt-3">
+                                    {% include 'utility/post_like.html' %}
+                                </h1>
+                            </div>
+                            {% include 'utility/post_details.html' %}
+                        </div>
+                    </div>
                 {% endfor %}
-            </table>
+            {% else %}
+                <h4 class="display-4"> Welcome <strong>{{ user.username }}</strong>, subscribe to communities to see posts here ! </h4>
+            {% endif %}
         </div>
+        {% include "nav/link_new_post.html" %}
     </div>
+
 {% endblock %}

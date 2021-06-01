@@ -157,7 +157,6 @@ def modif_post(request, post_id):
             one_post.priority = Priority.objects.get(name=form.cleaned_data['priority'])
             one_post.date_creation = timezone.now()
             one_post.event, one_post.date_event = form.clean_event_and_date(request)
-
             # check if the date is possible (after now)
             if one_post.event:
                 try:
