@@ -2,20 +2,15 @@
 {% block title %} Create a post {% endblock %}
 
 {% block nav %}
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'news_feed' %}">News feed</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'communities' %}">Communities</a>
-    </li>
-    <li class="nav-item">
-        <a class="navbar-text" href="{% url 'new_post' %}">Create a post</a>
-    </li>
+    {% include 'nav/link_news_feed.html' %}
+    {% include 'nav/link_communities.html' %}
 {% endblock %}
 
+{% block logout %}{% include 'nav/logout.html' %}{% endblock %}
+{% block top %}        <h1 class="border-title">add a post</h1>{% endblock %}
 {% block content %}
     <div class="container">
-        <h1 class="border-title">add a post</h1>
+
 
         <form method="post" action="{% url 'new_post' %}" id="post_form" class="needs-validation">
             <div class="form-group">

@@ -1,22 +1,22 @@
 <!-- Template to show every information of posts : priority, author, date, etc...-->
 <div class="row">
     <h4 class="text-end">
-        {% if post.priority.label == "Urgent" %}
+        {% if one_post.priority.label == "Urgent" %}
             <i class="bi bi-exclamation-diamond-fill text-danger"> Urgent</i>
-        {% elif post.priority.label == "Normal" %}
+        {% elif one_post.priority.label == "Normal" %}
             <i class="bi bi-info-circle-fill text-success"></i> Normal
         {% endif %}
-        <i class="bi bi-person"></i> {{ post.author }}
-        <i class="bi bi-calendar-event"></i> {{ post.date_creation }}
-        {% if user == post.author %}
-            <a href="{% url 'modif_post' post.id %}">  <i class="bi bi-pencil"></i></a>
+        <i class="bi bi-person"></i> {{ one_post.author }}
+        <i class="bi bi-calendar-event"></i> {{ one_post.date_creation }}
+        {% if user == one_post.author %}
+            <a href="{% url 'modif_post' one_post.id %}">  <i class="bi bi-pencil"></i></a>
         {% endif %}
     </h4>
 </div>
 <div class="row">
     <h4 class="text-end">
-        {% if post.event %}
-            <i class="bi bi-calendar2-x"></i> event on {{ post.date_event }}
+        {% if one_post.event %}
+            <i class="bi bi-calendar2-x"></i> event on {{ one_post.date_event }}
         {% endif %}
     </h4>
 </div>

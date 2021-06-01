@@ -1,11 +1,11 @@
-{% if user in post.readers.all %}
+{% if user in one_post.readers.all %}
     <i class="bi bi-bookmark-check-fill"></i>
-    {% if user in post.likers.all %}
-        <a href="{% url 'like_post' post_id=post.id %}"><i class="bi bi-hand-thumbs-up-fill"></i></a>
+    {% if user in one_post.likers.all %}
+        <a href="{% url 'like_post' post_id=one_post.id %}"><i class="bi bi-hand-thumbs-up-fill"></i></a>
     {% else %}
-        <a href="{% url 'like_post' post_id=post.id %}"><i class="bi bi-hand-thumbs-up"></i></a>
+        <a href="{% url 'like_post' post_id=one_post.id %}"><i class="bi bi-hand-thumbs-up"></i></a>
     {% endif %}
 {% else %}
     <i class="bi bi-bookmark"></i>
 {% endif %}
-{{ post.likers.count }}
+{{ one_post.likers.count }}

@@ -14,22 +14,32 @@
 {% block top %}Home{% endblock %}
 
 {% block content %}
-    {% include 'utility/advanced_searching.html' %}
+    <form class="row row-cols-lg-auto g-3 align-items-center" method="POST" action="{% url 'news_feed' %}">
+
+        {% include 'forms/post_search.html' %}
+        {% include 'forms/priority_filter.html' %}
+        {% include 'forms/event_filter.html' %}
+
+
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
     <div class = "row">
         <div class="col-md-10">
             {% if posts_user %}
                 <h1 class="display-5"> Welcome <strong>{{ user.username }}</strong>, here are all the posts of your favourite communities </h1>
-                {% for post in posts_user %}
+                {% for one_post in posts_user %}
                     <div class="row g-0 border border-left-0 border-bottom-0 flex-md-row mb-5 h-md-250">
                         <div class="col ml-6">
                             <div class="row justify-content-between">
                                 <h2 class="display-6 text-dark ml-4 mt-3">
-                                    <strong><a href="{% url 'post' post.id %}" class="text-dark">{{ post }}</a></strong>
-                                    in <a href="{% url 'community' post.community.id %}" class="text-dark">{{ post.community }}</a>
+                                    <strong><a href="{% url 'post' one_post.id %}" class="text-dark">{{ one_post }}</a></strong>
+                                    in <a href="{% url 'community' one_post.community.id %}" class="text-dark">{{ one_post.community }}</a>
                                 </h2>
-                                <h1 class="display-5 text-dark mr-4 mt-3">
+                                <h3 class="display-5 text-dark mr-4 mt-3">
                                     {% include 'utility/post_like.html' %}
-                                </h1>
+                                </h3>
                             </div>
                             {% include 'utility/post_details.html' %}
                         </div>

@@ -1,46 +1,54 @@
+
+
+<!-- Template that displays every post relative to a community -->
 {% extends 'base.html' %}
-{% block title %} {{one_community.name}} {% endblock %}
 
-{% block content %}
-<div class="container">
-    <h1 class="border-title">{{one_community.name}}'s post</h1>
-    {% include 'forms/event_filter.html' %}
-    <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
-        <table class="table">
-            <tbody>
-            <tr class="center">
-                <th>Title</th>
-                <th>Author</th>
-                <th>Description</th>
-                <th>Date of the event</th>
-                <th>Modifications</th>
-                <th>Date of creation</th>
-            </tr>
+{% block title %}{{ community }}{% endblock %}
 
-            {% for post in posts_user %}
-            <tr>
-                <td class="left">{{ post.title}}
-                    {% include 'utility/post_like.html' %}
-                    <br>
-                    <a href="{% url 'post' post_id=post.id %}">voir l'article</a></td>
-                <td class="center">{{post.author}}</td>
-                <td class="left"> {{post.description}}</td>
-                {% if post.event %}
-                <td class="center">{{post.date_event}}</td>
-                {% else %}
-                <td class="center"> /</td>
-                {% endif %}
-                {% if request.user == post.author %}
-                <td class="center"><a href="{% url 'modif_post' post_id=post.id %}">Change the article</a></td>
-                {% else %}
-                <td></td>
-                {% endif %}
-                <td class="right">{{post.date_creation}}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+{% block nav %}
+    {% include 'nav/link_news_feed.html' %}
+    {% include 'nav/link_communities.html' %}
 {% endblock %}
 
+{% block logout %}{% include 'nav/logout.html' %}{% endblock %}
+
+{% block top %}{{ one_community }}{% endblock %}
+
+{% block content %}
+    <form class="row row-cols-lg-auto g-3 align-items-center mb-4" method="POST" action="{% url 'community' community_id=one_community.id %}">
+        {% include 'forms/priority_filter.html' %}
+        {% include 'forms/event_filter.html' %}
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+    <div class = "row">
+        <div class="col-md-10">
+            {% if posts_user %}
+                {% for one_post in posts_user %}
+                    <div class="row g-0 border border-left-0 border-bottom-0 flex-md-row mb-5 h-md-250">
+                        <div class="col ml-6">
+                            <div class="row justify-content-between">
+                                <h1 class="display-5 text-dark ml-4 mt-3">
+                                    <strong><a href="{% url 'post' one_post.id %}" class="text-dark">{{ one_post }}</a></strong>
+                                </h1>
+                                <h1 class="display-5 text-dark mr-4 mt-3">
+                                    {% include 'utility/post_like.html' %}
+                                </h1>
+                            </div>
+                            {% include 'utility/post_details.html' %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h3> No post to display...</h3>
+            {% endif %}
+        </div>
+        <div class="col-md-2">
+            {% include "nav/link_new_post.html" %}
+        </div>
+    </div>
+
+
+
+{% endblock %}

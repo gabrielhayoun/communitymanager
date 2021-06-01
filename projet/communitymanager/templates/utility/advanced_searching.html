@@ -1,17 +1,10 @@
-<form class="row row-cols-lg-auto g-3 align-items-center" method="POST" action="{% url 'news_feed' %}">
-  <div class="col-4">
+
+
     {% include 'forms/post_search.html' %}
-  </div>
-
-  <div class="col-3">
     {% include 'forms/priority_filter.html' %}
-  </div>
-
-  <div class="col-1">
     {% include 'forms/event_filter.html' %}
-  </div>
 
-  <div class="col-2">
+
+<div class="col-2">
     <button type="submit" class="btn btn-primary">Submit</button>
-  </div>
-</form>
+</div>

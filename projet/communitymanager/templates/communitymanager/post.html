@@ -1,88 +1,53 @@
+<!-- Template that focuses on a particular post, displaying its content and comments -->
 {% extends 'base.html' %}
-{% block title %} {{ one_post.title}} {% endblock %}
+
+{% block title %}{{ one_post }}{% endblock %}
+
+{% block nav %}
+    {% include 'nav/link_home.html' %}
+    {% include 'nav/link_communities.html' %}
+    {% include 'nav/link_community.html' %}
+{% endblock %}
+
+{% block logout %}{% include 'nav/logout.html' %}{% endblock %}
+
+{% block top %}{{ one_post }}<h3>{%  include 'utility/post_like.html' %}</h3>{% endblock %}
 
 {% block content %}
-    <div class="container">
-        {# toast #}
-        {% if modif %}
-            <div class="toast" data-autohide="false" style="position: absolute; top: 10%; right: 2%;">
-                <div class="toast-header">
-                    <strong class="mr-auto text-primary"> WARNING !</strong>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+    <div class = "row">
+        <div class="col-md-10">
+            <div class="col-md-11">
+                <div class="row mb-5">
+                    <div class="col-auto text-justify border border-right-0 border-top-0 pb-2 pl-4">
+                        <h3>{{ one_post.description }}</h3>
+                    </div>
+                    <div class="col-auto mt-3">
+                        {% include 'utility/post_signature.html' %}
+                    </div>
                 </div>
-                <div class="toast-body">
-                    You can not modify a post that is not yours !
+                <div class="row">
+                    <div class="col-md-9">
+                        <h3 class="display-3">Comments</h3>
+
+                            {% include 'utility/post_comments.html' %}
+
+
+                        <h4> <i class="bi bi-chat-left-dots"></i> Leave your comment </h4>
+
+                        <form action="{% url 'post' post_id=one_post.id %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="id_content">Comment:</label>
+                                <textarea class="form-control" rows="5" id="id_content" name="content"></textarea>
+                            </div>
+                            <input type="submit" value="Submit">
+                        </form>
+                    </div>
                 </div>
             </div>
-        {% endif %}
-
-        <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
-            <table class="table">
-                <tbody>
-                <tr class="center">
-                    <th class="left">{{ one_post.title}}
-                        {% for reader in readers_list %}
-                            {{ reader }}
-                        {% endfor %}
-                    </th>
-                    <td class="center"> {{one_post.description}}</td>
-                    {% if one_post.event == True %}
-                        <td class="center"> date of the event :<br> {{one_post.date_event}}</td>
-                        <td class="right">{{one_post.date_creation}}</td>
-                    {% else %}
-                        <td class="right">{{one_post.date_creation}}</td>
-                    {% endif %}
-                </tr>
-            </table>
         </div>
-
-        {# comment section #}
-        <h3 class="left">Comments</h3>
-
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="id_content">Comment:</label>
-                <textarea class="form-control" rows="5" id="id_content" name="content"></textarea>
-            </div>
-            <input type="submit" value="Submit">
-        </form>
-
-        <table class="table">
-            {% for comment in commentaries %}
-                <tr>
-                    <td class="left">{{ comment.author}}</td>
-                    <td class="center"> {{comment.content}}</td>
-                    <td class="right">{{comment.date_creation}}</td>
-                </tr>
-            {% endfor %}
-        </table>
+        {% include "nav/link_new_post.html" %}
     </div>
-
-    {# comment section #}
-    <h3 class="left">Comments</h3>
-
-    <form action="{% url 'post' post_id=one_post.id %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="id_content">Comment:</label>
-            <textarea class="form-control" rows="5" id="id_content" name="content"></textarea>
-        </div>
-        <input type="submit" value="Submit">
-    </form>
-
-    <table class="table">
-        {% for comment in commentaries %}
-            <tr>
-                <td class="left">{{ comment.author}}</td>
-                <td class="center"> {{comment.content}}</td>
-                <td class="right">{{comment.date_creation}}</td>
-            </tr>
-        {% endfor %}
-    </table>
-    </div>
-
-
 
     {# script to make the toast pop-up #}
     <script>
@@ -90,7 +55,4 @@
             $('.toast').toast('show');
         });
     </script>
-
-
-
 {% endblock %}
