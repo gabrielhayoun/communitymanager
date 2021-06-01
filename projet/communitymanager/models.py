@@ -37,6 +37,7 @@ class Post(models.Model):
     date_event = models.DateTimeField(verbose_name="Date of the event", null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author")
     readers = models.ManyToManyField(User)
+    likers = models.ManyToManyField(User, related_name='likers')
 
     def __str__(self):
         return self.title

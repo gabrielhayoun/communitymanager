@@ -26,5 +26,7 @@ urlpatterns = [
     # path to see the news_feed
     path('news_feed/', views.news_feed, name='news_feed'),
 
+    path('like_post/<int:post_id>', views.like_post, name='like_post')
+
 
 ]

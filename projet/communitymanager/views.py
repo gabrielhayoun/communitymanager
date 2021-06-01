@@ -2,6 +2,7 @@
 # ---------------IMPORT-------------------
 from django.contrib.auth.models import User
 from django.core.files import temp
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 
 from django.utils import timezone
@@ -245,3 +246,15 @@ def filter_posts(request):
                 return posts_user
     return posts_user
 
+
+@login_required()
+def like_post(request, post_id):
+    one_post = get_object_or_404(Post, id=post_id)
+
+    if request.user in one_post.likers.all():
+        one_post.likers.remove(request.user)
+    else:
+        one_post.likers.add(request.user)
+    one_post.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

@@ -19,7 +19,9 @@
 
             {% for post in posts_user %}
             <tr>
-                <td class="left">{{ post.title}}<br>
+                <td class="left">{{ post.title}}
+                    {% include 'forms/post_like.html' %}
+                    <br>
                     <a href="{% url 'post' post_id=post.id %}">voir l'article</a></td>
                 <td class="center">{{post.author}}</td>
                 <td class="left"> {{post.description}}</td>
