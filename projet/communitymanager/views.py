@@ -221,7 +221,7 @@ def news_feed(request):
     if form.is_valid():
         query = form.cleaned_data['query']
         if query != "":
-            posts_user = Post.objects.filter(Q(title__icontains=query) |
+            posts_user = Post.objects.filter(community__in=community_user).filter(Q(title__icontains=query) |
                                              Q(description__icontains=query) |
                                              Q(author__username__icontains=query)
                                              )
@@ -233,7 +233,7 @@ def news_feed(request):
                                                                                       ).filter(event=is_event).order_by('-date_creation')
             if priority_form.is_valid():
                 if priority_form.cleaned_data['name'] == "":
-                    return render(request, 'communitymanager/news_feed.html', locals())
+                    posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
                 else:
                     prio_id = priority_form.cleaned_data['name']
                     chosen_pr = get_object_or_404(Priority, id=prio_id)
@@ -257,7 +257,7 @@ def news_feed(request):
                 posts_user = Post.objects.filter(community__in=community_user).filter(event=is_event).order_by('-date_creation')
             if priority_form.is_valid():
                 if priority_form.cleaned_data['name'] == "":
-                    return render(request, 'communitymanager/news_feed.html', locals())
+                    posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
                 else:
                     prio_id = priority_form.cleaned_data['name']
                     chosen_pr = get_object_or_404(Priority, id=prio_id)
