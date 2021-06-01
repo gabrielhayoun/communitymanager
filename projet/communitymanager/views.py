@@ -1,5 +1,6 @@
 
 # ---------------IMPORT-------------------
+from django.core import serializers
 from django.core.files import temp
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -184,4 +185,6 @@ def news_feed(request):
 
 @login_required()
 def calendar(request):
+    community_user = request.user.community_set.all()
+    posts = Post.objects.filter(event=True, community__in=community_user)
     return render(request, 'communitymanager/calendar.html', locals())
