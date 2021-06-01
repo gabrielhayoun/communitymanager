@@ -35,7 +35,8 @@ class Post(models.Model):
     priority = models.ForeignKey(Priority, on_delete=models.SET_NULL, null=True, default=1)
     event = models.BooleanField(null=True, blank=True)
     date_event = models.DateTimeField(verbose_name="Date of the event", null=True, blank=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author")
+    readers = models.ManyToManyField(User)
 
     def __str__(self):
         return self.title

@@ -35,6 +35,11 @@
                     <tr>
                         <td><a href="{% url 'community' community_id=one_post.community.id %}">{{ one_post.community}}</a></td>
                         <td>{{ one_post.title}}
+                            {% if user in one_post.readers.all %}
+                                <i class="bi bi-bookmark-check-fill"></i>
+                            {% else %}
+                                <i class="bi bi-bookmark"></i>
+                            {% endif %}
                             <br>
                             <a href="{% url 'post' post_id=one_post.id %}">voir l'article</a></td>
                         <td> {{ one_post.author}} {{ one_post.priority }}</td>
