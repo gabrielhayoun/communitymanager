@@ -13,12 +13,14 @@
 {% block top %}Communities{% endblock %}
 
 {% block content %}
-    {% for community in community_user %}
-        {% include 'utility/community_disp.html' %}
-    {% endfor %}
-    {% for community in community_list %}
-        {% if community not in community_user %}
+    <div class="row justify-content-center">
+        {% for community in community_user %}
             {% include 'utility/community_disp.html' %}
-        {% endif %}
-    {% endfor %}
+        {% endfor %}
+        {% for community in community_list %}
+            {% if community not in community_user %}
+                {% include 'utility/community_disp.html' %}
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}

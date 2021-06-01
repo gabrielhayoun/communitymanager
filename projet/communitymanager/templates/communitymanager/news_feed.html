@@ -14,7 +14,7 @@
 {% block top %}Home{% endblock %}
 
 {% block content %}
-    <form class="row row-cols-lg-auto g-3 align-items-center" method="POST" action="{% url 'news_feed' %}">
+    <form class="row row-cols-lg-auto g-3 align-items-center mt-3 mb-3" method="POST" action="{% url 'news_feed' %}">
 
         {% include 'forms/post_search.html' %}
         {% include 'forms/priority_filter.html' %}
@@ -25,18 +25,28 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
-    <div class = "row">
+    <div class="row">
         <div class="col-md-10">
             {% if posts_user %}
-                <h1 class="display-5"> Welcome <strong>{{ user.username }}</strong>, here are all the posts of your favourite communities </h1>
+                <h1 class="display-5"> Welcome <strong>{{ user.username }}</strong>, here are all the posts of your
+                    favourite communities </h1>
                 {% for one_post in posts_user %}
-                    <div class="row g-0 border border-left-0 border-bottom-0 flex-md-row mb-5 h-md-250">
+                    <div {% if one_post.priority.name == "red" %}
+                        class="row g-0 border border-danger border-left-0 border-bottom-0 flex-md-row mb-5 h-md-250"
+                    {% elif one_post.priority.name == "orange" %}
+                        class="row g-0 border border-warning border-left-0 border-bottom-0 flex-md-row mb-5 h-md-250"
+                    {% else %}
+                        class="row g-0 border border-left-0 border-bottom-0 flex-md-row mb-5 h-md-250"
+                    {% endif %}
+                    >
                         <div class="col ml-6">
                             <div class="row justify-content-between">
                                 <h2 class="display-6 text-dark ml-4 mt-3">
                                     <strong><a href="{% url 'post' one_post.id %}" class="text-dark">{{ one_post }}</a></strong>
-                                    in <a href="{% url 'community' one_post.community.id %}" class="text-dark">{{ one_post.community }}</a>
+                                    in <a href="{% url 'community' one_post.community.id %}"
+                                          class="text-dark">{{ one_post.community }}</a>
                                 </h2>
+
                                 <h3 class="display-5 text-dark mr-4 mt-3">
                                     {% include 'utility/post_like.html' %}
                                 </h3>
@@ -46,7 +56,8 @@
                     </div>
                 {% endfor %}
             {% else %}
-                <h4 class="display-4"> Welcome <strong>{{ user.username }}</strong>, subscribe to communities to see posts here ! </h4>
+                <h4 class="display-4"> Welcome <strong>{{ user.username }}</strong>, subscribe to communities to see
+                    posts here ! </h4>
             {% endif %}
         </div>
         {% include "nav/link_new_post.html" %}

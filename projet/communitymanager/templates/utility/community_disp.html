@@ -1,14 +1,19 @@
-<div class="col-md-4">
-    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-            <h3 class="mb-0"><a href="{% url 'community' community.id %} ">{{ community }}</a>
-                <a href="{% url 'join' community_id=community.id %}">
-                    {% if user in community.subscribers.all %}
-                        <i class="bi bi-heart-fill text-danger"></i></a>
-                    {%  else %}
-                        <i class="bi bi-heart text-danger"></i></a>
-                    {% endif %}
-            </h3>
-        </div>
+{% load communitymanager_extras %}
+
+<div class="col-5 p-4 pb-0 d-flex flex-column g-0 border rounded mt-4 ml-1 mr-1">
+    <div class="row">
+        <h3 class="mb-2"><a href="{% url 'community' community.id %} ">{{ community }}</a>
+            <a href="{% url 'join' community_id=community.id %}">
+                {% if user in community.subscribers.all %}
+                    <i class="bi bi-heart-fill text-danger"></i></a>
+                {%  else %}
+                    <i class="bi bi-heart text-danger"></i></a>
+                {% endif %}
+        </h3>
+    </div>
+    <div class="row align-item-end">
+        <h5 class="mb-0 col-auto align-self-end">
+            {% unread_posts community user %} unread posts
+        </h5>
     </div>
 </div>
