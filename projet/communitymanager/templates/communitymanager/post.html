@@ -2,33 +2,60 @@
 {% block title %} {{ one_post.title}} {% endblock %}
 
 {% block content %}
-<div class="container">
-    {# toast #}
-    {% if modif %}
-    <div class="toast" data-autohide="false" style="position: absolute; top: 10%; right: 2%;">
-        <div class="toast-header">
-            <strong class="mr-auto text-primary"> WARNING !</strong>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
-        </div>
-        <div class="toast-body">
-            You can not modify a post that is not yours !
-        </div>
-    </div>
-    {% endif %}
+    <div class="container">
+        {# toast #}
+        {% if modif %}
+            <div class="toast" data-autohide="false" style="position: absolute; top: 10%; right: 2%;">
+                <div class="toast-header">
+                    <strong class="mr-auto text-primary"> WARNING !</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+                </div>
+                <div class="toast-body">
+                    You can not modify a post that is not yours !
+                </div>
+            </div>
+        {% endif %}
 
-    <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
+        <div class="jumbotron jumbotron-fluid" id="communities_jumbo">
+            <table class="table">
+                <tbody>
+                <tr class="center">
+                    <th class="left">{{ one_post.title}}
+                        {% for reader in readers_list %}
+                            {{ reader }}
+                        {% endfor %}
+                    </th>
+                    <td class="center"> {{one_post.description}}</td>
+                    {% if one_post.event == True %}
+                        <td class="center"> date of the event :<br> {{one_post.date_event}}</td>
+                        <td class="right">{{one_post.date_creation}}</td>
+                    {% else %}
+                        <td class="right">{{one_post.date_creation}}</td>
+                    {% endif %}
+                </tr>
+            </table>
+        </div>
+
+        {# comment section #}
+        <h3 class="left">Comments</h3>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_content">Comment:</label>
+                <textarea class="form-control" rows="5" id="id_content" name="content"></textarea>
+            </div>
+            <input type="submit" value="Submit">
+        </form>
+
         <table class="table">
-            <tbody>
-            <tr class="center">
-                <th class="left">{{ one_post.title}}</th>
-                <td class="center"> {{one_post.description}}</td>
-                {% if one_post.event == True %}
-                <td class="center"> date of the event :<br> {{one_post.date_event}}</td>
-                <td class="right">{{one_post.date_creation}}</td>
-                {% else %}
-                <td class="right">{{one_post.date_creation}}</td>
-                {% endif %}
-            </tr>
+            {% for comment in commentaries %}
+                <tr>
+                    <td class="left">{{ comment.author}}</td>
+                    <td class="center"> {{comment.content}}</td>
+                    <td class="right">{{comment.date_creation}}</td>
+                </tr>
+            {% endfor %}
         </table>
     </div>
 
@@ -46,21 +73,24 @@
 
     <table class="table">
         {% for comment in commentaries %}
-        <tr>
-            <td class="left">{{ comment.author}}</td>
-            <td class="center"> {{comment.content}}</td>
-            <td class="right">{{comment.date_creation}}</td>
-        </tr>
+            <tr>
+                <td class="left">{{ comment.author}}</td>
+                <td class="center"> {{comment.content}}</td>
+                <td class="right">{{comment.date_creation}}</td>
+            </tr>
         {% endfor %}
     </table>
-</div>
+    </div>
 
-{# script to make the toast pop-up #}
-<script>
-    $(document).ready(function () {
-        $('.toast').toast('show');
-    });
-</script>
+
+
+    {# script to make the toast pop-up #}
+    <script>
+        $(document).ready(function () {
+            $('.toast').toast('show');
+        });
+    </script>
+
 
 
 {% endblock %}

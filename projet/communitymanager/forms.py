@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Commentary
+from .models import Post, Commentary, Priority
 
 
 class NewPostForm(forms.ModelForm):
@@ -7,7 +7,7 @@ class NewPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = '__all__'
-        exclude = ('author', 'date_creation', 'event', 'date_event')
+        exclude = ('author', 'date_creation', 'event', 'date_event', 'readers')
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
@@ -49,6 +49,16 @@ class SearchForm(forms.Form):
     query = forms.CharField(max_length=100, required=False, label='Search in posts')
 
 
+class PriorityForm(forms.ModelForm):
+
+    class Meta:
+        model = Priority
+        fields = ('name',)
+
+    def __init__(self, *args, **kwargs):
+        super(PriorityForm, self).__init__(*args, **kwargs)
+        self.fields['name'].required = False
 
 
-
+class EventForm(forms.Form):
+    is_event = forms.BooleanField(label='is_event')

@@ -1,3 +1,4 @@
+import self as self
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -18,10 +19,9 @@ class Community(models.Model):
 
 class Priority(models.Model):
     name = models.CharField(max_length=50)
-
+    rank = models.IntegerField()
     class Meta:
-        verbose_name = "priority"
-        ordering = ['name']
+        verbose_name = "name"
 
     def __str__(self):
         return self.name
@@ -35,10 +35,16 @@ class Post(models.Model):
     priority = models.ForeignKey(Priority, on_delete=models.SET_NULL, null=True, default=1)
     event = models.BooleanField(null=True, blank=True)
     date_event = models.DateTimeField(verbose_name="Date of the event", null=True, blank=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author")
+    readers = models.ManyToManyField(User)
+    likers = models.ManyToManyField(User, related_name='likers')
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = 'title'
+        ordering = ['date_creation']
 
 
 class Commentary(models.Model):
