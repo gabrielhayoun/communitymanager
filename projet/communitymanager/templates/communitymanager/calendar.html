@@ -34,17 +34,9 @@
             </select>
             {# Date #}
             <label for="id_start_date">Start Date</label>
-            {% if start == 1 %}
             <input type="date" class="" id="id_start_date" name="start_date" value="{{str_start}}"/>
-            {% else %}
-            <input type="date" class="" id="id_start_date" name="start_date"/>
-            {% endif %}
             <label for="id_end_date">End Date</label>
-            {% if end == 1 %}
             <input type="date" class="" id="id_end_date" name="end_date" value="{{str_end}}"/>
-            {% else %}
-            <input type="date" class="" id="id_end_date" name="end_date"/>
-            {% endif %}
             <br>
         </div>
         <input type="submit" value="Submit">

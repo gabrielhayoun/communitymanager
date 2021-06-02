@@ -186,8 +186,6 @@ def news_feed(request):
 def calendar(request):
     all_community = 0
     all_priority =0
-    start = 0
-    end = 0
     form = CalendarForm(user=request.user, data=request.POST or None)
     user_community = request.user.community_set.all()
     priorities = Priority.objects.order_by('id')
@@ -210,26 +208,19 @@ def calendar(request):
             end_date_plus = end_date + timedelta(days=1)
             posts = Post.objects.filter(event=True, community__in=community_form,
                                         priority__in=priority_form, date_event__gt=start_date, date_event__lt=end_date_plus)
-            end = 1
-            start = 1
             str_start = str(start_date)
             str_end = str(end_date)
         elif start_date is not None :
             posts = Post.objects.filter(event=True, community__in=community_form,
                                         priority__in=priority_form, date_event__gt=start_date)
-            start = 1
             str_start = str(start_date)
         elif end_date is not None:
             end_date_plus = end_date + timedelta(days=1)
             posts = Post.objects.filter(event=True, community__in=community_form,
                                         priority__in=priority_form, date_event__lt=end_date_plus)
-            end = 1
             tr_end = str(end_date)
         else:
             posts = Post.objects.filter(event=True, community__in=community_form, priority__in=priority_form, )
-
-        print (start_date, start)
-        print(form.cleaned_data['start_date'])
         return render(request, 'communitymanager/calendar.html', locals())
     print("nope")
     return render(request, 'communitymanager/calendar.html', locals())
