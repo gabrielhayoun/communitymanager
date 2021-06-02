@@ -19,7 +19,7 @@ td.fc-today {
 
 .fc-first th{
 	font-family: 'Roboto', sans-serif;
-    background:#9675ce !important;
+    background:cornflowerblue !important;
 	color:#FFF;
 	font-size:14px !important;
 	font-weight:500 !important;
@@ -97,11 +97,11 @@ html .fc,
 }
 	span.fc-button {
     font-family: 'Roboto', sans-serif;
-    border-color: #9675ce;
-	color: #9675ce;
+    border-color: #333333;
+	color: #333333;
 }
 .fc-state-down, .fc-state-active {
-    background-color: #9675ce !important;
+    background-color: cornflowerblue !important;
 	color: #FFF !important;
 }
 .fc .fc-header-space {
@@ -172,7 +172,7 @@ html .fc,
 }
 
 .fc-state-highlight > div > div.fc-day-number{
-    background-color: #ff3b30;
+    background-color: steelblue;
     color: #FFFFFF;
     border-radius: 50%;
     margin: 4px;
@@ -250,8 +250,8 @@ html .fc,
 
 
 .fc-state-default {
-	border-color: #ff3b30;
-	color: #ff3b30;
+	border-color: #03a9f3;
+	color: #03a9f3;
 }
 .fc-button-month.fc-state-default, .fc-button-agendaWeek.fc-state-default, .fc-button-agendaDay.fc-state-default{
     min-width: 67px;
@@ -264,7 +264,7 @@ html .fc,
 .fc-state-active,
 .fc-state-disabled {
 	color: #333333;
-	background-color: #FFE3E3;
+	background-color: lightsteelblue;
 	}
 
 .fc-state-hover {
@@ -288,7 +288,7 @@ html .fc,
 .fc-state-disabled {
 	cursor: default;
 	background-image: none;
-	background-color: #FFE3E3;
+	background-color: lightsteelblue;
 	filter: alpha(opacity=65);
 	box-shadow: none;
 	border:1px solid #FFE3E3;
