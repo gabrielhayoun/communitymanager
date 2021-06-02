@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Commentary
+from .models import Post, Commentary, Priority
 
 
 class NewPostForm(forms.ModelForm):
@@ -45,6 +45,19 @@ class CommentaryForm(forms.ModelForm):
         self.fields['content'].required = False
 
 
+class CalendarForm(forms.Form):
+    community = forms.ModelMultipleChoiceField(queryset=None, required=False, widget=forms.CheckboxSelectMultiple )
+    priority = forms.ModelMultipleChoiceField(queryset=None, required=False, widget=forms.CheckboxSelectMultiple )
+    start_date = forms.DateField(required=False)
+    end_date = forms.DateField(required=False)
 
+    def __init__(self, user, *args, **kwargs):
+        super(CalendarForm, self).__init__(*args, **kwargs)
+        self.fields['community'].queryset = user.community_set.all()
+        self.fields['priority'].queryset = Priority.objects.all()
 
-
+#    def clean_community(self, request):
+#        for commu in request.user.community_set.all():
+#            if request.POST.get(commu.title):
+#                self.community.update({commu.title: commu})
+#        return self.community

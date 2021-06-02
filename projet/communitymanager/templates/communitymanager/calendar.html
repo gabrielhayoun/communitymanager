@@ -4,6 +4,53 @@
 {% block title %} Calendar {% endblock %}
 
 {% block content %}
+
+<div class="container">
+    <h1 class="border-title">Calendar</h1>
+    <form method="post" action="{% url 'calendar' %}" id="calendar_form" class="needs-validation">
+        <div class="form-group">
+            {% csrf_token %}
+            {# Community #}
+            <label for="id_community">Community :</label>
+            <select class="form-control" id="id_community" name="community" multiple>
+                {% for commu in user_community %}
+                {% if commu in community_form and all_community == 0 %}
+                <option value={{commu.id}} selected>{{commu}}</option>
+                {% else %}
+                <option value={{commu.id}}>{{commu}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            {# Priority #}
+            <label for="id_priority">Priority :</label>
+            <select class="form-control" id="id_priority" name="priority" multiple>
+                {% for priority in priorities %}
+                {% if priority in priority_form and all_priority == 0 %}
+                <option value="{{priority.id}}" selected>{{priority}}</option>
+                {% else %}
+                <option value="{{priority.id}}">{{priority}}</option>
+                {% endif %}}
+                {% endfor %}
+            </select>
+            {# Date #}
+            <label for="id_start_date">Start Date</label>
+            {% if start == 1 %}
+            <input type="date" class="" id="id_start_date" name="start_date" value="{{str_start}}"/>
+            {% else %}
+            <input type="date" class="" id="id_start_date" name="start_date"/>
+            {% endif %}
+            <label for="id_end_date">End Date</label>
+            {% if end == 1 %}
+            <input type="date" class="" id="id_end_date" name="end_date" value="{{str_end}}"/>
+            {% else %}
+            <input type="date" class="" id="id_end_date" name="end_date"/>
+            {% endif %}
+            <br>
+        </div>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
 <div id='wrap'>
 
     <div id='calendar'></div>
