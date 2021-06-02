@@ -1,0 +1,25 @@
+<div class="clearfix">
+    <form method="post" action="{% url 'news_feed' %}">
+        {% csrf_token %}
+        <div class="form-row float-right">
+            <div class="col-auto">
+                <label class="" for="inlineFormInputGroup">Search in posts : </label>
+            </div>
+            <div class="col-auto">
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="inlineFormInputGroup" name="query">
+                  </div>
+            </div>
+            <div class="col-auto">
+                <input type="submit" value="Submit"/>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="clearfix">
+    <div class="float-right">
+        <a href="{% url 'advanced_research' %}">
+            <input type="button" value="Advanced Search" />
+        </a>
+    </div>
+</div>

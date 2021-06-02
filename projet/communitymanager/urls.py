@@ -27,6 +27,6 @@ urlpatterns = [
     path('news_feed', views.news_feed, name='news_feed'),
 
     # path to make an advanced research
-    path('advanced_search', views.advanced_search, name='advanced_search'),
+    path('advanced_research', views.advanced_research, name='advanced_research'),
 
 ]

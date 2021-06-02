@@ -180,6 +180,47 @@ def news_feed(request):
 
 
 @login_required()
-def advanced_search(request):
-    form = AdvancedSearchForm(request.POST or None)
+def advanced_research(request):
+    form = AdvancedSearchForm(data=request.POST or None)
+    if form.is_valid():
+        query = form.cleaned_data['query']
+        titles = form.cleaned_data['titles']
+        descriptions = form.cleaned_data['descriptions']
+        usernames = form.cleaned_data['usernames']
+        comments = form.cleaned_data['comments']
+        communities = form.cleaned_data['communities']
+        date_creation_min, date_creation_max, date_event_min, date_event_max = form.clean_dates(request)
+        print("uuuurg")
+
+        posts_user = Post.objects.none()
+        if titles :
+            posts_titles = Post.objects.filter(title__icontains=query)
+            posts_user = posts_user.union(posts_titles)
+        if descriptions :
+            posts_descriptions = Post.objects.filter(description__icontains=query)
+            posts_user = posts_user.union(posts_descriptions)
+        if usernames :
+            posts_usernames = Post.objects.filter(author__username__icontains=query)
+            posts_user = posts_user.union(posts_usernames)
+        if comments :
+            commentaries = Commentary.objects.filter(content__icontains=query)
+            for comment in commentaries:
+                posts_user = posts_user.union(Post.objects.filter(id=comment.post.id))
+        if communities :
+            posts_communities = Post.objects.filter(community__in=request.user.community_set.all())
+            posts_user = posts_user.intersection(posts_communities)
+        if date_creation_min :
+            compare_date = datetime.strptime(date_creation_min, '%Y-%m-%d %H:%M')
+            posts_user = posts_user.filter(date_creation__gte=compare_date)
+        if date_creation_max:
+            compare_date = datetime.strptime(date_creation_max, '%Y-%m-%d %H:%M')
+            posts_user = posts_user.filter(date_creation__lte=compare_date)
+        if date_event_max:
+            compare_date = datetime.strptime(date_event_max, '%Y-%m-%d %H:%M')
+            posts_user = posts_user.filter(date_event__lte=compare_date)
+        if date_event_min:
+            compare_date = datetime.strptime(date_event_min, '%Y-%m-%d %H:%M')
+            posts_user = posts_user.filter(date_event__gte=compare_date)
+        return render(request, 'communitymanager/news_feed.html', locals())
+    return render(request, 'communitymanager/advanced_research.html', locals())
 

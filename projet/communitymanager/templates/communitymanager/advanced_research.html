@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Research</title>
+</head>
+<body>
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+
+    <form method="post" action="{% url 'advanced_research' %}">
+        <div class="form-group">
+            {% csrf_token %}
+
+            <label for="id_query">What do you want to search :</label>
+            <input type="text" class="form-control" id="id_query" name="query" required>
+
+            <p>Where do you want to search it ?</p>
+
+            <label for="id_titles">Posts' titles</label>
+            <input type="checkbox" class="a" id="id_titles" name="titles"/> </br>
+            <label for="id_titles">Posts' descriptions</label>
+            <input type="checkbox" class="a" id="id_descriptions" name="descriptions"/> </br>
+            <label for="id_titles">Posts' usernames</label>
+            <input type="checkbox" class="a" id="id_usernames" name="usernames"/></br>
+            <label for="id_comments">Posts' comments</label>
+            <input type="checkbox" class="a" id="id_comments" name="comments"/></br>
+
+            <label for="id_communities">Check this box if you wish to only search the communities you subscribed to</label>
+            <input type="checkbox" class="a" id="id_communities" name="communities"/> </br>
+            <label>Date of the event</label>
+            <label for="id_date_event_min">min</label><input type="datetime-local" class="" id="id_date_event_min" name="date_event_min"/>
+            <label for="id_date_event_max">max</label><input type="datetime-local" class="" id="id_date_event_max" name="date_event_max"/>
+            <br>
+            <label>Date of creation</label>
+            <label for="id_date_creation_min">min</label><input type="datetime-local" class="" id="id_date_creation_min" name="date_creation_min"/>
+            <label for="id_date_creation_max">max</label><input type="datetime-local" class="" id="id_date_creation_max" name="date_creation_max"/>
+            <br>
+
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+</body>
+</html>
