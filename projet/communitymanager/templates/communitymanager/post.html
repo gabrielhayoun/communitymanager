@@ -11,48 +11,48 @@
 
 {% block logout %}{% include 'nav/logout.html' %}{% endblock %}
 
-{% block top %}{{ one_post }}<h3>{%  include 'utility/post_like.html' %}</h3>{% endblock %}
+{% block top %}{{ one_post }}<h3>{% include 'utility/post_like.html' %}</h3>{% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-md-10">
 
-                <div class="row mb-2">
-                    <div {% if one_post.priority.name == "red" %}
-                        class="col-12 text-justify border border-danger border-right-0 border-top-0 pb-2 pl-4"
-                    {% elif one_post.priority.name == "orange" %}
-                        class="col-12 text-justify border border-warning border-right-0 border-top-0 pb-2 pl-4"
-                    {% else %}
-                        class="col-12 text-justify border border-right-0 border-top-0 pb-2 pl-4"
-                    {% endif %}
-                    >
-                        <h3>{{ one_post.description }}</h3>
-                    </div>
+            <div class="row mb-2">
+                <div {% if one_post.priority.name == "red" %}
+                    class="col-12 text-justify border border-danger border-right-0 border-top-0 pb-2 pl-4"
+                {% elif one_post.priority.name == "orange" %}
+                    class="col-12 text-justify border border-warning border-right-0 border-top-0 pb-2 pl-4"
+                {% else %}
+                    class="col-12 text-justify border border-right-0 border-top-0 pb-2 pl-4"
+                {% endif %}
+                >
+                    <h3>{{ one_post.description }}</h3>
                 </div>
-                <div class="row justify-content-end">
-                    <div class="col-5 align-self-end">
-                        {% include 'utility/post_signature.html' %}
-                    </div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-5 align-self-end">
+                    {% include 'utility/post_signature.html' %}
                 </div>
-                <div class="row">
-                    <div class="col-md-9">
-                        <h3 class="display-3">Comments</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <h3 class="display-3">Comments</h3>
 
-                        {% include 'utility/post_comments.html' %}
+                    {% include 'utility/post_comments.html' %}
 
 
-                        <h4> <i class="bi bi-chat-left-dots"></i> Leave your comment </h4>
+                    <h4><i class="bi bi-chat-left-dots"></i> Leave your comment </h4>
 
-                        <form action="{% url 'post' post_id=one_post.id %}" method="post">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="id_content">Comment:</label>
-                                <textarea class="form-control" rows="5" id="id_content" name="content"></textarea>
-                            </div>
-                            <input type="submit" value="Submit">
-                        </form>
-                    </div>
+                    <form action="{% url 'post' post_id=one_post.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_content">Comment:</label>
+                            <textarea class="form-control" rows="5" id="id_content" name="content"></textarea>
+                        </div>
+                        <input type="submit" value="Submit">
+                    </form>
                 </div>
+            </div>
         </div>
         {% include "nav/link_new_post.html" %}
     </div>

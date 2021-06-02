@@ -1,5 +1,5 @@
-
 from django.urls import path, include
+
 from . import views
 
 urlpatterns = [
@@ -28,8 +28,6 @@ urlpatterns = [
 
     path('like_post/<int:post_id>', views.like_post, name='like_post'),
 
-
     path('calendar', views.calendar, name='calendar')
-
 
 ]

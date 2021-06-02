@@ -13,5 +13,3 @@ def unread_posts(community, user):
         if user in post.readers.all():
             n_posts -= 1
     return n_posts
-
-

@@ -6,7 +6,7 @@
             <a href="{% url 'join' community_id=community.id %}">
                 {% if user in community.subscribers.all %}
                     <i class="bi bi-heart-fill text-danger"></i></a>
-                {%  else %}
+                {% else %}
                     <i class="bi bi-heart text-danger"></i></a>
                 {% endif %}
         </h3>

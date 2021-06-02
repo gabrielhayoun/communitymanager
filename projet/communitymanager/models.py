@@ -1,6 +1,5 @@
-import self as self
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.utils import timezone
 
 
@@ -20,6 +19,7 @@ class Community(models.Model):
 class Priority(models.Model):
     name = models.CharField(max_length=50)
     rank = models.IntegerField()
+
     class Meta:
         verbose_name = "name"
 

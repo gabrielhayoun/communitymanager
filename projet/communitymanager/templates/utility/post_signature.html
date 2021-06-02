@@ -9,7 +9,7 @@
         <i class="bi bi-person"></i> {{ one_post.author }}
         <i class="bi bi-calendar-event"></i> {{ one_post.date_creation }}
         {% if user == one_post.author %}
-            <a href="{% url 'modif_post' one_post.id %}">  <i class="bi bi-pencil"></i></a>
+            <a href="{% url 'modif_post' one_post.id %}"> <i class="bi bi-pencil"></i></a>
         {% endif %}
     </h4>
 </div>

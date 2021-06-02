@@ -20,7 +20,7 @@
                 <select class="form-control" id="id_community" name="community" required>
                     <option></option>
                     {% for commu in user_community %}
-                        <option value={{commu.id}}>{{commu}}</option>
+                        <option value={{ commu.id }}>{{ commu }}</option>
                     {% endfor %}
                 </select>
                 <div class="valid-feedback">Valid.</div>
@@ -28,7 +28,8 @@
                 <br>
                 {# Title #}
                 <label for="id_title">Title:</label>
-                <input type="text" class="form-control" name="title" id="id_title" placeholder="Enter the Title" required/>
+                <input type="text" class="form-control" name="title" id="id_title" placeholder="Enter the Title"
+                       required/>
                 <div class="valid-feedback">Valid.</div>
                 <div class="invalid-feedback">Please fill out this field.</div>
                 <br>
@@ -49,7 +50,7 @@
                 <label for="id_priority">Priority :</label>
                 <select class="form-control" id="id_priority" name="priority" required>
                     {% for priority in priorities %}
-                        <option value="{{priority.id}}">{{priority}}</option>
+                        <option value="{{ priority.id }}">{{ priority }}</option>
                     {% endfor %}
                 </select>
                 <div class="valid-feedback">Valid.</div>
