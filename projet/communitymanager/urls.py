@@ -7,7 +7,7 @@ urlpatterns = [
     # path for an account
     path('accounts/', include('django.contrib.auth.urls')),
     # path to see all the communities
-    path('community', views.communities, name='communities'),
+    path('community/', views.communities, name='communities'),
     # path to join a community
     path('join/<int:community_id>', views.join_community, name='join'),
 
