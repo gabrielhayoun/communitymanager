@@ -20,10 +20,16 @@
             transform: translatex(-50%);
         }
 
-.navbar-nav.navbar-right {
+.navbar-nav.navbar-right-door {
             position: absolute;
             left: 90%;
             transform: translatex(-90%);
+        }
+
+.navbar-nav.navbar-right-calendar {
+            position: absolute;
+            left: 85%;
+            transform: translatex(-85%);
         }
 
 .border-title {

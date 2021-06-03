@@ -50,7 +50,12 @@
             </ul>
             {% endblock %}
         </div>
-        <ul class="navbar-nav navbar-right">
+        <ul class="navbar-nav navbar-right-calendar">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'calendar' %}"><i class="far fa-calendar-alt" style="font-size: 30px"></i></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav navbar-right-door">
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-door-open"
                                                                  style="font-size: 30px"></i></a>

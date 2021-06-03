@@ -1,15 +1,21 @@
 # ---------------IMPORT-------------------
-from django.core import serializers
-from django.core.files import temp
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import Q
 
-from django.utils import timezone
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 from .forms import NewPostForm, CommentaryForm, CalendarForm
 from .models import Community, Post, Commentary, Priority
 from django.contrib.auth.decorators import login_required
+
+from datetime import datetime
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.views import generic
+from django.utils.safestring import mark_safe
+
+from .models import *
+from .utils import Calendar
+import calendar
 
 
 # ---------------VIEWS-------------------
@@ -183,9 +189,9 @@ def news_feed(request):
 
 
 @login_required()
-def calendar(request):
+def calendar1(request):
     all_community = 0
-    all_priority =0
+    all_priority = 0
     form = CalendarForm(user=request.user, data=request.POST or None)
     user_community = request.user.community_set.all()
     priorities = Priority.objects.order_by('id')
@@ -207,10 +213,11 @@ def calendar(request):
         if start_date is not None and end_date is not None:
             end_date_plus = end_date + timedelta(days=1)
             posts = Post.objects.filter(event=True, community__in=community_form,
-                                        priority__in=priority_form, date_event__gt=start_date, date_event__lt=end_date_plus)
+                                        priority__in=priority_form, date_event__gt=start_date,
+                                        date_event__lt=end_date_plus)
             str_start = str(start_date)
             str_end = str(end_date)
-        elif start_date is not None :
+        elif start_date is not None:
             posts = Post.objects.filter(event=True, community__in=community_form,
                                         priority__in=priority_form, date_event__gt=start_date)
             str_start = str(start_date)
@@ -224,3 +231,43 @@ def calendar(request):
         return render(request, 'communitymanager/calendar.html', locals())
     print("nope")
     return render(request, 'communitymanager/calendar.html', locals())
+
+
+def CalendarView(request, **kwargs):
+    def prev_month(d):
+        first = d.replace(day=1)
+        prev_month = first - timedelta(days=1)
+        month =str(prev_month.year) + '-' + str(prev_month.month)
+        print(month)
+        return month
+
+    def next_month(d):
+        days_in_month = calendar.monthrange(d.year, d.month)[1]
+        last = d.replace(day=days_in_month)
+        next_month = last + timedelta(days=1)
+        month = str(next_month.year) + '-' + str(next_month.month)
+        return month
+
+    def get_date(req_day):
+        if req_day:
+            year, month = (int(x) for x in req_day.split('-'))
+            return date(year, month, day=1)
+        return datetime.today()
+
+    # use today's date for the calendar
+    d = get_date(request.GET.get('month', None))
+
+    if kwargs :
+        month=kwargs.get("month")
+        date_month = datetime.strptime(month, '%Y-%m')
+        cal = Calendar(d.year, int(date_month.month) )
+    else :
+        # Instantiate our calendar class with today's year and date
+        cal = Calendar(d.year, d.month)
+
+    # Call the formatmonth method, which returns our calendar as a table
+    html_cal = cal.formatmonth(withyear=True)
+    cal = mark_safe(html_cal)
+    prev_month = prev_month(d)
+    next_month = next_month(d)
+    return render(request, 'communitymanager/calendar1.html', locals())
