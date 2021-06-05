@@ -234,7 +234,6 @@ def calendar1(request):
 
 
 def CalendarView(request, **kwargs):
-    #    TODO:when you change months, keep the filter/form
     #   TODO: view with week
     def prev_month(d):
         first = d.replace(day=1)
