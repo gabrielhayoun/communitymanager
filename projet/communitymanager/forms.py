@@ -7,7 +7,7 @@ class NewPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = '__all__'
-        exclude = ('author', 'date_creation', 'event', 'date_event', 'readers', 'likers')
+        exclude = ('author', 'date_creation', 'event', 'date_event')
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
@@ -46,7 +46,45 @@ class CommentaryForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
-    query = forms.CharField(max_length=100, required=False, label="Search Posts")
+    query = forms.CharField(max_length=100, required=False, label='Search in posts')
+    titles = forms.BooleanField(required=False)
+    descriptions = forms.BooleanField(required=False)
+    comments = forms.BooleanField(required=False)
+    usernames = forms.BooleanField(required=False)
+    communities = forms.BooleanField(required=False)
+    date_creation_min = forms.DateField(required=False)
+    date_creation_max = forms.DateField(required=False)
+    date_event_min = forms.DateField(required=False)
+    date_event_max = forms.DateField(required=False)
+
+    def clean_dates(self, request):
+        if request.POST.get('date_creation_min'):
+            date_creat_min = format_date(request.POST.get('date_creation_min'))
+        else:
+            date_creat_min = None
+        if request.POST.get('date_creation_max'):
+            date_creat_max = format_date(request.POST.get('date_creation_max'))
+        else:
+            date_creat_max = None
+        if request.POST.get('date_event_min'):
+            date_event_min = format_date(request.POST.get('date_event_min'))
+        else:
+            date_event_min = None
+        if request.POST.get('date_event_max'):
+            date_event_max = format_date(request.POST.get('date_event_max'))
+        else:
+            date_event_max = None
+        return date_creat_min, date_creat_max, date_event_min, date_event_max
+
+
+def format_date(date):
+    final_date = ""
+    for i in range(len(date)):
+        if date[i] == 'T':
+            final_date += ' '
+        else:
+            final_date += date[i]
+    return final_date
 
 
 class PriorityForm(forms.ModelForm):
@@ -62,6 +100,7 @@ class PriorityForm(forms.ModelForm):
 
 class EventForm(forms.Form):
     is_event = forms.BooleanField(label='is_event')
+
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
         self.fields['is_event'].required = False

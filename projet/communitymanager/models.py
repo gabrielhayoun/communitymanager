@@ -44,7 +44,6 @@ class Post(models.Model):
 
     class Meta:
         verbose_name = 'title'
-        ordering = ['date_creation']
 
 
 class Commentary(models.Model):

@@ -1,3 +1,4 @@
+
 # ---------------IMPORT-------------------
 from datetime import datetime
 
@@ -6,10 +7,12 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+from datetime import datetime
 
-from .forms import NewPostForm, CommentaryForm, PriorityForm, EventForm
-from .forms import SearchForm
+from .forms import NewPostForm, CommentaryForm, PriorityForm, EventForm, SearchForm
+
 from .models import Community, Post, Commentary, Priority
+
 
 
 # ---------------VIEWS-------------------
@@ -203,130 +206,69 @@ def modif_post(request, post_id):
 
 
 # see the news_feed
-
-
 @login_required()
 def news_feed(request):
     form = SearchForm(request.POST or None)
-    priority_form = PriorityForm(request.POST or None)
-    event_form = EventForm(request.POST or None)
-    priorities = Priority.objects.all()
-    is_event = False
-    community_user = request.user.community_set.order_by('name')
-    posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
+
     if form.is_valid():
-        query = form.cleaned_data['query']
-        if query != "":
-            posts_user = Post.objects.filter(Q(title__icontains=query) |
-                                             Q(description__icontains=query) |
-                                             Q(author__username__icontains=query)
-                                             )
-            if event_form.is_valid():
-                is_event = event_form.cleaned_data['is_event']
-                if is_event:
-                    posts_user = Post.objects.filter(community__in=community_user).filter(Q(title__icontains=query) |
-                                                                                          Q(description__icontains=query) |
-                                                                                          Q(author__username__icontains=query)
-                                                                                          ).filter(
-                        event=is_event).order_by('-date_creation')
-            if priority_form.is_valid():
-                if priority_form.cleaned_data['name'] == "":
-                    if event_form.is_valid():
-                        if is_event:
-                            is_event = event_form.cleaned_data['is_event']
-                            posts_user = Post.objects.filter(community__in=community_user).filter(
-                                Q(title__icontains=query) |
-                                Q(description__icontains=query) |
-                                Q(author__username__icontains=query)
-                            ).filter(event=is_event).order_by('-date_creation')
-                        else:
-                            posts_user = Post.objects.filter(community__in=community_user).filter(
-                                Q(title__icontains=query) |
-                                Q(description__icontains=query) |
-                                Q(author__username__icontains=query)
-                            ).order_by('-date_creation')
-                else:
-                    prio_id = priority_form.cleaned_data['name']
-                    chosen_pr = get_object_or_404(Priority, id=prio_id)
-                    if event_form.is_valid():
-                        if is_event:
-                            is_event = event_form.cleaned_data['is_event']
-                            posts_user = Post.objects.filter(community__in=community_user).filter(
-                                Q(title__icontains=query) |
-                                Q(description__icontains=query) |
-                                Q(author__username__icontains=query)
-                            ).filter(event=is_event).filter(priority__rank__gte=chosen_pr.rank).order_by(
-                                '-date_creation')
-                        else:
-                            posts_user = Post.objects.filter(community__in=community_user).filter(
-                                Q(title__icontains=query) |
-                                Q(description__icontains=query) |
-                                Q(author__username__icontains=query)
-                            ).filter(priority__rank__gte=chosen_pr.rank).order_by('-date_creation')
-                    if is_event:
-                        posts_user = Post.objects.filter(community__in=community_user).filter(
-                            Q(title__icontains=query) |
-                            Q(description__icontains=query) |
-                            Q(author__username__icontains=query)
-                        ).filter(priority__rank__gte=chosen_pr.rank).filter(event=is_event).order_by(
-                            '-date_creation')
-                    else:
-                        posts_user = Post.objects.filter(community__in=community_user).filter(
-                            priority__rank__gte=chosen_pr.rank).filter(Q(title__icontains=query) |
-                                                                       Q(description__icontains=query) |
-                                                                       Q(author__username__icontains=query)
-                                                                       ).order_by('-date_creation')
-        else:
-            if event_form.is_valid():
-                is_event = event_form.cleaned_data['is_event']
-                if is_event:
-                    posts_user = Post.objects.filter(community__in=community_user).filter(event=is_event).order_by(
-                        '-date_creation')
-            if priority_form.is_valid():
-                if priority_form.cleaned_data['name'] == "":
-                    if event_form.is_valid():
-                        if is_event:
-                            posts_user = Post.objects.filter(community__in=community_user).filter(
-                                event=is_event).order_by('-date_creation')
-                else:
-                    prio_id = priority_form.cleaned_data['name']
-                    chosen_pr = get_object_or_404(Priority, id=prio_id)
-                    if is_event:
-                        posts_user = Post.objects.filter(community__in=community_user).filter(
-                            priority__rank__gte=chosen_pr.rank).filter(event=is_event).order_by('-date_creation')
-                    else:
-                        posts_user = Post.objects.filter(community__in=community_user).filter(
-                            priority__rank__gte=chosen_pr.rank).order_by('-date_creation')
+        return advanced_research(request, form)
+    else:
+        community_user = request.user.community_set.order_by('name')
+        posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
     return render(request, 'communitymanager/news_feed.html', locals())
 
 
-def filter_posts(request):
-    community_user = request.user.community_set.order_by('name')
-    posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
-    priority_form = PriorityForm(request.POST or None)
-    priorities = Priority.objects.all()
-    event_form = EventForm(request.POST or None)
 
-    is_event = False
-    if event_form.is_valid():
-        is_event = event_form.cleaned_data['is_event']
-        posts_user = Post.objects.filter(community__in=community_user).filter(event=is_event).order_by('-date_creation')
+@login_required()
+def calendar(request):
+    return render(request, 'communitymanager/calendar.html', locals())
 
-    if priority_form.is_valid():
-        if priority_form.cleaned_data['name'] == "":
-            return posts_user
-        else:
-            prio_id = priority_form.cleaned_data['name']
-            chosen_pr = get_object_or_404(Priority, id=prio_id)
-            if is_event:
-                posts_user = Post.objects.filter(community__in=community_user).filter(
-                    priority__rank__gte=chosen_pr.rank).filter(event=is_event).order_by('-date_creation')
-                return posts_user
-            else:
-                posts_user = Post.objects.filter(community__in=community_user).filter(
-                    priority__rank__gte=chosen_pr.rank).order_by('-date_creation')
-                return posts_user
-    return posts_user
+@login_required()
+def advanced_research(request, form):
+    query = form.cleaned_data['query']
+    titles = form.cleaned_data['titles']
+    descriptions = form.cleaned_data['descriptions']
+    usernames = form.cleaned_data['usernames']
+    comments = form.cleaned_data['comments']
+    communities = form.cleaned_data['communities']
+    date_creation_min = form.cleaned_data['date_creation_min']
+    date_creation_max = form.cleaned_data['date_creation_max']
+    date_event_min = form.cleaned_data['date_event_min']
+    date_event_max = form.cleaned_data['date_event_max']
+
+    posts_user = Post.objects.none()
+    if titles:
+        posts_titles = Post.objects.filter(title__icontains=query)
+        posts_user = posts_user.union(posts_titles)
+    if descriptions:
+        posts_descriptions = Post.objects.filter(description__icontains=query)
+        posts_user = posts_user.union(posts_descriptions)
+    if usernames:
+        posts_usernames = Post.objects.filter(author__username__icontains=query)
+        posts_user = posts_user.union(posts_usernames)
+    if comments:
+        commentaries = Commentary.objects.filter(content__icontains=query)
+        for comment in commentaries:
+            posts_user = posts_user.union(Post.objects.filter(id=comment.post.id))
+    if (not titles) and (not descriptions) and (not usernames) and (not comments):
+        posts_user = posts_user.union(Post.objects.all())
+    if communities:
+        posts_communities = Post.objects.filter(community__in=request.user.community_set.all())
+        posts_user = posts_user.intersection(posts_communities)
+    if date_creation_min:
+        posts_date = Post.objects.filter(date_creation__gte=date_creation_min)
+        posts_user = posts_user.intersection(posts_date)
+    if date_creation_max:
+        posts_date = Post.objects.filter(date_creation__lte=date_creation_max)
+        posts_user = posts_user.intersection(posts_date)
+    if date_event_max:
+        posts_date = Post.objects.filter(date_event__lte=date_event_max)
+        posts_user = posts_user.intersection(posts_date)
+    if date_event_min:
+        posts_date = Post.objects.filter(date_event__gte=date_event_min)
+        posts_user = posts_user.intersection(posts_date)
+    posts_user = posts_user.order_by('-date_creation')
+    return render(request, 'communitymanager/news_feed.html', locals())
 
 
 @login_required()
@@ -340,8 +282,3 @@ def like_post(request, post_id):
     one_post.save()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-
-@login_required()
-def calendar(request):
-    return render(request, 'communitymanager/calendar.html', locals())
