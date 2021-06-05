@@ -232,7 +232,7 @@ def calendar1(request):
     print("nope")
     return render(request, 'communitymanager/calendar.html', locals())
 
-
+@login_required()
 def CalendarView(request, **kwargs):
     #   TODO: view with week
     def prev_month(d):
