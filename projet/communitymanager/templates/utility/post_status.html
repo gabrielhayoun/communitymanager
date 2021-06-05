@@ -1,11 +1,18 @@
 {% if user in one_post.readers.all %}
-    <i class="bi bi-bookmark-check-fill"></i>
+
     {% if user in one_post.likers.all %}
         <a href="{% url 'like_post' post_id=one_post.id %}"><i class="bi bi-hand-thumbs-up-fill"></i></a>
     {% else %}
         <a href="{% url 'like_post' post_id=one_post.id %}"><i class="bi bi-hand-thumbs-up"></i></a>
     {% endif %}
     {{ one_post.likers.count }}
+    <i {% if one_post.priority.name == "red" %}
+                        class="bi bi-bookmark-check-fill text-danger"
+                    {% elif one_post.priority.name == "orange" %}
+                        class="bi bi-bookmark-check-fill text-warning"
+                    {% else %}
+                        class="bi bi-bookmark-check-fill text-secondary"
+                    {% endif %}></i>
 {% else %}
     <i class="bi bi-bookmark"></i>
 {% endif %}
