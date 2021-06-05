@@ -1,4 +1,3 @@
-
 # ---------------IMPORT-------------------
 from django.core.files import temp
 from django.shortcuts import render, get_object_or_404, redirect
@@ -7,8 +6,7 @@ from django.db.models import Q
 from django.utils import timezone
 from datetime import datetime
 
-
-from .forms import NewPostForm, CommentaryForm, SearchForm, AdvancedSearchForm
+from .forms import NewPostForm, CommentaryForm, SearchForm
 from .models import Community, Post, Commentary, Priority
 from django.contrib.auth.decorators import login_required
 
@@ -51,7 +49,7 @@ def community(request, community_id):
 # 0 lets not see the toast
 # 1 will return the page with a toast when someone wants to change a post he is not allowed to
 @login_required()
-def post(request, post_id,):
+def post(request, post_id, ):
     one_post = get_object_or_404(Post, id=post_id)
     commentaries = Commentary.objects.filter(post=one_post).order_by('-date_creation')
     # beginning of the form
@@ -109,7 +107,7 @@ def new_post(request):
         return render(request, 'communitymanager/new_post.html', locals())
 
 
-#modify a post
+# modify a post
 @login_required()
 def modif_post(request, post_id):
     form = NewPostForm(user=request.user, data=request.POST or None)
@@ -168,11 +166,7 @@ def news_feed(request):
     form = SearchForm(request.POST or None)
 
     if form.is_valid():
-        query = form.cleaned_data['query']
-        posts_user = Post.objects.filter(Q(title__icontains=query) |
-                                         Q(description__icontains=query) |
-                                         Q(author__username__icontains=query)
-                                         )
+        return advanced_research(request, form)
     else:
         community_user = request.user.community_set.order_by('name')
         posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
@@ -180,47 +174,48 @@ def news_feed(request):
 
 
 @login_required()
-def advanced_research(request):
-    form = AdvancedSearchForm(data=request.POST or None)
-    if form.is_valid():
-        query = form.cleaned_data['query']
-        titles = form.cleaned_data['titles']
-        descriptions = form.cleaned_data['descriptions']
-        usernames = form.cleaned_data['usernames']
-        comments = form.cleaned_data['comments']
-        communities = form.cleaned_data['communities']
-        date_creation_min, date_creation_max, date_event_min, date_event_max = form.clean_dates(request)
-        print("uuuurg")
+def advanced_research(request, form):
+    query = form.cleaned_data['query']
+    titles = form.cleaned_data['titles']
+    descriptions = form.cleaned_data['descriptions']
+    usernames = form.cleaned_data['usernames']
+    comments = form.cleaned_data['comments']
+    communities = form.cleaned_data['communities']
+    date_creation_min = form.cleaned_data['date_creation_min']
+    date_creation_max = form.cleaned_data['date_creation_max']
+    date_event_min = form.cleaned_data['date_event_min']
+    date_event_max = form.cleaned_data['date_event_max']
 
-        posts_user = Post.objects.none()
-        if titles :
-            posts_titles = Post.objects.filter(title__icontains=query)
-            posts_user = posts_user.union(posts_titles)
-        if descriptions :
-            posts_descriptions = Post.objects.filter(description__icontains=query)
-            posts_user = posts_user.union(posts_descriptions)
-        if usernames :
-            posts_usernames = Post.objects.filter(author__username__icontains=query)
-            posts_user = posts_user.union(posts_usernames)
-        if comments :
-            commentaries = Commentary.objects.filter(content__icontains=query)
-            for comment in commentaries:
-                posts_user = posts_user.union(Post.objects.filter(id=comment.post.id))
-        if communities :
-            posts_communities = Post.objects.filter(community__in=request.user.community_set.all())
-            posts_user = posts_user.intersection(posts_communities)
-        if date_creation_min :
-            compare_date = datetime.strptime(date_creation_min, '%Y-%m-%d %H:%M')
-            posts_user = posts_user.filter(date_creation__gte=compare_date)
-        if date_creation_max:
-            compare_date = datetime.strptime(date_creation_max, '%Y-%m-%d %H:%M')
-            posts_user = posts_user.filter(date_creation__lte=compare_date)
-        if date_event_max:
-            compare_date = datetime.strptime(date_event_max, '%Y-%m-%d %H:%M')
-            posts_user = posts_user.filter(date_event__lte=compare_date)
-        if date_event_min:
-            compare_date = datetime.strptime(date_event_min, '%Y-%m-%d %H:%M')
-            posts_user = posts_user.filter(date_event__gte=compare_date)
-        return render(request, 'communitymanager/news_feed.html', locals())
-    return render(request, 'communitymanager/advanced_research.html', locals())
-
+    posts_user = Post.objects.none()
+    if titles:
+        posts_titles = Post.objects.filter(title__icontains=query)
+        posts_user = posts_user.union(posts_titles)
+    if descriptions:
+        posts_descriptions = Post.objects.filter(description__icontains=query)
+        posts_user = posts_user.union(posts_descriptions)
+    if usernames:
+        posts_usernames = Post.objects.filter(author__username__icontains=query)
+        posts_user = posts_user.union(posts_usernames)
+    if comments:
+        commentaries = Commentary.objects.filter(content__icontains=query)
+        for comment in commentaries:
+            posts_user = posts_user.union(Post.objects.filter(id=comment.post.id))
+    if (not titles) and (not descriptions) and (not usernames) and (not comments):
+        posts_user = posts_user.union(Post.objects.all())
+    if communities:
+        posts_communities = Post.objects.filter(community__in=request.user.community_set.all())
+        posts_user = posts_user.intersection(posts_communities)
+    if date_creation_min:
+        posts_date = Post.objects.filter(date_creation__gte=date_creation_min)
+        posts_user = posts_user.intersection(posts_date)
+    if date_creation_max:
+        posts_date = Post.objects.filter(date_creation__lte=date_creation_max)
+        posts_user = posts_user.intersection(posts_date)
+    if date_event_max:
+        posts_date = Post.objects.filter(date_event__lte=date_event_max)
+        posts_user = posts_user.intersection(posts_date)
+    if date_event_min:
+        posts_date = Post.objects.filter(date_event__gte=date_event_min)
+        posts_user = posts_user.intersection(posts_date)
+    posts_user = posts_user.order_by('-date_creation')
+    return render(request, 'communitymanager/news_feed.html', locals())

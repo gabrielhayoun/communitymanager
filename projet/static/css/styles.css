@@ -1,0 +1,78 @@
+.communities_jumbo {
+    padding: 10% 5% 3%;
+}
+
+.right {
+    text-align: right;
+}
+
+.left {
+    text-align: left;
+}
+
+.center {
+    text-align: center;
+}
+
+.navbar-nav.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+}
+
+.navbar-nav.navbar-right {
+    position: absolute;
+    left: 90%;
+    transform: translatex(-90%);
+}
+
+.border-title {
+    padding-top: 3%;
+}
+
+.navbar-custom .navbar-text {
+    color: cornflowerblue;
+    font-weight: bold;
+}
+
+.advancedsearch li {
+    list-style: none !important;
+    color: white;
+    padding: 10px;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.advancedsearch ul {
+    list-style: none !important;
+    background-color: lightsteelblue;
+    padding: 0;
+    margin: 0;
+}
+
+.advancedsearch ul li {
+    list-style: none;
+    line-height: 30px;
+    float: left;
+    background-color: lightsteelblue;
+}
+
+.advancedsearch ul li ul {
+    display: none;
+}
+
+/* Rend le menu déroulant caché par défaut */
+.advancedsearch ul li:hover ul { /* Affiche la dropNav au survol de la souris avec la class .drop */
+    z-index: 99999;
+    display: list-item !important;
+    position: absolute;
+    margin-top: 5px;
+    margin-left: -10px;
+}
+
+.advancedsearch ul li:hover ul li {
+    float: none;
+    font-size: 15px;
+    padding: 0px 10px;
+    line-height: 20px;
+}

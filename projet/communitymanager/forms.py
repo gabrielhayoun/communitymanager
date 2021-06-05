@@ -48,29 +48,20 @@ class CommentaryForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     query = forms.CharField(max_length=100, required=False, label='Search in posts')
-
-
-class AdvancedSearchForm(forms.Form):
-    query = forms.CharField(max_length=100, label='Search in posts')
     titles = forms.BooleanField(required=False)
     descriptions = forms.BooleanField(required=False)
     comments = forms.BooleanField(required=False)
     usernames = forms.BooleanField(required=False)
     communities = forms.BooleanField(required=False)
-    date_creation_min = forms.DateTimeField(required=False)
-    date_creation_max = forms.DateTimeField(required=False)
-    date_event_min = forms.DateTimeField(required=False)
-    date_event_max = forms.DateTimeField(required=False)
-
-    class Meta:
-        model = Post
-        fields = '__all__'
-        exclude = ('date_event_min', 'date_event_max', 'date_creation_max', 'date_creation_min')
+    date_creation_min = forms.DateField(required=False)
+    date_creation_max = forms.DateField(required=False)
+    date_event_min = forms.DateField(required=False)
+    date_event_max = forms.DateField(required=False)
 
     def clean_dates(self, request):
-        if request.POST.get('date_creation_min') :
+        if request.POST.get('date_creation_min'):
             date_creat_min = format_date(request.POST.get('date_creation_min'))
-        else :
+        else:
             date_creat_min = None
         if request.POST.get('date_creation_max'):
             date_creat_max = format_date(request.POST.get('date_creation_max'))
@@ -86,7 +77,6 @@ class AdvancedSearchForm(forms.Form):
             date_event_max = None
 
         return date_creat_min, date_creat_max, date_event_min, date_event_max
-
 
 def format_date(date):
     final_date = ""
