@@ -6,7 +6,7 @@
 
 
 {% block nav %}
-    {% include 'nav/link_home.html' %}
+    {% include 'nav/link_news_feed.html' %}
     {% include 'nav/link_communities.html' %}
 {% endblock %}
 {% block logout %}{% include 'nav/logout.html' %}{% endblock %}
@@ -17,9 +17,6 @@
     <form class="row row-cols-lg-auto g-3 align-items-center mt-3 mb-3" method="POST" action="{% url 'news_feed' %}">
 
         {% include 'forms/post_search.html' %}
-        {% include 'forms/priority_filter.html' %}
-        {% include 'forms/event_filter.html' %}
-
 
         <div class="col-2">
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -48,7 +45,7 @@
                                 </h2>
 
                                 <h3 class="display-5 text-dark mr-4 mt-3">
-                                    {% include 'utility/post_like.html' %}
+                                    {% include 'utility/post_status.html' %}
                                 </h3>
                             </div>
                             {% include 'utility/post_details.html' %}

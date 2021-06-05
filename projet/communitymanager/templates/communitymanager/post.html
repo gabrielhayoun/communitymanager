@@ -4,14 +4,14 @@
 {% block title %}{{ one_post }}{% endblock %}
 
 {% block nav %}
-    {% include 'nav/link_home.html' %}
+    {% include 'nav/link_news_feed.html' %}
     {% include 'nav/link_communities.html' %}
     {% include 'nav/link_community.html' %}
 {% endblock %}
 
 {% block logout %}{% include 'nav/logout.html' %}{% endblock %}
 
-{% block top %}{{ one_post }}<h3>{% include 'utility/post_like.html' %}</h3>{% endblock %}
+{% block top %}{{ one_post }}<h3>{% include 'utility/post_status.html' %}</h3>{% endblock %}
 
 {% block content %}
     <div class="row">

@@ -38,9 +38,9 @@
                                 <h1 class="display-5 text-dark ml-4 mt-3">
                                     <strong><a href="{% url 'post' one_post.id %}" class="text-dark">{{ one_post }}</a></strong>
                                 </h1>
-                                <h1 class="display-5 text-dark mr-4 mt-3">
-                                    {% include 'utility/post_like.html' %}
-                                </h1>
+                                <h3 class="display-5 text-dark mr-4 mt-3">
+                                    {% include 'utility/post_status.html' %}
+                                </h3>
                             </div>
                             {% include 'utility/post_details.html' %}
                         </div>

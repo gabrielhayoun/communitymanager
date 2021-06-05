@@ -12,4 +12,10 @@ def unread_posts(community, user):
     for post in community_posts:
         if user in post.readers.all():
             n_posts -= 1
-    return n_posts
+    if n_posts == 0:
+        reply = "no unread post"
+    elif n_posts == 1:
+        reply = "1 unread post"
+    else:
+        reply = "%d unread posts" %n_posts
+    return reply

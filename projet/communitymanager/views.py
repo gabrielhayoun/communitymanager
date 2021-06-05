@@ -300,34 +300,6 @@ def news_feed(request):
     return render(request, 'communitymanager/news_feed.html', locals())
 
 
-def filter_posts(request):
-    community_user = request.user.community_set.order_by('name')
-    posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
-    priority_form = PriorityForm(request.POST or None)
-    priorities = Priority.objects.all()
-    event_form = EventForm(request.POST or None)
-
-    is_event = False
-    if event_form.is_valid():
-        is_event = event_form.cleaned_data['is_event']
-        posts_user = Post.objects.filter(community__in=community_user).filter(event=is_event).order_by('-date_creation')
-
-    if priority_form.is_valid():
-        if priority_form.cleaned_data['name'] == "":
-            return posts_user
-        else:
-            prio_id = priority_form.cleaned_data['name']
-            chosen_pr = get_object_or_404(Priority, id=prio_id)
-            if is_event:
-                posts_user = Post.objects.filter(community__in=community_user).filter(
-                    priority__rank__gte=chosen_pr.rank).filter(event=is_event).order_by('-date_creation')
-                return posts_user
-            else:
-                posts_user = Post.objects.filter(community__in=community_user).filter(
-                    priority__rank__gte=chosen_pr.rank).order_by('-date_creation')
-                return posts_user
-    return posts_user
-
 
 @login_required()
 def like_post(request, post_id):
@@ -337,6 +309,19 @@ def like_post(request, post_id):
         one_post.likers.remove(request.user)
     else:
         one_post.likers.add(request.user)
+    one_post.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required()
+def unread_post(request, post_id):
+    one_post = get_object_or_404(Post, id=post_id)
+
+    if request.user in one_post.readers.all():
+        one_post.readers.remove(request.user)
+    else:
+        one_post.readers.add(request.user)
     one_post.save()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

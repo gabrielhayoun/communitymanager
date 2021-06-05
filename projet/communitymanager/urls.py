@@ -28,6 +28,8 @@ urlpatterns = [
 
     path('like_post/<int:post_id>', views.like_post, name='like_post'),
 
+    path('unread_post/<int:post_id>', views.unread_post, name='unread_post'),
+
     path('calendar', views.calendar, name='calendar')
 
 ]
