@@ -7,7 +7,7 @@
 
 <div class="container">
     <h1 class="border-title">Calendar</h1>
-    <form method="post" action="{% url 'calendar' %}" id="calendar_form" class="needs-validation">
+    <form method="post" id="calendar_form" class="needs-validation">
         <div class="form-group">
             {% csrf_token %}
             {# Community #}

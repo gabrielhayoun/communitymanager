@@ -29,13 +29,17 @@ class Calendar(HTMLCalendar):
         return f'<tr> {week} </tr>'
 
     # formats a month as a table
-    # filter events by year and month
-    def formatmonth(self, withyear=True):
-        posts = Post.objects.filter(date_event__year=self.year, date_event__month=self.month)
-
+    def formatmonth(self, posts, withyear=True,):
         cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
         cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
         cal += f'{self.formatweekheader()}\n'
         for week in self.monthdays2calendar(self.year, self.month):
             cal += f'{self.formatweek(week, posts)}\n'
+        return cal
+
+    def formatweektable(self, theweek, posts):
+        cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
+        cal += f'{self.formatmonthname(self.year, self.month, withyear=True)}\n'
+        cal += f'{self.formatweekheader()}\n'
+        cal += f'{self.formatweek(theweek, posts)}\n'
         return cal

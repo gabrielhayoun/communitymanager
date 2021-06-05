@@ -7,11 +7,50 @@
 
 <div class="container">
     <div class="clearfix">
-        <a class="btn btn-info left" href="{% url 'calendar' month=prev_month %}"> Previous Month </a>
-        <a class="btn btn-info right" href="{% url 'calendar' month=next_month %}"> Next Month </a>
-        <a class="btn btn-info right" href="{% url 'calendar' %}"> Today </a>
+        <a class="btn btn-info left" href="{%url 'calendar_form' view='month' month=prev_month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}"> Previous Month </a>
+        <a class="btn btn-info right" href="{%url 'calendar_form' view='month' month=next_month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}"> Next Month </a>
+        <a class="btn btn-info right" href="{%url 'calendar_form' view='month' month=today community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}"> Today </a>
     </div>
 </div>
+
+<div class="container">
+    <form method="post" action="{%url 'calendar_form' view='month' month=month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}" id=calendar_form" class="needs-validation">
+        <div class="form-group">
+            {% csrf_token %}
+            {# Community #}
+            <label for="id_community">Community :</label>
+            <select class="form-control" id="id_community" name="community" multiple>
+                {% for commu in user_community %}
+                {% if commu in community_form and all_community == 0 %}
+                <option value={{commu.id}} selected>{{commu}}</option>
+                {% else %}
+                <option value={{commu.id}}>{{commu}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            {# Priority #}
+            <label for="id_priority">Priority :</label>
+            <select class="form-control" id="id_priority" name="priority" multiple>
+                {% for priority in priorities %}
+                {% if priority in priority_form and all_priority == 0 %}
+                <option value="{{priority.id}}" selected>{{priority}}</option>
+                {% else %}
+                <option value="{{priority.id}}">{{priority}}</option>
+                {% endif %}}
+                {% endfor %}
+            </select>
+            {# Date #}
+            <label for="id_start_date">Start Date</label>
+            <input type="date" class="" id="id_start_date" name="start_date" value="{{start_date_url}}"/>
+            <label for="id_end_date">End Date</label>
+            <input type="date" class="" id="id_end_date" name="end_date" value="{{end_date_url}}"/>
+            <br>
+        </div>
+        <a class="btn" href="{%url 'calendar_form' view='month' month=month community='None' priority='None' start_date='None' end_date='None' %}">Reset</a>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
 
 <div class="container">
     <h1 class="border-title">Calendar</h1>
