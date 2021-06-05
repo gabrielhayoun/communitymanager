@@ -219,6 +219,7 @@ def news_feed(request):
 
 
 
+
 @login_required()
 def calendar(request):
     return render(request, 'communitymanager/calendar.html', locals())
@@ -271,6 +272,7 @@ def advanced_research(request, form):
     return render(request, 'communitymanager/news_feed.html', locals())
 
 
+
 @login_required()
 def like_post(request, post_id):
     one_post = get_object_or_404(Post, id=post_id)
@@ -282,3 +284,23 @@ def like_post(request, post_id):
     one_post.save()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+
+@login_required()
+def unread_post(request, post_id):
+    one_post = get_object_or_404(Post, id=post_id)
+
+    if request.user in one_post.readers.all():
+        one_post.readers.remove(request.user)
+    else:
+        one_post.readers.add(request.user)
+    one_post.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required()
+def calendar(request):
+    return render(request, 'communitymanager/calendar.html', locals())
+
