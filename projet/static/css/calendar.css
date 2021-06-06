@@ -133,18 +133,24 @@ a {
 
 .red {
     color: black;
-    background-color: #ff3b30;
-}
-
-.redul {
-
+    background-color: lightcoral;
+    outline-color: indianred;
+    outline-style: solid;
+    outline-width: thin;
 }
 
 .white {
     color: black;
-
+    background-color: whitesmoke;
+    outline-color: lightgray;
+    outline-style: solid;
+    outline-width: thin;
 }
 
 .orange {
-    color: darkorange;
+    color: black;
+    background-color: lightsalmon;
+    outline-color: darkorange;
+    outline-style: solid;
+    outline-width: thin;
 }

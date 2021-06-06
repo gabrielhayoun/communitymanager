@@ -15,8 +15,7 @@ class Calendar(HTMLCalendar):
         events_per_day = posts.filter(date_event__day=day)
         d = ''
         for event in events_per_day:
-            print(event)
-            d += f'<li class="{event.priority}"> {event.title} </li>'
+            d += f'<a  href="/post/{event.id}"><li class="{event.priority}" >{event.title}</li></a>'
 
         if day != 0:
             return f"<td><span class='date'>{day}</span><ul class='calendarul'> {d} </ul></td>"
@@ -75,8 +74,7 @@ class Calendar(HTMLCalendar):
         events_per_day = posts.filter(date_event__day=day, date_event__hour=hour)
         d = ''
         for event in events_per_day:
-
-            d += f'<li class="{event.priority}"> {event.title} </li>'
+            d += f'<a  href="/post/{event.id}"><li class="{event.priority}" >{event.title}</li></a>'
         if day != 0:
             return f"<td class='tdhour'><ul> {d} </ul></td>"
         return '<td></td>'
