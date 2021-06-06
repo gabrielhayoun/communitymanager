@@ -18,7 +18,7 @@ class Community(models.Model):
 
 class Priority(models.Model):
     name = models.CharField(max_length=50)
-    rank = models.IntegerField()    #to set an order relation between priorities
+    rank = models.IntegerField()
 
     class Meta:
         verbose_name = "name"

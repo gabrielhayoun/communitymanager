@@ -14,51 +14,49 @@
 {% block top %}Home{% endblock %}
 
 {% block content %}
-    <div class="container">
+<div class="container">
 
-        <!-- Search bar -->
-        {% include 'forms/research.html' %}
+    <!-- Search bar -->
+    {% include 'forms/research.html' %}
 
-        <!-- Listing of the posts -->
-        <div class="row">
-            <div class="col-md-10">
-                {% if posts_user %}
-                    <h1 class="display-5"> Welcome <strong>{{ user.username }}</strong>, here are all the posts of your
-                        favourite communities </h1>
-                    {% for one_post in posts_user %}
-                        <div {% if one_post.priority.name == "red" %}
-                            class="row g-0 border border-danger border-left-0 border-bottom-0 flex-md-row mb-5 h-md-250"
-                        {% elif one_post.priority.name == "orange" %}
-                            class="row g-0 border border-warning border-left-0 border-bottom-0 flex-md-row mb-5 h-md-250"
-                        {% else %}
-                            class="row g-0 border border-left-0 border-bottom-0 flex-md-row mb-5 h-md-250"
-                        {% endif %}
-                        >
-                            <div class="col ml-6">
-                                <div class="row justify-content-between">
-                                    <h2 class="display-6 text-dark ml-4 mt-3">
-                                        <strong><a href="{% url 'post' one_post.id %}"
-                                                   class="text-dark">{{ one_post }}</a></strong>
-                                        in <a href="{% url 'community' one_post.community.id %}"
-                                              class="text-dark">{{ one_post.community }}</a>
-                                    </h2>
+    <!-- Listing of the posts -->
+    <div class="row">
+        <div class="col-md-10">
+            {% if posts_user %}
+                <h1 class="display-5"> Welcome <strong>{{ user.username }}</strong>, here are all the posts of your
+                    favourite communities </h1>
+                {% for one_post in posts_user %}
+                    <div {% if one_post.priority.name == "red" %}
+                        class="row g-0 border border-danger border-left-0 border-bottom-0 flex-md-row mb-5 h-md-250"
+                    {% elif one_post.priority.name == "orange" %}
+                        class="row g-0 border border-warning border-left-0 border-bottom-0 flex-md-row mb-5 h-md-250"
+                    {% else %}
+                        class="row g-0 border border-left-0 border-bottom-0 flex-md-row mb-5 h-md-250"
+                    {% endif %}
+                    >
+                        <div class="col ml-6">
+                            <div class="row justify-content-between">
+                                <h2 class="display-6 text-dark ml-4 mt-3">
+                                    <strong><a href="{% url 'post' one_post.id %}" class="text-dark">{{ one_post }}</a></strong>
+                                    in <a href="{% url 'community' one_post.community.id %}"
+                                          class="text-dark">{{ one_post.community }}</a>
+                                </h2>
 
-                                    <h3 class="display-5 text-dark mr-4 mt-3">
-                                        {% include 'utility/post_status.html' %}
-                                    </h3>
-                                </div>
-                                {% include 'utility/post_details.html' %}
+                                <h3 class="display-5 text-dark mr-4 mt-3">
+                                    {% include 'utility/post_status.html' %}
+                                </h3>
                             </div>
+                            {% include 'utility/post_details.html' %}
                         </div>
-                    {% endfor %}
-                {% else %}
-                    <h4 class="display-4"> Welcome <strong>{{ user.username }}</strong>, there is no post to display...
-                    </h4>
-                {% endif %}
-            </div>
-            {% include "nav/link_new_post.html" %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h4 class="display-4"> Welcome <strong>{{ user.username }}</strong>, there is no post to display... </h4>
+            {% endif %}
         </div>
+        {% include "nav/link_new_post.html" %}
     </div>
+</div>
 
 
 

@@ -1,17 +1,27 @@
 # ---------------IMPORT-------------------
 
+from datetime import datetime
+
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
 import calendar
+
 from datetime import datetime
 from datetime import timedelta, date
 
+from .forms import NewPostForm, CommentaryForm, PriorityForm, EventForm, SearchForm
+
+from .models import Community, Post, Commentary, Priority
+
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 
 from .forms import NewPostForm, CommentaryForm, CalendarForm
-from .forms import PriorityForm, EventForm, SearchForm
 from .models import *
 from .utils import Calendar
 
@@ -45,31 +55,28 @@ def join_community(request, community_id):
 def community(request, community_id):
     one_community = get_object_or_404(Community, id=community_id)
     posts_user = Post.objects.filter(community=one_community).order_by('-date_creation')
-    # the form to filter the post displayed on the community
     priority_form = PriorityForm(request.POST or None)
-    event_form = EventForm(request.POST or None)
     priorities = Priority.objects.all()
+    event_form = EventForm(request.POST or None)
     is_event = False
+    if event_form.is_valid():
+        is_event = event_form.cleaned_data['is_event']
+        if is_event:
+            posts_user = Post.objects.filter(community=one_community).filter(event=is_event).order_by(
+                '-date_creation')
     if priority_form.is_valid():
-        #first if : the user doesn't choose any priority
         if priority_form.cleaned_data['name'] == "":
             if event_form.is_valid():
-                is_event = event_form.cleaned_data['is_event']
-                #the user want to see events
                 if is_event:
                     posts_user = Post.objects.filter(community=one_community).filter(event=is_event).order_by(
                         '-date_creation')
-        #second if : the user chooses a priority
         else:
             prio_id = priority_form.cleaned_data['name']
             chosen_pr = get_object_or_404(Priority, id=prio_id)
             if event_form.is_valid():
-                is_event = event_form.cleaned_data['is_event']
-                #the user want also to see events
                 if is_event:
                     posts_user = Post.objects.filter(community=one_community).filter(
                         priority__rank__gte=chosen_pr.rank).filter(event=is_event).order_by('-date_creation')
-                #the user doesn't want to see only events
                 else:
                     posts_user = Post.objects.filter(community=one_community).filter(
                         priority__rank__gte=chosen_pr.rank).order_by('-date_creation')
@@ -290,35 +297,32 @@ def advanced_research(request, form):
         posts_date = Post.objects.filter(date_event__gte=date_event_min)
         posts_user = posts_user.intersection(posts_date)
     posts_user = posts_user.order_by('-date_creation')
+    return render(request, 'communitymanager/news_feed.html', locals())
 
 
-# view to allow user to like post they read
 @login_required()
 def like_post(request, post_id):
     one_post = get_object_or_404(Post, id=post_id)
-    # if he already likes the post he can unlike it
+
     if request.user in one_post.likers.all():
         one_post.likers.remove(request.user)
-    # otherwise he can like it
     else:
         one_post.likers.add(request.user)
     one_post.save()
-    # the user stays at the same page
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-# view to switch read status of a read post
 @login_required()
 def unread_post(request, post_id):
     one_post = get_object_or_404(Post, id=post_id)
-    # if he allready read it, he can set it as unread
+
     if request.user in one_post.readers.all():
         one_post.readers.remove(request.user)
-    # if he doesn't want to see it as unread
     else:
         one_post.readers.add(request.user)
     one_post.save()
-    # the user stays at the same page
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
@@ -493,7 +497,7 @@ def CalendarView(request, **kwargs):
                                         date_event__year=cal.year, date_event__month=cal.month)
             end_date_url = str(end_date)
         else:
-            # Community and Priority
+            #Community and Priority
             posts = Post.objects.filter(event=True, community__in=community_form, priority__in=priority_form,
                                         date_event__year=cal.year, date_event__month=cal.month)
 

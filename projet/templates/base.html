@@ -48,7 +48,7 @@
                 <div class="row">
 
                     <a class="blog-header-logo text-light" href={% url 'news_feed' %}><h1 class="display-1">
-                        In Da Club</h1></a>
+                    In Da Club</h1></a>
 
                 </div>
 
@@ -69,35 +69,35 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     {% block nav %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'news_feed' %}">News feed</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'communities' %}">Communities</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'new_post' %}">Create a post</a>
-                        </li>
-                        </ul>
-                    {% endblock %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'news_feed' %}">News feed</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'communities' %}">Communities</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'new_post' %}">Create a post</a>
+                    </li>
+                </ul>
+                {% endblock %}
                 </ul>
             </div>
         </div>
         <div class="col-md-2 navbar navbar-expand navbar-danger border-bottom rounded-0 bg-dark">
             {% block logout %}
-                <ul class="navbar-nav navbar-right-calendar">
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="{% url 'calendar' view='month' community='None' priority='None' start_date='None' end_date='None' %}"><i
-                                class="far fa-calendar-alt" style="font-size: 30px; color: cornflowerblue"></i></a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav navbar-right-door">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-door-open"
-                                                                         style="font-size: 30px; color: cornflowerblue"></i></a>
-                    </li>
-                </ul>
+            <ul class="navbar-nav navbar-right-calendar">
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="{%url 'calendar' view='month' community='None' priority='None' start_date='None' end_date='None' %}"><i
+                            class="far fa-calendar-alt" style="font-size: 30px; color: cornflowerblue"></i></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav navbar-right-door">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-door-open"
+                                                                     style="font-size: 30px; color: cornflowerblue"></i></a>
+                </li>
+            </ul>
             {% endblock %}
         </div>
     </div>

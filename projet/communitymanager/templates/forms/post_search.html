@@ -1,0 +1,9 @@
+<div class="col-4">
+    {% csrf_token %}
+    <label for="id_title">Search:</label>
+    {% if  query %}
+        <input type="text" class="form-control" name="query" id="id_title" value={{ query }} />
+    {% else %}
+        <input type="text" class="form-control" name="query" id="id_title"/>
+    {% endif %}
+</div>

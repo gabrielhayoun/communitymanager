@@ -1,5 +1,6 @@
-from calendar import HTMLCalendar, month_name, day_name, day_abbr
-
+from datetime import datetime, timedelta
+from calendar import HTMLCalendar, _localized_month, month_name, day_name, day_abbr
+from .models import Post
 
 # Class for the calendar
 class Calendar(HTMLCalendar):
@@ -8,7 +9,7 @@ class Calendar(HTMLCalendar):
         self.month = month
         super(Calendar, self).__init__()
 
-    # -------------- Function for the view as a MONTH ------------------
+# -------------- Function for the view as a MONTH ------------------
     # formats a day as a td
     def formatday(self, day, posts):
         # filter events by day
@@ -37,7 +38,7 @@ class Calendar(HTMLCalendar):
         return '<tr class="days">%s</tr>' % s
 
     # formats a month as a table
-    def formatmonth(self, posts, withyear=True, ):
+    def formatmonth(self, posts, withyear=True,):
         cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
         cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
         cal += f'{self.formatweekheader()}\n'
@@ -45,7 +46,7 @@ class Calendar(HTMLCalendar):
             cal += f'{self.formatweek(week, posts)}\n'
         return cal
 
-    # -------------- Function for the view as a WEEK ------------------
+# -------------- Function for the view as a WEEK ------------------
 
     def formatmonthname_week(self, theyear, themonth, withyear=True):
         """
@@ -82,20 +83,20 @@ class Calendar(HTMLCalendar):
         return '<td></td>'
 
     # format a week as a tr with an hour
-    def formatweekhour(self, theweek, hour, posts):
+    def formatweekhour(self, theweek, hour,  posts):
         week = ''
         for d, weekday in theweek:
-            week += self.formathour(d, hour, posts)
+                week += self.formathour(d, hour, posts)
         return f'<tr><td class="dayshourtd">{hour}:00</td>{week}</tr>'
 
     # Format the table of the week with each hour of the day
     def formatweektable(self, theweek, posts):
         cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendarhour" >\n'
         cal += f'{self.formatmonthname_week(self.year, self.month, withyear=True)}\n'
-        s = ""
+        s=""
         for i, number in theweek:
-            s += f"<td class='dayshourtd'>{self.formatweekday_week(number, i, 3)}"
+            s +=f"<td class='dayshourtd'>{self.formatweekday_week(number, i, 3)}"
         cal += f'<tr class="dayshourtr"><td class="dayshourtd">hour</td>{s}</tr>\n'
         for hour in range(0, 24):
-            cal += f'{self.formatweekhour(theweek, hour, posts)}\n'
+            cal += f'{self.formatweekhour(theweek, hour,  posts)}\n'
         return cal
