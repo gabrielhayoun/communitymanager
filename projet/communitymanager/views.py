@@ -16,7 +16,6 @@ from .forms import NewPostForm, CommentaryForm, PriorityForm, EventForm, SearchF
 
 from .models import Community, Post, Commentary, Priority
 
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
@@ -220,11 +219,12 @@ def modif_post(request, post_id):
 # see the news_feed
 @login_required()
 def news_feed(request):
+    # Form to search through the posts
     form = SearchForm(request.POST or None)
-
     if form.is_valid():
         return advanced_research(request, form)
     else:
+        # If the form is not valid, we show all the posts of the communities the user subscribed to
         community_user = request.user.community_set.order_by('name')
         posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
     return render(request, 'communitymanager/news_feed.html', locals())
@@ -232,6 +232,7 @@ def news_feed(request):
 
 @login_required()
 def advanced_research(request, form):
+    # Get all the information from the search
     query = form.cleaned_data['query']
     titles = form.cleaned_data['titles']
     descriptions = form.cleaned_data['descriptions']
@@ -244,23 +245,29 @@ def advanced_research(request, form):
     date_event_max = form.cleaned_data['date_event_max']
 
     posts_user = Post.objects.none()
+
+    # If the user wishes to search in the titles
     if titles:
         posts_titles = Post.objects.filter(title__icontains=query)
         posts_user = posts_user.union(posts_titles)
+    # If the user wishes to search in the descriptions of the posts
     if descriptions:
         posts_descriptions = Post.objects.filter(description__icontains=query)
         posts_user = posts_user.union(posts_descriptions)
+    # If the user wishes to search in the authors' name
     if usernames:
         posts_usernames = Post.objects.filter(author__username__icontains=query)
         posts_user = posts_user.union(posts_usernames)
+    # If the user wishes to search in the comments' text
     if comments:
         commentaries = Commentary.objects.filter(content__icontains=query)
         for comment in commentaries:
             posts_user = posts_user.union(Post.objects.filter(id=comment.post.id))
+    # If none of these are filled, then we look through all of these possibilities
     if (not titles) and (not descriptions) and (not usernames) and (not comments):
         if query == "":
             posts_user = Post.objects.all()
-        else :
+        else:
             posts_user = posts_user.union(
                 Post.objects.filter(title__icontains=query)
             ).union(
@@ -271,15 +278,18 @@ def advanced_research(request, form):
             commentaries = Commentary.objects.filter(content__icontains=query)
             for comment in commentaries:
                 posts_user = posts_user.union(Post.objects.filter(id=comment.post.id))
-    if communities:
+    # If the user wishes to see the posts of all communities
+    if (not communities):
         posts_communities = Post.objects.filter(community__in=request.user.community_set.all())
         posts_user = posts_user.intersection(posts_communities)
+    # If the user wishes to filter according to posts' date of creation
     if date_creation_min:
         posts_date = Post.objects.filter(date_creation__gte=date_creation_min)
         posts_user = posts_user.intersection(posts_date)
     if date_creation_max:
         posts_date = Post.objects.filter(date_creation__lte=date_creation_max)
         posts_user = posts_user.intersection(posts_date)
+    # If the user wishes to filter according to posts' date of event
     if date_event_max:
         posts_date = Post.objects.filter(date_event__lte=date_event_max)
         posts_user = posts_user.intersection(posts_date)
@@ -288,7 +298,6 @@ def advanced_research(request, form):
         posts_user = posts_user.intersection(posts_date)
     posts_user = posts_user.order_by('-date_creation')
     return render(request, 'communitymanager/news_feed.html', locals())
-
 
 
 @login_required()
@@ -302,7 +311,6 @@ def like_post(request, post_id):
     one_post.save()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
 
 
 @login_required()
@@ -406,7 +414,7 @@ def CalendarView(request, **kwargs):
         showcolor = 1
         view = kwargs.get("view")
         nextweek = "week"
-        prevweek="week"
+        prevweek = "week"
         community_form = form.cleaned_data['community']
         priority_form = form.cleaned_data['priority']
         start_date = form.cleaned_data['start_date']
@@ -524,23 +532,22 @@ def CalendarView(request, **kwargs):
         viewbtn = 1
         if len(kwargs.get("view")) > 4:
             arg = int(kwargs.get("view")[4])
-            if 0<=arg<=4:
+            if 0 <= arg <= 4:
                 theweek = cal.monthdays2calendar(cal.year, cal.month)[arg]
         view = "week"
-        if arg+1 > 4:
+        if arg + 1 > 4:
             nextweek = view + str(0)
-        else :
-            nextweek = view + str(arg+1)
+        else:
+            nextweek = view + str(arg + 1)
             next_month = month
 
-        if arg-1<0:
-            prevweek = view+str(4)
-        else :
-            prevweek = view + str(arg-1)
-            prev_month=month
+        if arg - 1 < 0:
+            prevweek = view + str(4)
+        else:
+            prevweek = view + str(arg - 1)
+            prev_month = month
 
         month = str(month)
         html_cal = cal.formatweektable(theweek, posts)
         cal = mark_safe(html_cal)
     return render(request, 'communitymanager/calendar.html', locals())
-
