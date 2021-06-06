@@ -30,8 +30,10 @@ urlpatterns = [
 
     path('unread_post/<int:post_id>', views.unread_post, name='unread_post'),
 
+    # Path to the calendar with the default date (today's month)
     path('calendar/<str:view>/<str:community>/<str:priority>/<str:start_date>/<str:end_date>', views.CalendarView, name='calendar'),
 
+    # Path to the calendar with the selected date
     path('calendar/<str:view>/<str:month>/<str:community>/<str:priority>/<str:start_date>/<str:end_date>'
          , views.CalendarView, name='calendar_form'),
 

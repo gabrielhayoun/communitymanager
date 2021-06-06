@@ -2,18 +2,20 @@ from datetime import datetime, timedelta
 from calendar import HTMLCalendar, _localized_month, month_name, day_name, day_abbr
 from .models import Post
 
-
+# Class for the calendar
 class Calendar(HTMLCalendar):
     def __init__(self, year=None, month=None):
         self.year = year
         self.month = month
         super(Calendar, self).__init__()
 
+# -------------- Function for the view as a MONTH ------------------
     # formats a day as a td
-    # filter events by day
     def formatday(self, day, posts):
+        # filter events by day
         events_per_day = posts.filter(date_event__day=day)
         d = ''
+        # we build the html to return with the right class and event
         for event in events_per_day:
             d += f'<a  href="/post/{event.id}"><li class="{event.priority}" >{event.title}</li></a>'
 
@@ -44,7 +46,7 @@ class Calendar(HTMLCalendar):
             cal += f'{self.formatweek(week, posts)}\n'
         return cal
 
-
+# -------------- Function for the view as a WEEK ------------------
 
     def formatmonthname_week(self, theyear, themonth, withyear=True):
         """
@@ -70,6 +72,7 @@ class Calendar(HTMLCalendar):
         else:
             return names[day][:width].center(width)
 
+    # Format a day as a td with the nice day and hour
     def formathour(self, day, hour, posts):
         events_per_day = posts.filter(date_event__day=day, date_event__hour=hour)
         d = ''
@@ -79,14 +82,15 @@ class Calendar(HTMLCalendar):
             return f"<td class='tdhour'><ul> {d} </ul></td>"
         return '<td></td>'
 
+    # format a week as a tr with an hour
     def formatweekhour(self, theweek, hour,  posts):
         week = ''
         for d, weekday in theweek:
                 week += self.formathour(d, hour, posts)
         return f'<tr><td class="dayshourtd">{hour}:00</td>{week}</tr>'
 
+    # Format the table of the week with each hour of the day
     def formatweektable(self, theweek, posts):
-
         cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendarhour" >\n'
         cal += f'{self.formatmonthname_week(self.year, self.month, withyear=True)}\n'
         s=""
