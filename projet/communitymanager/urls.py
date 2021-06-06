@@ -30,6 +30,10 @@ urlpatterns = [
 
     path('unread_post/<int:post_id>', views.unread_post, name='unread_post'),
 
-    path('calendar', views.calendar, name='calendar')
+    path('calendar/<str:view>/<str:community>/<str:priority>/<str:start_date>/<str:end_date>', views.CalendarView, name='calendar'),
+
+    path('calendar/<str:view>/<str:month>/<str:community>/<str:priority>/<str:start_date>/<str:end_date>'
+         , views.CalendarView, name='calendar_form'),
+
 
 ]

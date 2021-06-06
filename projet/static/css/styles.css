@@ -26,11 +26,23 @@
     transform: translatex(-90%);
 }
 
+.navbar-nav.navbar-right-door {
+            position: absolute;
+            left: 90%;
+            transform: translatex(-90%);
+        }
+
+.navbar-nav.navbar-right-calendar {
+            position: absolute;
+            left: 5%;
+            transform: translatex(-5%);
+        }
+
 .border-title {
     padding-top: 3%;
 }
 
-.navbar-custom .navbar-text {
+.navbar-custom .navbar-text{
     color: cornflowerblue;
     font-weight: bold;
 }
@@ -77,6 +89,44 @@
     line-height: 20px;
 }
 
+li {
+    list-style:none !important;
+    padding:10px;
+    font-size:20px;
+    text-decoration:none;
+}
+nav ul {
+    background-color:#64abfb;
+    padding:0;
+    margin:0;
+}
+nav ul li {
+    list-style: none;
+    line-height:44px;
+    float:left;
+    background-color:#64abfb;
+}
+nav ul li a {
+    color:#FFF;
+    padding:10px;
+    font-size:20px;
+    text-decoration:none;
+}
+li a:hover {
+    border-bottom:3px #FFF solid;
+}
+nav ul li ul { display:none; } /* Rend le menu déroulant caché par défaut */
+nav ul li:hover ul { /* Affiche la dropNav au survol de la souris avec la class .drop */
+    z-index:99999;
+    display:list-item !important;
+    position:absolute;
+    margin-top:5px;
+    margin-left:-10px;
+}
+nav ul li:hover ul li {
+    float:none;
+}
+
 #contcalendar{
 
 width:75%;
@@ -93,4 +143,5 @@ font-weight:bold;
 line-height:20px;
 
 }
+
 

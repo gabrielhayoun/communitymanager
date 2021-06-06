@@ -1,5 +1,5 @@
-
 # ---------------IMPORT-------------------
+
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
@@ -7,12 +7,24 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+import calendar
+
 from datetime import datetime
+from datetime import timedelta, date
 
 from .forms import NewPostForm, CommentaryForm, PriorityForm, EventForm, SearchForm
 
 from .models import Community, Post, Commentary, Priority
 
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import render
+from django.utils.safestring import mark_safe
+
+from .forms import NewPostForm, CommentaryForm, CalendarForm
+from .models import *
+from .utils import Calendar
 
 
 # ---------------VIEWS-------------------
@@ -218,12 +230,6 @@ def news_feed(request):
     return render(request, 'communitymanager/news_feed.html', locals())
 
 
-
-
-@login_required()
-def calendar(request):
-    return render(request, 'communitymanager/calendar.html', locals())
-
 @login_required()
 def advanced_research(request, form):
     query = form.cleaned_data['query']
@@ -301,6 +307,229 @@ def unread_post(request, post_id):
 
 
 @login_required()
-def calendar(request):
+def CalendarView(request, **kwargs):
+    #   TODO: view with week
+    def prev_month(d):
+        first = d.replace(day=1)
+        prev_month = first - timedelta(days=1)
+        month = str(prev_month.year) + '-' + str(prev_month.month)
+        return month
+
+    def next_month(d):
+        days_in_month = calendar.monthrange(d.year, d.month)[1]
+        last = d.replace(day=days_in_month)
+        next_month = last + timedelta(days=1)
+        month = str(next_month.year) + '-' + str(next_month.month)
+        return month
+
+    def get_date(req_day):
+        if req_day:
+            year, month = (int(x) for x in req_day.split('-'))
+            return date(year, month, day=1)
+        return datetime.today()
+
+    def arg_day(theweek, date):
+        for i, week in enumerate(theweek):
+            for w in week:
+                if int(date.day) == w[0]:
+                    return i
+
+    # use today's date for the calendar
+    d = get_date(request.GET.get('month', None))
+    today = str(d.year) + "-" + str(d.month)
+
+    if kwargs.get("month") is not None:
+        month = kwargs.get("month")
+        date_month = datetime.strptime(month, '%Y-%m')
+        cal = Calendar(int(date_month.year), int(date_month.month))
+        prev_month = prev_month(date_month)
+        next_month = next_month(date_month)
+        arg = arg_day(cal.monthdays2calendar(cal.year, cal.month), date_month)
+        theweek = cal.monthdays2calendar(cal.year, cal.month)[arg]
+    #        print(theweek)
+    else:
+        # Instantiate our calendar class with today's year and date
+        cal = Calendar(d.year, d.month)
+        month = str(d.year) + "-" + str(d.month)
+        prev_month = prev_month(d)
+        next_month = next_month(d)
+        arg = arg_day(cal.monthdays2calendar(cal.year, cal.month), d)
+        theweek = cal.monthdays2calendar(cal.year, cal.month)[arg]
+    #        print(theweek)
+
+    showcolor = 0
+    show = 0
+    all_community = 0
+    all_priority = 0
+    form = CalendarForm(user=request.user, data=request.POST or None)
+    user_community = request.user.community_set.all()
+    priorities = Priority.objects.order_by('id')
+    posts = Post.objects.filter(event=True, community__in=user_community)
+
+    community_url = kwargs.get("community")
+    priority_url = kwargs.get("priority")
+    start_date_url = kwargs.get("start_date")
+    end_date_url = kwargs.get("end_date")
+
+    community_list = community_url.split("@")
+    priority_list = priority_url.split("@")
+
+    if community_list[0] == "None":
+        community_form = Community.objects.all()
+        all_community = 1
+    else:
+        showcolor = 1
+        community_form = Community.objects.filter(name__in=community_list)
+
+    if priority_list[0] == "None":
+        priority_form = Priority.objects.all()
+        all_priority = 1
+    else:
+        showcolor = 1
+        priority_form = Priority.objects.filter(name__in=priority_list)
+
+    if form.is_valid():
+        all_community = 0
+        all_priority = 0
+        show = 1
+        showcolor = 1
+        view = kwargs.get("view")
+        nextweek = "week"
+        prevweek="week"
+        community_form = form.cleaned_data['community']
+        priority_form = form.cleaned_data['priority']
+        start_date = form.cleaned_data['start_date']
+        end_date = form.cleaned_data['end_date']
+
+        if not priority_form and not community_form and start_date is None and end_date is None:
+            showcolor = 0
+
+        priority_url = ""
+        for values in priority_form:
+            priority_url += str(values) + "@"
+
+        community_url = ""
+        for values in community_form:
+            community_url += str(values) + "@"
+
+        if not priority_form:
+            priority_form = priorities
+            all_priority = 1
+            priority_url = "None"
+
+        if not community_form:
+            community_form = user_community
+            all_community = 1
+            community_url = "None"
+
+        if start_date is not None and end_date is not None:
+            end_date_plus = end_date + timedelta(days=1)
+            posts = Post.objects.filter(event=True, community__in=community_form,
+                                        priority__in=priority_form, date_event__gt=start_date,
+                                        date_event__lt=end_date_plus,
+                                        date_event__year=cal.year, date_event__month=cal.month)
+            start_date_url = str(start_date)
+            end_date_url = str(end_date)
+
+        elif start_date is not None:
+            posts = Post.objects.filter(event=True, community__in=community_form,
+                                        priority__in=priority_form, date_event__gt=start_date,
+                                        date_event__year=cal.year, date_event__month=cal.month)
+            start_date_url = str(start_date)
+
+        elif end_date is not None:
+            end_date_plus = end_date + timedelta(days=1)
+            posts = Post.objects.filter(event=True, community__in=community_form,
+                                        priority__in=priority_form, date_event__lt=end_date_plus,
+                                        date_event__year=cal.year, date_event__month=cal.month)
+            end_date_url = str(end_date)
+        else:
+            posts = Post.objects.filter(event=True, community__in=community_form, priority__in=priority_form,
+                                        date_event__year=cal.year, date_event__month=cal.month)
+
+        if kwargs.get("view") == "month":
+            viewbtn = 0
+            view = "month"
+            html_cal = cal.formatmonth(posts, withyear=True)
+            cal = mark_safe(html_cal)
+        elif kwargs.get("view") == "week":
+            viewbtn = 1
+            if len(kwargs.get("view")) > 4:
+                arg = int(kwargs.get("view")[4])
+                if 0 <= arg <= 4:
+                    theweek = cal.monthdays2calendar(cal.year, cal.month)[arg]
+            view = "week"
+            if arg + 1 > 4:
+                nextweek = view + str(0)
+            else:
+                nextweek = view + str(arg + 1)
+                next_month = month
+
+            if arg - 1 < 0:
+                prevweek = view + str(4)
+            else:
+                prevweek = view + str(arg - 1)
+                prev_month = month
+
+            month = str(month)
+            html_cal = cal.formatweektable(theweek, posts)
+            cal = mark_safe(html_cal)
+        return render(request, 'communitymanager/calendar.html', locals())
+
+    # Call the formatmonth method, which returns our calendar as a table
+    if start_date_url != "None" and end_date_url != "None":
+        showcolor = 1
+        start_date = datetime.strptime(start_date_url, '%Y-%m-%d')
+        end_date = datetime.strptime(end_date_url, '%Y-%m-%d')
+        end_date_plus = end_date + timedelta(days=1)
+        posts = Post.objects.filter(event=True, community__in=community_form,
+                                    priority__in=priority_form, date_event__gt=start_date, date_event__lt=end_date_plus,
+                                    date_event__year=cal.year, date_event__month=cal.month)
+
+    elif start_date_url != "None":
+        showcolor = 1
+        start_date = datetime.strptime(start_date_url, '%Y-%m-%d')
+        posts = Post.objects.filter(event=True, community__in=community_form, priority__in=priority_form,
+                                    date_event__year=cal.year, date_event__month=cal.month, date_event__gt=start_date)
+
+    elif end_date_url != "None":
+        showcolor = 1
+        end_date = datetime.strptime(end_date_url, '%Y-%m-%d')
+        end_date_plus = end_date + timedelta(days=1)
+        posts = Post.objects.filter(event=True, community__in=community_form, priority__in=priority_form,
+                                    date_event__lt=end_date_plus, date_event__year=cal.year,
+                                    date_event__month=cal.month)
+
+    else:
+        posts = Post.objects.filter(event=True, community__in=community_form, priority__in=priority_form,
+                                    date_event__year=cal.year, date_event__month=cal.month)
+
+    if kwargs.get("view") == "month":
+        viewbtn = 0
+        view = "month"
+        html_cal = cal.formatmonth(posts, withyear=True)
+        cal = mark_safe(html_cal)
+    elif "week" in kwargs.get("view"):
+        viewbtn = 1
+        if len(kwargs.get("view")) > 4:
+            arg = int(kwargs.get("view")[4])
+            if 0<=arg<=4:
+                theweek = cal.monthdays2calendar(cal.year, cal.month)[arg]
+        view = "week"
+        if arg+1 > 4:
+            nextweek = view + str(0)
+        else :
+            nextweek = view + str(arg+1)
+            next_month = month
+
+        if arg-1<0:
+            prevweek = view+str(4)
+        else :
+            prevweek = view + str(arg-1)
+            prev_month=month
+
+        month = str(month)
+        html_cal = cal.formatweektable(theweek, posts)
+        cal = mark_safe(html_cal)
     return render(request, 'communitymanager/calendar.html', locals())
 
