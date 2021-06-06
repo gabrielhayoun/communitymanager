@@ -308,7 +308,6 @@ def unread_post(request, post_id):
 
 @login_required()
 def CalendarView(request, **kwargs):
-    #   TODO: view with week
     def prev_month(d):
         first = d.replace(day=1)
         prev_month = first - timedelta(days=1)
