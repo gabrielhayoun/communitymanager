@@ -15,7 +15,7 @@ class Calendar(HTMLCalendar):
         events_per_day = posts.filter(date_event__day=day)
         d = ''
         for event in events_per_day:
-            d += f'<li> {event.title} </li>'
+            d += f'<li class="{event.priority}"> {event.title} </li>'
 
         if day != 0:
             return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
@@ -74,16 +74,17 @@ class Calendar(HTMLCalendar):
         events_per_day = posts.filter(date_event__day=day, date_event__hour=hour)
         d = ''
         for event in events_per_day:
-            d += f'<li> {event.title} </li>'
+
+            d += f'<li class="{event.priority}"> {event.title} </li>'
         if day != 0:
-            return f"<td ><ul> {d} </ul></td>"
+            return f"<td class='tdhour'><ul> {d} </ul></td>"
         return '<td></td>'
 
     def formatweekhour(self, theweek, hour,  posts):
         week = ''
         for d, weekday in theweek:
                 week += self.formathour(d, hour, posts)
-        return f'<tr><td class="hour">{hour}</td>{week}</tr>'
+        return f'<tr><td class="dayshourtd">{hour}:00</td>{week}</tr>'
 
     def formatweektable(self, theweek, posts):
 
@@ -91,8 +92,8 @@ class Calendar(HTMLCalendar):
         cal += f'{self.formatmonthname_week(self.year, self.month, withyear=True)}\n'
         s=""
         for i, number in theweek:
-            s +=f"<td>{self.formatweekday_week(number, i, 3)}"
-        cal += f'<tr><td>hour</td>{s}</tr>\n'
+            s +=f"<td class='dayshourtd'>{self.formatweekday_week(number, i, 3)}"
+        cal += f'<tr class="dayshourtr"><td class="dayshourtd">hour</td>{s}</tr>\n'
         for hour in range(0, 24):
             cal += f'{self.formatweekhour(theweek, hour,  posts)}\n'
         return cal
