@@ -3,7 +3,6 @@ from .models import Post, Commentary, Priority
 
 
 class NewPostForm(forms.ModelForm):
-
     class Meta:
         model = Post
         fields = '__all__'
@@ -35,7 +34,6 @@ class NewPostForm(forms.ModelForm):
 
 
 class CommentaryForm(forms.ModelForm):
-
     class Meta:
         model = Commentary
         fields = ('content',)
@@ -43,6 +41,7 @@ class CommentaryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CommentaryForm, self).__init__(*args, **kwargs)
         self.fields['content'].required = False
+
 
 class SearchForm(forms.Form):
     query = forms.CharField(max_length=100, required=False, label='Search in posts')
@@ -56,38 +55,8 @@ class SearchForm(forms.Form):
     date_event_min = forms.DateField(required=False)
     date_event_max = forms.DateField(required=False)
 
-    def clean_dates(self, request):
-        if request.POST.get('date_creation_min'):
-            date_creat_min = format_date(request.POST.get('date_creation_min'))
-        else:
-            date_creat_min = None
-        if request.POST.get('date_creation_max'):
-            date_creat_max = format_date(request.POST.get('date_creation_max'))
-        else:
-            date_creat_max = None
-        if request.POST.get('date_event_min'):
-            date_event_min = format_date(request.POST.get('date_event_min'))
-        else:
-            date_event_min = None
-        if request.POST.get('date_event_max'):
-            date_event_max = format_date(request.POST.get('date_event_max'))
-        else:
-            date_event_max = None
-        return date_creat_min, date_creat_max, date_event_min, date_event_max
-
-
-def format_date(date):
-    final_date = ""
-    for i in range(len(date)):
-        if date[i] == 'T':
-            final_date += ' '
-        else:
-            final_date += date[i]
-    return final_date
-
 
 class PriorityForm(forms.ModelForm):
-
     class Meta:
         model = Priority
         fields = ('name',)
@@ -104,9 +73,10 @@ class EventForm(forms.Form):
         super(EventForm, self).__init__(*args, **kwargs)
         self.fields['is_event'].required = False
 
+
 class CalendarForm(forms.Form):
-    community = forms.ModelMultipleChoiceField(queryset=None, required=False, widget=forms.CheckboxSelectMultiple )
-    priority = forms.ModelMultipleChoiceField(queryset=None, required=False, widget=forms.CheckboxSelectMultiple )
+    community = forms.ModelMultipleChoiceField(queryset=None, required=False, widget=forms.CheckboxSelectMultiple)
+    priority = forms.ModelMultipleChoiceField(queryset=None, required=False, widget=forms.CheckboxSelectMultiple)
     start_date = forms.DateField(required=False)
     end_date = forms.DateField(required=False)
 
@@ -114,5 +84,4 @@ class CalendarForm(forms.Form):
         super(CalendarForm, self).__init__(*args, **kwargs)
         self.fields['community'].queryset = user.community_set.all()
         self.fields['priority'].queryset = Priority.objects.all()
-
 
