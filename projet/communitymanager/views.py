@@ -1,21 +1,16 @@
 # ---------------IMPORT-------------------
-from django.shortcuts import render, get_object_or_404, redirect
-
-from datetime import datetime, timedelta, date
-
-from .forms import NewPostForm, CommentaryForm, CalendarForm
-from .models import Community, Post, Commentary, Priority
-from django.contrib.auth.decorators import login_required
-
+import calendar
 from datetime import datetime
+from datetime import timedelta, date
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.views import generic
 from django.utils.safestring import mark_safe
 
+from .forms import NewPostForm, CommentaryForm, CalendarForm
 from .models import *
 from .utils import Calendar
-import calendar
 
 
 # ---------------VIEWS-------------------
@@ -189,50 +184,6 @@ def news_feed(request):
 
 
 @login_required()
-def calendar1(request):
-    all_community = 0
-    all_priority = 0
-    form = CalendarForm(user=request.user, data=request.POST or None)
-    user_community = request.user.community_set.all()
-    priorities = Priority.objects.order_by('id')
-    posts = Post.objects.filter(event=True, community__in=user_community)
-    if form.is_valid():
-        community_form = form.cleaned_data['community']
-        priority_form = form.cleaned_data['priority']
-        start_date = form.cleaned_data['start_date']
-        end_date = form.cleaned_data['end_date']
-
-        if not priority_form:
-            priority_form = priorities
-            all_priority = 1
-
-        if not community_form:
-            community_form = user_community
-            all_community = 1
-
-        if start_date is not None and end_date is not None:
-            end_date_plus = end_date + timedelta(days=1)
-            posts = Post.objects.filter(event=True, community__in=community_form,
-                                        priority__in=priority_form, date_event__gt=start_date,
-                                        date_event__lt=end_date_plus)
-            str_start = str(start_date)
-            str_end = str(end_date)
-        elif start_date is not None:
-            posts = Post.objects.filter(event=True, community__in=community_form,
-                                        priority__in=priority_form, date_event__gt=start_date)
-            str_start = str(start_date)
-        elif end_date is not None:
-            end_date_plus = end_date + timedelta(days=1)
-            posts = Post.objects.filter(event=True, community__in=community_form,
-                                        priority__in=priority_form, date_event__lt=end_date_plus)
-            tr_end = str(end_date)
-        else:
-            posts = Post.objects.filter(event=True, community__in=community_form, priority__in=priority_form, )
-        return render(request, 'communitymanager/calendar.html', locals())
-    print("nope")
-    return render(request, 'communitymanager/calendar.html', locals())
-
-@login_required()
 def CalendarView(request, **kwargs):
     #   TODO: view with week
     def prev_month(d):
@@ -400,7 +351,7 @@ def CalendarView(request, **kwargs):
             month = str(month)
             html_cal = cal.formatweektable(theweek, posts)
             cal = mark_safe(html_cal)
-        return render(request, 'communitymanager/calendar1.html', locals())
+        return render(request, 'communitymanager/calendar.html', locals())
 
     # Call the formatmonth method, which returns our calendar as a table
     if start_date_url != "None" and end_date_url != "None":
@@ -457,4 +408,4 @@ def CalendarView(request, **kwargs):
         month = str(month)
         html_cal = cal.formatweektable(theweek, posts)
         cal = mark_safe(html_cal)
-    return render(request, 'communitymanager/calendar1.html', locals())
+    return render(request, 'communitymanager/calendar.html', locals())

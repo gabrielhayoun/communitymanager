@@ -30,6 +30,5 @@ urlpatterns = [
     path('calendar/<str:view>/<str:month>/<str:community>/<str:priority>/<str:start_date>/<str:end_date>'
          , views.CalendarView, name='calendar_form'),
 
-    path('calendara', views.calendar1, name='calendara'),
 
 ]
