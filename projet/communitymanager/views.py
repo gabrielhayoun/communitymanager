@@ -283,6 +283,7 @@ def CalendarView(request, **kwargs):
         theweek = cal.monthdays2calendar(cal.year, cal.month)[arg]
     #        print(theweek)
 
+    showcolor = 0
     show = 0
     all_community = 0
     all_priority = 0
@@ -303,20 +304,21 @@ def CalendarView(request, **kwargs):
         community_form = Community.objects.all()
         all_community = 1
     else:
-        show = 1
+        showcolor = 1
         community_form = Community.objects.filter(name__in=community_list)
 
     if priority_list[0] == "None":
         priority_form = Priority.objects.all()
         all_priority = 1
     else:
-        show = 1
+        showcolor = 1
         priority_form = Priority.objects.filter(name__in=priority_list)
 
     if form.is_valid():
         all_community = 0
         all_priority = 0
         show = 1
+        showcolor = 1
         view = kwargs.get("view")
         nextweek = "week"
         prevweek="week"
@@ -326,7 +328,7 @@ def CalendarView(request, **kwargs):
         end_date = form.cleaned_data['end_date']
 
         if not priority_form and not community_form and start_date is None and end_date is None:
-            show = 0
+            showcolor = 0
 
         priority_url = ""
         for values in priority_form:
@@ -402,7 +404,7 @@ def CalendarView(request, **kwargs):
 
     # Call the formatmonth method, which returns our calendar as a table
     if start_date_url != "None" and end_date_url != "None":
-        show = 1
+        showcolor = 1
         start_date = datetime.strptime(start_date_url, '%Y-%m-%d')
         end_date = datetime.strptime(end_date_url, '%Y-%m-%d')
         end_date_plus = end_date + timedelta(days=1)
@@ -411,13 +413,13 @@ def CalendarView(request, **kwargs):
                                     date_event__year=cal.year, date_event__month=cal.month)
 
     elif start_date_url != "None":
-        show = 1
+        showcolor = 1
         start_date = datetime.strptime(start_date_url, '%Y-%m-%d')
         posts = Post.objects.filter(event=True, community__in=community_form, priority__in=priority_form,
                                     date_event__year=cal.year, date_event__month=cal.month, date_event__gt=start_date)
 
     elif end_date_url != "None":
-        show = 1
+        showcolor = 1
         end_date = datetime.strptime(end_date_url, '%Y-%m-%d')
         end_date_plus = end_date + timedelta(days=1)
         posts = Post.objects.filter(event=True, community__in=community_form, priority__in=priority_form,

@@ -6,57 +6,22 @@
 {% block content %}
 
 <div class="container">
-    {% if viewbtn == 0 %}
+    <br>
     <div class="clearfix">
-        <a class="btn btn-info left"
-           href="{%url 'calendar_form' view='month' month=prev_month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
-            Previous Month </a>
-        <a class="btn btn-info right"
-           href="{%url 'calendar_form' view='month' month=next_month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
-            Next Month </a>
-        <a class="btn btn-info right"
-           href="{%url 'calendar_form' view='month' month=today community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
-            Today </a>
-
-        <a class="btn btn-info center"
-           href="{%url 'calendar_form' view='week' month=month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
-            week </a>
-    </div>
-    {% else %}
-    <div class="clearfix">
-        <a class="btn btn-info left"
-           href="{%url 'calendar_form' view=prevweek month=prev_month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
-            Previous Month </a>
-        <a class="btn btn-info right"
-           href="{%url 'calendar_form' view=nextweek month=next_month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
-            Next Month </a>
-        <a class="btn btn-info right"
-           href="{%url 'calendar_form' view=view month=today community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
-            Today </a>
-
-        <a class="btn btn-info center"
-           href="{%url 'calendar_form' view='month' month=month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
-            month </a>
-
-    </div>
-    {% endif %}
-</div>
-<div class="container">
-    <div class="clearfix">
-        {% if show == 1%}
-        <button type="button" class="btn btn-primary" style="background-color: #03a9f3" data-toggle="collapse"
-                data-target="#demo">Advanced Research
+        {% if showcolor == 1%}
+        <button type="button" class="btn btn-primary active"  data-toggle="collapse"
+                data-target="#form">Advanced Research
         </button>
         {% else %}
-        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo">Advanced Research
+        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#form">Advanced Research
         </button>
         {% endif %}
         <a class="btn btn-primary" role="button"
            href="{%url 'calendar_form' view=view month=month community='None' priority='None' start_date='None' end_date='None' %}">Reset</a>
         {% if show == 1%}
-        <div id="demo" class="collapse show">
+        <div id="form" class="collapse show">
             {% else %}
-            <div id="demo" class="collapse">
+            <div id="form" class="collapse">
                 {% endif %}
                 <form method="post"
                       action="{%url 'calendar_form' view=view month=month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}"
@@ -101,9 +66,53 @@
             </div>
         </div>
     </div>
+</div>
 
-    <div class="container" id="calendar">
-        {{ cal }}
+
+<div class="container">
+    {% if viewbtn == 0 %}
+    <div class="clearfix">
+        <a class="btn btn-primary right"
+           href="{%url 'calendar_form' view='month' month=next_month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
+            <i class='fas fa-angle-right' style='font-size:20px'></i></a>
+        <a class="btn btn-primary right"
+           href="{%url 'calendar_form' view='month' month=prev_month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
+            <i class='fas fa-angle-left' style='font-size:20px'></i></a>
+        <a class="btn btn-primary right"
+           href="{%url 'calendar_form' view='month' month=today community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
+            Today </a>
+
+        <di class="center">
+        <a class="btn btn-primary"
+           href="{%url 'calendar_form' view='week' month=month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
+            week </a>
+        <a class="btn btn-primary active"
+           href="{%url 'calendar_form' view='month' month=month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
+            month </a>
+        </di>
     </div>
-    <link rel="stylesheet" href="{% static 'css/calendar1.css' %}"/>
-    {% endblock %}
+    {% else %}
+    <div class="clearfix">
+        <a class="btn btn-info left"
+           href="{%url 'calendar_form' view=prevweek month=prev_month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
+            Previous Month </a>
+        <a class="btn btn-info right"
+           href="{%url 'calendar_form' view=nextweek month=next_month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
+            Next Month </a>
+        <a class="btn btn-info right"
+           href="{%url 'calendar_form' view=view month=today community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
+            Today </a>
+
+        <a class="btn btn-info center"
+           href="{%url 'calendar_form' view='month' month=month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
+            month </a>
+
+    </div>
+    {% endif %}
+</div>
+
+<div class="container" id="calendar">
+    {{ cal }}
+</div>
+<link rel="stylesheet" href="{% static 'css/calendar1.css' %}"/>
+{% endblock %}

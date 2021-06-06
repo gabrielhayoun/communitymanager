@@ -2,7 +2,7 @@
     width: 98%;
     margin: auto;
     font-size: 13px;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif !important;
 }
 
 #calendar {
@@ -36,13 +36,17 @@
 
 
 .month {
-    font-size: 25px;
-    border-top-style: none !important;
+    font-size: 32px !important;
+    font-weight: 100;
+    border: hidden !important;
+    text-align: left !important;
 }
+
 .days {
     background-color: cornflowerblue;
-    color : #EEEEEE;
+    color: #EEEEEE;
 }
+
 .date {
     font-size: 16px;
 }
@@ -62,6 +66,12 @@ a {
 
 .right {
     float: right;
+}
+
+.center {
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
 }
 
 .btn {
