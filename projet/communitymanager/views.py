@@ -201,7 +201,19 @@ def advanced_research(request, form):
         for comment in commentaries:
             posts_user = posts_user.union(Post.objects.filter(id=comment.post.id))
     if (not titles) and (not descriptions) and (not usernames) and (not comments):
-        posts_user = posts_user.union(Post.objects.all())
+        if query == "":
+            posts_user = Post.objects.all()
+        else :
+            posts_user = posts_user.union(
+                Post.objects.filter(title__icontains=query)
+            ).union(
+                Post.objects.filter(description__icontains=query)
+            ).union(
+                Post.objects.filter(author__username__icontains=query)
+            )
+            commentaries = Commentary.objects.filter(content__icontains=query)
+            for comment in commentaries:
+                posts_user = posts_user.union(Post.objects.filter(id=comment.post.id))
     if communities:
         posts_communities = Post.objects.filter(community__in=request.user.community_set.all())
         posts_user = posts_user.intersection(posts_communities)
