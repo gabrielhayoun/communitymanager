@@ -1,11 +1,11 @@
 from django import template
-from django.shortcuts import get_list_or_404
 
 from ..models import Post, Commentary
 
 register = template.Library()
 
 
+# a filter to count the number of post the user hasn't read in a given community and return the corresponding sentence
 @register.simple_tag
 def nb_unread_posts(community, user):
     community_posts = Post.objects.filter(community=community)
@@ -18,10 +18,11 @@ def nb_unread_posts(community, user):
     elif n_posts == 1:
         reply = "1 unread post"
     else:
-        reply = "%d unread posts" %n_posts
+        reply = "%d unread posts" % n_posts
     return reply
 
 
+# a filter to get the number of comments under a given post in templates
 @register.simple_tag
 def nb_comments(post):
     comments = Commentary.objects.filter(post=post)
