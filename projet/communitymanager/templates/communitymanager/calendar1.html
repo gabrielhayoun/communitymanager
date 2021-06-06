@@ -9,7 +9,7 @@
     <br>
     <div class="clearfix">
         {% if showcolor == 1%}
-        <button type="button" class="btn btn-primary active"  data-toggle="collapse"
+        <button type="button" class="btn btn-primary active" data-toggle="collapse"
                 data-target="#form">Advanced Research
         </button>
         {% else %}
@@ -83,30 +83,33 @@
             Today </a>
 
         <di class="center">
-        <a class="btn btn-primary"
-           href="{%url 'calendar_form' view='week' month=month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
-            week </a>
-        <a class="btn btn-primary active"
-           href="{%url 'calendar_form' view='month' month=month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
-            month </a>
+            <a class="btn btn-primary"
+               href="{%url 'calendar_form' view='week' month=month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
+                week </a>
+            <a class="btn btn-primary active"
+               href="{%url 'calendar_form' view='month' month=month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
+                month </a>
         </di>
     </div>
     {% else %}
     <div class="clearfix">
-        <a class="btn btn-info left"
-           href="{%url 'calendar_form' view=prevweek month=prev_month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
-            Previous Month </a>
-        <a class="btn btn-info right"
+        <a class="btn btn-primary right"
            href="{%url 'calendar_form' view=nextweek month=next_month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
-            Next Month </a>
-        <a class="btn btn-info right"
+            <i class='fas fa-angle-right' style='font-size:20px'></i></a>
+        <a class="btn btn-primary right"
+           href="{%url 'calendar_form' view=prevweek month=prev_month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
+            <i class='fas fa-angle-left' style='font-size:20px'></i></a>
+        <a class="btn btn-primary right"
            href="{%url 'calendar_form' view=view month=today community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
             Today </a>
-
-        <a class="btn btn-info center"
-           href="{%url 'calendar_form' view='month' month=month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
-            month </a>
-
+        <div class="center">
+            <a class="btn btn-primary active"
+               href="{%url 'calendar_form' view='week' month=month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
+                week </a>
+            <a class="btn btn-primary"
+               href="{%url 'calendar_form' view='month' month=month community=community_url priority=priority_url start_date=start_date_url end_date=end_date_url %}">
+                month </a>
+        </div>
     </div>
     {% endif %}
 </div>
