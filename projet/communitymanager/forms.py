@@ -55,7 +55,7 @@ class SearchForm(forms.Form):
     date_event_min = forms.DateField(required=False)
     date_event_max = forms.DateField(required=False)
 
-
+# allows the user to select a priority value
 class PriorityForm(forms.ModelForm):
     class Meta:
         model = Priority
@@ -65,7 +65,7 @@ class PriorityForm(forms.ModelForm):
         super(PriorityForm, self).__init__(*args, **kwargs)
         self.fields['name'].required = False
 
-
+# allows the user to choose if he only want to see events or not
 class EventForm(forms.Form):
     is_event = forms.BooleanField(label='is_event')
 

@@ -7,7 +7,7 @@ urlpatterns = [
     # path for an account
     path('accounts/', include('django.contrib.auth.urls')),
     # path to see all the communities
-    path('community', views.communities, name='communities'),
+    path('community/', views.communities, name='communities'),
     # path to join a community
     path('join/<int:community_id>', views.join_community, name='join'),
 
@@ -26,8 +26,10 @@ urlpatterns = [
     # path to see the news_feed
     path('news_feed/', views.news_feed, name='news_feed'),
 
+    # path to like a post
     path('like_post/<int:post_id>', views.like_post, name='like_post'),
 
+    # path to mark a post as read or unread
     path('unread_post/<int:post_id>', views.unread_post, name='unread_post'),
 
     # Path to the calendar with the default date (today's month)
