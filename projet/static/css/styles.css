@@ -89,12 +89,7 @@
     line-height: 20px;
 }
 
-li {
-    list-style:none !important;
-    padding:10px;
-    font-size:20px;
-    text-decoration:none;
-}
+
 nav ul {
     background-color:#64abfb;
     padding:0;

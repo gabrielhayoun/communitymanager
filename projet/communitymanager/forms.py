@@ -7,7 +7,7 @@ class NewPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = '__all__'
-        exclude = ('author', 'date_creation', 'event', 'date_event')
+        exclude = ('author', 'date_creation', 'event', 'date_event', 'readers', 'likers')
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
@@ -115,9 +115,4 @@ class CalendarForm(forms.Form):
         self.fields['community'].queryset = user.community_set.all()
         self.fields['priority'].queryset = Priority.objects.all()
 
-#    def clean_community(self, request):
-#        for commu in request.user.community_set.all():
-#            if request.POST.get(commu.title):
-#                self.community.update({commu.title: commu})
-#        return self.community
 
