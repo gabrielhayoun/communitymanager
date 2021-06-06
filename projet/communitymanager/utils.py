@@ -28,6 +28,13 @@ class Calendar(HTMLCalendar):
             week += self.formatday(d, posts)
         return f'<tr> {week} </tr>'
 
+    def formatweekheader(self):
+        """
+        Return a header for a week as a table row.
+        """
+        s = ''.join(self.formatweekday(i) for i in self.iterweekdays())
+        return '<tr class="days">%s</tr>' % s
+
     # formats a month as a table
     def formatmonth(self, posts, withyear=True,):
         cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
@@ -69,18 +76,18 @@ class Calendar(HTMLCalendar):
         for event in events_per_day:
             d += f'<li> {event.title} </li>'
         if day != 0:
-            return f"<td><ul> {d} </ul></td>"
+            return f"<td ><ul> {d} </ul></td>"
         return '<td></td>'
 
     def formatweekhour(self, theweek, hour,  posts):
         week = ''
         for d, weekday in theweek:
                 week += self.formathour(d, hour, posts)
-        return f'<tr><td>{hour}</td>{week}</tr>'
+        return f'<tr><td class="hour">{hour}</td>{week}</tr>'
 
     def formatweektable(self, theweek, posts):
 
-        cal = f'<table border="0" cellpadding="0" cellspacing="0" style="height: 2px" class="calendar" >\n'
+        cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendarhour" >\n'
         cal += f'{self.formatmonthname_week(self.year, self.month, withyear=True)}\n'
         s=""
         for i, number in theweek:

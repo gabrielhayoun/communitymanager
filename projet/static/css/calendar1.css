@@ -1,57 +1,99 @@
 .calendar {
-  width: 98%;
-  margin: auto;
-  font-size: 13px;
+    width: 98%;
+    margin: auto;
+    font-size: 13px;
+    font-family: 'Roboto', sans-serif;
+}
+
+#calendar {
+    /* 		float: right; */
+    margin: 0 auto;
+    width: 900px;
+    background-color: #FFFFFF;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px #C3C3C3;
+    -webkit-box-shadow: 0px 0px 21px 2px rgba(0, 0, 0, 0.18);
+    -moz-box-shadow: 0px 0px 21px 2px rgba(0, 0, 0, 0.18);
+    box-shadow: 0px 0px 21px 2px rgba(0, 0, 0, 0.18);
 }
 
 .calendar tr, .calendar td {
-  border: 1px solid black;
+    border: 1px solid black;
 }
 
 .calendar th {
-  padding: 10px;
-  text-align: center;
-  font-size: 18px;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
 }
+
 
 .calendar td {
-  width: 200px;
-  height: 150px;
-  padding: 20px 0px 0px 5px;
+    width: 200px;
+    height: 150px;
+    padding: 20px 0px 0px 5px;
 }
+
 
 .month {
-  font-size: 25px;
+    font-size: 25px;
+    border-top-style: none !important;
 }
-
+.days {
+    background-color: cornflowerblue;
+    color : #EEEEEE;
+}
 .date {
-  font-size: 16px;
+    font-size: 16px;
 }
 
 ul {
-  height: 100%;
-  padding: 0px 5px 0px 20px;
+    height: 100%;
+    padding: 0px 5px 0px 20px;
 }
 
 a {
-  color: #17a2b8;
+    color: #17a2b8;
 }
 
 .left {
-  float: left;
+    float: left;
 }
 
 .right {
-  float: right;
+    float: right;
 }
 
 .btn {
-  outline: none;
-  color: black;
-  background-color: transparent;
-  box-shadow: 0 0 0 0;
+    outline: none;
+    color: black;
+    background-color: transparent;
+    box-shadow: 0 0 0 0;
 }
 
 .clearfix {
-  margin: 15px;
+    margin: 15px;
+}
+
+.calendarhour {
+    width: 98%;
+    margin: auto;
+    font-size: 13px;
+}
+
+.calendarhour tr, .calendarhour td {
+    border: 1px solid black;
+}
+
+.calendarhour th {
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+}
+
+
+.calendarhour td {
+    width: 200px;
+    height: 50px;
+    padding: 50px 0px 0px 5px;
 }
