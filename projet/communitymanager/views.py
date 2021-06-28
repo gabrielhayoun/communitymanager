@@ -8,7 +8,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
-from .forms import NewPostForm, CommentaryForm, PriorityForm, EventForm, CommunityEditionForm, BanForm, NewCommunityForm
+from .forms import NewPostForm, CommentaryForm, PriorityForm, EventForm, CommunityEditionForm, NewCommunityForm
 from .forms import SearchForm
 from .models import Community, Post, Commentary, Priority
 

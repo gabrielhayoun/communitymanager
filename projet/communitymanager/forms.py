@@ -79,8 +79,3 @@ class CommunityEditionForm(forms.Form):
     is_closed = forms.BooleanField(required=False)
     is_visible = forms.BooleanField(required=False)
 
-
-class BanForm(forms.ModelForm):
-    class Meta:
-        model = Community
-        fields = ('subscribers',)
