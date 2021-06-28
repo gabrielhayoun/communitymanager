@@ -7,6 +7,14 @@ from django.utils import timezone
 class Community(models.Model):
     name = models.CharField(max_length=100)
     subscribers = models.ManyToManyField(User)
+    ## Ajouts extension 2
+    manager = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='community_manager')
+    description = models.CharField(max_length=5000, default="")
+    banned_members = models.ManyToManyField(User, related_name="community_members_banned")
+    is_closed = models.BooleanField(default=False)
+    is_visible = models.BooleanField(default=True)
+    ## Fin ajouts extension 2
+
 
     class Meta:
         verbose_name = "community"
@@ -39,6 +47,12 @@ class Post(models.Model):
     readers = models.ManyToManyField(User, related_name="readers")
     likers = models.ManyToManyField(User, related_name='likers')
 
+    ## Ajouts extension 2
+    is_visible = models.BooleanField(default=True)
+    sticky = models.BooleanField(default=False)
+    warning = models.BooleanField(default=False)
+    ## Fin ajouts extension 2
+
     def __str__(self):
         return self.title
 
@@ -52,6 +66,9 @@ class Commentary(models.Model):
     content = models.CharField(max_length=1000)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    ## Ajouts extension 2
+    visible = models.BooleanField(default=True)
+    ## Fin ajouts extension 2
 
     class Meta:
         verbose_name = "commentarie"

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %} Create a community {% endblock %}
+
+{% block nav %}
+    {% include 'nav/link_news_feed.html' %}
+    {% include 'nav/link_communities.html' %}
+{% endblock %}
+
+{% block logout %}{% include 'nav/logout.html' %}{% endblock %}
+{% block top %}        <h1 class="border-title">Create a new community</h1>{% endblock %}
+{% block content %}
+    <div class="container">
+
+
+        <form method="post" action="{% url 'community_creation' %}">
+            <div class="form-group">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br>
+
+                <br>
+
+
+
+            </div>
+            <input type="submit" value="Submit">
+
+            <br>
+            <br>
+        </form>
+
+{% endblock %}

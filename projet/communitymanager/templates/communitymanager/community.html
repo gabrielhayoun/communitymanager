@@ -10,9 +10,14 @@
 
 {% block logout %}{% include 'nav/logout.html' %}{% endblock %}
 
-{% block top %}{{ one_community }}{% endblock %}
+{% block top %}
+    {{ one_community }}
+{% endblock %}
 
 {% block content %}
+    {% if one_community.is_closed %}
+        <h2>This community has been claused. You can no longer add new posts or comment existing posts.</h2>
+    {% endif %}
     <form class="row row-cols-lg-auto g-3 align-items-center mb-4" method="POST"
           action="{% url 'community' community_id=one_community.id %}">
         {% include 'forms/priority_filter.html' %}

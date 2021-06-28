@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %} {{ community.name }} moderation {% endblock %}
+
+{% block nav %}
+    {% include 'nav/link_news_feed.html' %}
+    {% include 'nav/link_communities.html' %}
+{% endblock %}
+
+{% block logout %}{% include 'nav/logout.html' %}{% endblock %}
+{% block top %}        <h1 class="border-title">{{ community.name }} community : subscribers</h1>{% endblock %}
+{% block content %}
+    {% for subscriber in subscribers %}
+        {% if subscriber not in banned_members %}
+            {{ subscriber.username }}
+            <a href="{% url 'apply_ban' community.id subscriber.id %}">Ban this member</a>
+            <br>
+        {% else %}
+            {{ subscriber.username }}
+            <a href="{% url 'apply_ban' community.id subscriber.id %}">Unban this member</a>
+            <br>
+        {% endif %}
+    {% endfor %}
+
+{% endblock %}

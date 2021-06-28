@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %} {{ community.name }} moderation {% endblock %}
+
+{% block nav %}
+    {% include 'nav/link_news_feed.html' %}
+    {% include 'nav/link_communities.html' %}
+{% endblock %}
+
+{% block logout %}{% include 'nav/logout.html' %}{% endblock %}
+{% block top %}        <h1 class="border-title">{{ community.name }} community : moderation page</h1>{% endblock %}
+{% block content %}
+    <div class="container">
+
+
+        <form method="post" action="{% url 'moderation' community.id %}">
+            <div class="form-group">
+                {% csrf_token %}
+                <br>
+                {# Name #}
+                <p>
+                    <label for="id_name">Name:</label>
+                    <input id="id_name" type="text" name="name" maxlength="100" value="{{ community.name }}" required/>
+                </p>
+                <br>
+
+                {# Description #}
+                <p>
+                    <label for="id_description">Description:</label>
+                    <input id="id_description" type="text" name="description" maxlength="100"
+                           value="{{ community.description }}" required/>
+                </p>
+                <br>
+
+                {# Closed community #}
+                <p>
+                    <label for="id_is_closed">Closed community:</label>
+                    <input type="checkbox" name="is_closed" id="id_is_closed"
+                            {% if community.is_closed %} checked {% endif %} />
+
+                </p>
+                <br>
+
+                {# Visible community #}
+                {% if request.user.is_superuser %}
+                    <p>
+                        <label for="id_is_visible">Visible community:</label>
+                        <input type="checkbox" name="is_visible" id="id_is_visible"
+                                {% if community.is_visible %} checked {% endif %} />
+                    </p>
+                {% endif %}
+
+
+            </div>
+            <input type="submit" value="Submit">
+
+            <br>
+            <br>
+        </form>
+
+        {# Ban a member #}
+        <a href="{% url 'ban' community_id %}"><h1>Ban a member</h1></a>
+
+        {# Delete a community #}
+        <br>
+        <h1>Danger zone</h1>
+
+
+        <a href="{% url 'delete_community' community.id %}">
+            Delete community
+        </a> Attention ! Irreversible action.
+
+
+    </div>
+
+{% endblock %}

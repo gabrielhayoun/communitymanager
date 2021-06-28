@@ -8,9 +8,25 @@
         {% endif %}
         <i class="bi bi-person"></i> {{ one_post.author }}
         <i class="bi bi-calendar-event"></i> {{ one_post.date_creation }}
-        {% if user == one_post.author %}
+        {% if user == one_post.author or request.user.is_superuser or user == one_post.community.manager %}
             <a href="{% url 'modif_post' one_post.id %}"> <i class="bi bi-pencil"></i></a>
         {% endif %}
+        {% if request.user.is_superuser or user == one_post.community.manager %}
+            {% if not one_post.is_visible %}
+                <a href="{% url 'make_post_visible' one_post.id %}"> <i class="bi bi-eye"></i></a>
+            {% else %}
+                <a href="{% url 'hide_post' one_post.id %}"> <i class="bi bi-eye-slash"></i></a>
+            {% endif %}
+            {% if not one_post.sticky %}
+                <a href="{% url 'stick' one_post.id %}"> <i class="bi bi-pin-fill"></i></a>
+            {% else %}
+                <a href="{% url 'unstick' one_post.id %}"> <i class="bi bi-pin-angle"></i></a>
+            {% endif %}
+        {% endif %}
+        {% if request.user.is_superuser %}
+            <a href="{% url 'warning' one_post.id %}"> <i class="bi bi-exclamation-lg"></i></a>
+        {% endif %}
+
     </h4>
 </div>
 <div class="row">
@@ -20,3 +36,5 @@
         {% endif %}
     </h4>
 </div>
+{% if one_post.sticky %} (Sticky post) {% endif %}
+{% if not one_post.is_visible %} (Unvisible post) {% endif %}

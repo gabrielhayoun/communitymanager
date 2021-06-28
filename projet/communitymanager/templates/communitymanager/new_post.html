@@ -7,10 +7,13 @@
 {% endblock %}
 
 {% block logout %}{% include 'nav/logout.html' %}{% endblock %}
-{% block top %}        <h1 class="border-title">add a post</h1>{% endblock %}
+{% block top %}        <h1 class="border-title">Add a post</h1>{% endblock %}
 {% block content %}
     <div class="container">
-
+    {% if banned_warning %}
+        You have been banned from this community. You cannot post in it.
+        <br>
+    {% endif %}
 
         <form method="post" action="{% url 'new_post' %}" id="post_form" class="needs-validation">
             <div class="form-group">
@@ -20,7 +23,9 @@
                 <select class="form-control" id="id_community" name="community" required>
                     <option></option>
                     {% for commu in user_community %}
+                        {% if not commu.is_closed %}
                         <option value={{ commu.id }}>{{ commu }}</option>
+                        {% endif %}
                     {% endfor %}
                 </select>
                 <div class="valid-feedback">Valid.</div>

@@ -1,9 +1,17 @@
 <!-- Template to display the commentaries under a post -->
 {% for comment in commentaries %}
-    <div class="col-auto text-justify border border-right-0 border-top-0 pb-2 pl-4 mt-4">
-        <blockquote>
-            <h4>{{ comment.content }}</h4>
-            <footer>{{ comment.author }}, {{ comment.date_creation }}</footer>
-        </blockquote>
-    </div>
+    {% if comment.visible or request.user.is_superuser or user == comment.post.community.manager %}
+        <div class="col-auto text-justify border border-right-0 border-top-0 pb-2 pl-4 mt-4">
+            <blockquote>
+                <h4>{{ comment.content }}</h4>
+                <footer>{{ comment.author }}, {{ comment.date_creation }}</footer>
+                {% if not comment.visible %}
+                    <a href="{% url 'show_comment' comment.id %}"> <i class="bi bi-eye"></i></a>
+                {% else %}
+                    <a href="{% url 'hide_comment' comment.id %}"> <i class="bi bi-eye-slash"></i></a>
+                {% endif %}
+                {% if not comment.visible %}(hidden){% endif %}
+            </blockquote>
+        </div>
+    {% endif %}
 {% endfor %}

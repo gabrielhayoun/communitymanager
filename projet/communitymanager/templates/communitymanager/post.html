@@ -11,7 +11,15 @@
 
 {% block logout %}{% include 'nav/logout.html' %}{% endblock %}
 
-{% block top %}{{ one_post }}<h3>{% include 'utility/post_like.html' %}</h3>{% endblock %}
+{% block top %}
+    <h3
+    {% if one_post.warning %}
+        class="text-danger"
+    {% endif %}
+    >
+    {{ one_post }}
+        {% include 'utility/post_like.html' %}</h3>
+{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -34,23 +42,35 @@
                     {% include 'utility/post_signature.html' %}
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-md-9">
                     <h3 class="display-3">Comments</h3>
 
                     {% include 'utility/post_comments.html' %}
 
+                    {% if one_post.community.is_closed %}
+                        <br>
+                        <h2>This post belongs to a community that has been closed. You cannot comment it.</h2>
 
-                    <h4><i class="bi bi-chat-left-dots"></i> Leave your comment </h4>
+                    {% elif request.user in banned_members %}
+                        <br>
+                        <h2>You have been banned from the community. You cannot comment this post.</h2>
 
-                    <form action="{% url 'post' post_id=one_post.id %}" method="post">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="id_content">Comment:</label>
-                            <textarea class="form-control" rows="5" id="id_content" name="content"></textarea>
-                        </div>
-                        <input type="submit" value="Submit">
-                    </form>
+                    {% else %}
+                        {{ banned_members  }}
+                        <h4><i class="bi bi-chat-left-dots"></i> Leave your comment </h4>
+
+                        <form action="{% url 'post' post_id=one_post.id %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="id_content">Comment:</label>
+                                <textarea class="form-control" rows="5" id="id_content" name="content"></textarea>
+                            </div>
+                            <input type="submit" value="Submit">
+                        </form>
+
+                    {% endif %}
                 </div>
             </div>
         </div>

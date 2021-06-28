@@ -2,12 +2,13 @@
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
-from .forms import NewPostForm, CommentaryForm, PriorityForm, EventForm
+from .forms import NewPostForm, CommentaryForm, PriorityForm, EventForm, CommunityEditionForm, BanForm, NewCommunityForm
 from .forms import SearchForm
 from .models import Community, Post, Commentary, Priority
 
@@ -40,7 +41,7 @@ def join_community(request, community_id):
 @login_required()
 def community(request, community_id):
     one_community = get_object_or_404(Community, id=community_id)
-    posts_user = Post.objects.filter(community=one_community).order_by('-date_creation')
+    posts_user = Post.objects.filter(community=one_community).order_by('-date_creation').order_by('-sticky')
     priority_form = PriorityForm(request.POST or None)
     priorities = Priority.objects.all()
     event_form = EventForm(request.POST or None)
@@ -76,6 +77,7 @@ def community(request, community_id):
 @login_required()
 def post(request, post_id, ):
     one_post = get_object_or_404(Post, id=post_id)
+    banned_members = one_post.community.banned_members.all()
     readers_list = one_post.readers.all()
     commentaries = Commentary.objects.filter(post=one_post).order_by('-date_creation')
     # beginning of the form
@@ -102,12 +104,16 @@ def new_post(request):
     form = NewPostForm(user=request.user, data=request.POST or None)
     user_community = request.user.community_set.all()
     priorities = Priority.objects.order_by('id')
+    banned_warning = False
 
     if form.is_valid():
         one_post = form.save(commit=False)
-
+        if request.user in one_post.community.banned_members.all():
+            banned_warning = True
+            return render(request, 'communitymanager/new_post.html', locals())
         one_post.event, one_post.date_event = form.clean_event_and_date(request)
         one_post.author = request.user
+        one_post.is_visible = True
 
         # check if the date is possible (after now)
         if one_post.event:
@@ -145,8 +151,9 @@ def modif_post(request, post_id):
     priorities = Priority.objects.order_by('id')
     # we get the post the user wants to change
     one_post = get_object_or_404(Post, id=post_id)
+
     # we check if the user has the right to change the post
-    if request.user == one_post.author:
+    if request.user == one_post.author or request.user.is_superuser or request.user == community.manager:
         if form.is_valid():
             one_post.title = form.cleaned_data['title']
             one_post.description = form.cleaned_data['description']
@@ -202,7 +209,144 @@ def modif_post(request, post_id):
         return render(request, 'communitymanager/post.html', locals())
 
 
-# see the news_feed
+@login_required
+def moderation(request, community_id):
+    community = Community.objects.get(id=community_id)
+    subscribers = community.subscribers.all()
+    if request.user == community.manager or request.user.is_superuser:
+        form = CommunityEditionForm(request.POST or None)
+        if form.is_valid():
+            community.name = form.cleaned_data['name']
+            community.description = form.cleaned_data['description']
+            community.is_closed = form.cleaned_data['is_closed']
+            community.is_visible = form.cleaned_data['is_visible']
+            community.save()
+            return redirect('communities')
+        else:
+            return render(request, 'communitymanager/community_moderation.html', locals())
+    else:
+        return redirect('logout')
+
+@login_required
+def ban(request, community_id):
+    community = Community.objects.get(id=community_id)
+    subscribers = community.subscribers.all()
+    banned_members = community.banned_members.all()
+
+    if request.user == community.manager or request.user.is_superuser:
+        return render(request, 'communitymanager/ban_member.html', locals())
+    else:
+        return redirect('logout')
+
+@login_required
+def apply_ban(request, community_id, subscriber_id):
+    community = Community.objects.get(id=community_id)
+    user = User.objects.get(id=subscriber_id)
+    if request.user == community.manager or request.user.is_superuser:
+        if user in community.banned_members.all():
+            community.banned_members.remove(user)
+        else:
+            community.banned_members.add(user)
+        return redirect('ban', community_id)
+    else:
+        return redirect('logout')
+
+@login_required()
+def community_creation(request):
+    form = NewCommunityForm(request.POST or None)
+    priorities = Priority.objects.order_by('id')
+
+    if form.is_valid():
+        new_community = form.save(commit=False)
+        new_community.manager = request.user
+        new_community.save()
+        return redirect('communities')
+    return render(request, 'communitymanager/community_creation.html', locals())
+
+@login_required()
+def delete_community(request, community_id):
+    community = Community.objects.get(id=community_id)
+    if request.user == community.manager or request.user.is_superuser:
+        community.delete()
+        return redirect('communities')
+    else:
+        return redirect('logout')
+
+
+@login_required()
+def make_post_visible(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if request.user == post.community.manager or request.user.is_superuser:
+        post.is_visible = True
+        post.save()
+        return redirect('post', post.id)
+    else:
+        return redirect('logout')
+
+
+@login_required()
+def hide_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if request.user == post.community.manager or request.user.is_superuser:
+        post.is_visible = False
+        post.save()
+        return redirect('post', post.id)
+    else:
+        return redirect('logout')
+
+@login_required()
+def warning(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if request.user.is_superuser:
+        if post.warning:
+            post.warning = False
+            post.save()
+            return redirect('post', post.id)
+        else:
+            post.warning = True
+            post.save()
+            return redirect('post', post.id)
+    else:
+        return redirect('logout')
+
+@login_required()
+def show_comment(request, comment_id):
+    comment = Commentary.objects.get(id=comment_id)
+    if request.user == comment.post.community.manager or request.user.is_superuser:
+        comment.visible = True
+        comment.save()
+        return redirect('post', comment.post.id)
+    else:
+        return redirect('logout')
+
+@login_required()
+def hide_comment(request, comment_id):
+    comment = Commentary.objects.get(id=comment_id)
+    if request.user == comment.post.community.manager or request.user.is_superuser:
+        comment.visible = False
+        comment.save()
+        return redirect('post', comment.post.id)
+    else:
+        return redirect('logout')
+
+def stick(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if request.user == post.community.manager or request.user.is_superuser:
+        post.sticky = True
+        post.save()
+        return redirect('post', post.id)
+    else:
+        return redirect('logout')
+
+
+def unstick(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if request.user == post.community.manager or request.user.is_superuser:
+        post.sticky = False
+        post.save()
+        return redirect('post', post.id)
+    else:
+        return redirect('logout')
 
 
 @login_required()
@@ -213,7 +357,7 @@ def news_feed(request):
     priorities = Priority.objects.all()
     is_event = False
     community_user = request.user.community_set.order_by('name')
-    posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation')
+    posts_user = Post.objects.filter(community__in=community_user).order_by('-date_creation').order_by('-sticky')
     if form.is_valid():
         query = form.cleaned_data['query']
         if query != "":

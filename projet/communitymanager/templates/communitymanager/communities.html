@@ -13,13 +13,18 @@
 {% block top %}Communities{% endblock %}
 
 {% block content %}
+    <a href= {% url 'community_creation' %}> Create a new community </a>
     <div class="row justify-content-center">
         {% for community in community_user %}
-            {% include 'utility/community_disp.html' %}
+            {% if community.is_visible or request.user.is_superuser %}
+                {% include 'utility/community_disp.html' %}
+            {% endif %}
         {% endfor %}
         {% for community in community_list %}
             {% if community not in community_user %}
-                {% include 'utility/community_disp.html' %}
+                {% if community.is_visible or request.user.is_superuser %}
+                    {% include 'utility/community_disp.html' %}
+                {% endif %}
             {% endif %}
         {% endfor %}
     </div>

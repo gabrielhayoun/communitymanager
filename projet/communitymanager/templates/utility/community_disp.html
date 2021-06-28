@@ -9,6 +9,11 @@
                 {% else %}
                     <i class="bi bi-heart text-danger"></i></a>
                 {% endif %}
+                {% if user == community.manager or user.is_superuser %}
+                    <a href="{% url 'moderation' community_id=community.id %}">
+                    <i class="bi bi-pencil"></i>
+                    </a>
+                {%  endif %}
         </h3>
     </div>
     <div class="row align-item-end">

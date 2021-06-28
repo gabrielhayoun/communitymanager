@@ -1,9 +1,11 @@
 from django import forms
-from .models import Post, Commentary, Priority
+from django.contrib.auth.models import User
+
+from . import models
+from .models import Post, Commentary, Priority, Community
 
 
 class NewPostForm(forms.ModelForm):
-
     class Meta:
         model = Post
         fields = '__all__'
@@ -35,7 +37,6 @@ class NewPostForm(forms.ModelForm):
 
 
 class CommentaryForm(forms.ModelForm):
-
     class Meta:
         model = Commentary
         fields = ('content',)
@@ -50,7 +51,6 @@ class SearchForm(forms.Form):
 
 
 class PriorityForm(forms.ModelForm):
-
     class Meta:
         model = Priority
         fields = ('name',)
@@ -62,6 +62,25 @@ class PriorityForm(forms.ModelForm):
 
 class EventForm(forms.Form):
     is_event = forms.BooleanField(label='is_event')
+
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
         self.fields['is_event'].required = False
+
+class NewCommunityForm(forms.ModelForm):
+    class Meta:
+        model = Community
+        fields = ('name', 'description')
+
+
+class CommunityEditionForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    description = forms.CharField(max_length=5000)
+    is_closed = forms.BooleanField(required=False)
+    is_visible = forms.BooleanField(required=False)
+
+
+class BanForm(forms.ModelForm):
+    class Meta:
+        model = Community
+        fields = ('subscribers',)
